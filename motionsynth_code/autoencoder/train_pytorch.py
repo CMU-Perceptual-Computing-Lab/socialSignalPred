@@ -23,7 +23,8 @@ from torchvision.utils import save_image
 from torchvision.datasets import MNIST
 import os
 
-datapath ='/ssd/codes/pytorch_motionSynth/motionsynth_data' 
+#datapath ='/ssd/codes/pytorch_motionSynth/motionsynth_data' 
+datapath ='../../motionsynth_data' 
 Xcmu = np.load(datapath +'/data/processed/data_cmu.npz')['clips'] # (17944, 240, 73)
 Xhdm05 = np.load(datapath +'/data/processed/data_hdm05.npz')['clips']	#(3190, 240, 73)
 Xmhad = np.load(datapath +'/data/processed/data_mhad.npz')['clips'] # (2674, 240, 73)
