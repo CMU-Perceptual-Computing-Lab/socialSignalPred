@@ -8,7 +8,6 @@ from torch.autograd import Variable
 sys.path.append('/ssd/codes/glvis_python/')
 from Visualize_human_gl import showSkeleton,show_Holden_Data_73 #opengl visualization 
 
-
 # skels = np.load('denoise_out.npy')
 # showSkeleton([skels[0], skels[1]])
 # showSkeleton([skels[1], skels[2]])
@@ -57,7 +56,7 @@ model = autoencoder()
 #model.load_state_dict(torch.load('./motion_autoencoder_naive_dropout.pth', map_location=lambda storage, loc: storage))
 #model.load_state_dict(torch.load('./motion_autoencoder_naive_dropout_2nd.pth', map_location=lambda storage, loc: storage))
 #model.load_state_dict(torch.load('./motion_autoencoder_naive_dropout_h36mOnly.pth', map_location=lambda storage, loc: storage))
-model.load_state_dict(torch.load('./motion_autoencoder_naive_dropout_h36mOnly_dropout300.pth', map_location=lambda storage, loc: storage))
+model.load_state_dict(torch.load('/media/posefs2b/Users/hanbyulj/pytorch_motionSynth/checkpoint/autoencoder/motion_autoencoder_naive_dropout_h36mOnly_dropout500.pth', map_location=lambda storage, loc: storage))
 
 
 model.eval()
@@ -71,9 +70,11 @@ rng = np.random.RandomState(23455)
 
 #X = np.load('../data/processed/data_edin_locomotion.npz')['clips']
 #X = np.load('../data/processed/data_hdm05.npz')['clips']
-#X = np.load('../data/processed/data_cmu.npz')['clips'] #(17944, 240, 73)
+#X = np.load('/ssd/codes/pytorch_motionSynth/motionsynth_data/data/processed/data_cmu.npz')['clips'] #(17944, 240, 73)
 #X = np.load('/ssd/codes/pytorch_motionSynth/motionsynth_data/data/processed/data_h36m_training.npz')['clips'] #(17944, 240, 73)
-X = np.load('/ssd/codes/pytorch_motionSynth/motionsynth_data/data/processed/data_h36m_testing.npz')['clips'] #(17944, 240, 73)
+#X = np.load('/ssd/codes/pytorch_motionSynth/motionsynth_data/data/processed/data_h36m_testing.npz')['clips'] #(17944, 240, 73)
+
+X = np.load('/ssd/codes/pytorch_motionSynth/motionsynth_data/data/processed/data_panoptic_haggling_all.npz')['clips'] #(17944, 240, 73)
 X = np.swapaxes(X, 1, 2).astype(np.float32) #(17944, 73, 240)
 
 preprocess = np.load('preprocess_core.npz') #preprocess['Xmean' or 'Xstd']: (1, 73,1)
@@ -96,16 +97,20 @@ for _ in range(100):
     # show_Holden_Data_73([ Xorgi[0,:,:]])
     # continue
 
+    """Gaussian Noise"""
+    #Xnois = ((Xorgi * rng.binomial(size=Xorgi.shape, n=1, p=0.5)) / 0.5).astype(np.float32)
 
-    Xnois = ((Xorgi * rng.binomial(size=Xorgi.shape, n=1, p=0.5)) / 0.5).astype(np.float32)
+    """Missing Noise"""
+    # Xnois = Xorgi.copy()#((Xorgi * rng.binomial(size=Xorgi.shape, n=1, p=0.5)) / 0.5).astype(np.float32)
+    # Xnois[:,:,::5] = 0
 
     #inputData = Variable(torch.from_numpy(inputData)).cuda()
     Xrecn = model(Variable(torch.from_numpy(Xorgi)))    #on CPU 
+    #Xrecn = model(Variable(torch.from_numpy(Xnois)))    #on CPU 
     #Xrecn = np.array(network(Xnois).eval())    
-    
 
     Xorgi = (Xorgi * preprocess['Xstd']) + preprocess['Xmean']
-    Xnois = (Xnois * preprocess['Xstd']) + preprocess['Xmean']
+    #Xnois = (Xnois * preprocess['Xstd']) + preprocess['Xmean']
     Xrecn = (Xrecn.data.numpy() * preprocess['Xstd']) + preprocess['Xmean']
 
     # Xrecn = constrain(Xrecn, network[0], network[1], preprocess, multiconstraint(
@@ -118,4 +123,5 @@ for _ in range(100):
     #animation_plot([Xnois, Xrecn, Xorgi], interval=2)    
     #animation_plot([Xnois, Xrecn, Xorgi], interval=15.15)
     #show_Holden_Data_73([ Xrecn[0,:,:], Xorgi[0,:,:], Xnois[0,:,:] ])
-    show_Holden_Data_73([ Xrecn[0,:,:], Xorgi[0,:,:], Xnois[0,:,:] ])
+    #show_Holden_Data_73([ Xrecn[0,:,:], Xorgi[0,:,:], Xnois[0,:,:] ])
+    show_Holden_Data_73([ Xrecn[0,:,:], Xorgi[0,:,:] ])

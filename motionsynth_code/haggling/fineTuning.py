@@ -23,37 +23,38 @@ from torchvision.utils import save_image
 from torchvision.datasets import MNIST
 import os
 
-#datapath ='/ssd/codes/pytorch_motionSynth/motionsynth_data' 
-datapath ='../../motionsynth_data' 
-Xcmu = np.load(datapath +'/data/processed/data_cmu.npz')['clips'] # (17944, 240, 73)
-Xhdm05 = np.load(datapath +'/data/processed/data_hdm05.npz')['clips']	#(3190, 240, 73)
-Xmhad = np.load(datapath +'/data/processed/data_mhad.npz')['clips'] # (2674, 240, 73)
-#Xstyletransfer = np.load('/data/processed/data_styletransfer.npz')['clips']
-Xedin_locomotion = np.load(datapath +'/data/processed/data_edin_locomotion.npz')['clips'] #(351, 240, 73)
-Xedin_xsens = np.load(datapath +'/data/processed/data_edin_xsens.npz')['clips'] #(1399, 240, 73)
-Xedin_misc = np.load(datapath +'/data/processed/data_edin_misc.npz')['clips'] #(122, 240, 73)
-Xedin_punching = np.load(datapath +'/data/processed/data_edin_punching.npz')['clips'] #(408, 240, 73)
-h36m_training = np.load(datapath +'/data/processed/data_h36m_training.npz')['clips'] #(13156, 240, 73)
+# #datapath ='/ssd/codes/pytorch_motionSynth/motionsynth_data' 
+datapath ='./panoptic_cleaned' 
+# Xcmu = np.load(datapath +'/data/processed/data_cmu.npz')['clips'] # (17944, 240, 73)
+# Xhdm05 = np.load(datapath +'/data/processed/data_hdm05.npz')['clips']	#(3190, 240, 73)
+# Xmhad = np.load(datapath +'/data/processed/data_mhad.npz')['clips'] # (2674, 240, 73)
+# #Xstyletransfer = np.load('/data/processed/data_styletransfer.npz')['clips']
+# Xedin_locomotion = np.load(datapath +'/data/processed/data_edin_locomotion.npz')['clips'] #(351, 240, 73)
+# Xedin_xsens = np.load(datapath +'/data/processed/data_edin_xsens.npz')['clips'] #(1399, 240, 73)
+# Xedin_misc = np.load(datapath +'/data/processed/data_edin_misc.npz')['clips'] #(122, 240, 73)
+# Xedin_punching = np.load(datapath +'/data/processed/data_edin_punching.npz')['clips'] #(408, 240, 73)
+# h36m_training = np.load(datapath +'/data/processed/data_h36m_training.npz')['clips'] #(13156, 240, 73)
 
-#X = np.concatenate([Xcmu, Xhdm05, Xmhad, Xstyletransfer, Xedin_locomotion, Xedin_xsens, Xedin_misc, Xedin_punching], axis=0)
-#X = np.concatenate([Xcmu, Xhdm05, Xmhad, Xedin_locomotion, Xedin_xsens, Xedin_misc, Xedin_punching], axis=0) #(26088,  240, 73 )
+h36m_training = np.load(datapath +'/data_panoptic_haggling_winners.npz')['clips'] #(13156, 240, 73)
 X = h36m_training
-#X = np.swapaxes(X, 1, 2).astype(theano.config.floatX) #(26088,  73,  240)
 X = np.swapaxes(X, 1, 2).astype(np.float32)
 
 feet = np.array([12,13,14,15,16,17,24,25,26,27,28,29])
 
-Xmean = X.mean(axis=2).mean(axis=0)[np.newaxis,:,np.newaxis]
-Xmean[:,-7:-4] = 0.0
-Xmean[:,-4:]   = 0.5
+# Xmean = X.mean(axis=2).mean(axis=0)[np.newaxis,:,np.newaxis]
+# Xmean[:,-7:-4] = 0.0
+# Xmean[:,-4:]   = 0.5
 
-Xstd = np.array([[[X.std()]]]).repeat(X.shape[1], axis=1)
-Xstd[:,feet]  = 0.9 * Xstd[:,feet]
-Xstd[:,-7:-5] = 0.9 * X[:,-7:-5].std()
-Xstd[:,-5:-4] = 0.9 * X[:,-5:-4].std()
-Xstd[:,-4:]   = 0.5
+# Xstd = np.array([[[X.std()]]]).repeat(X.shape[1], axis=1)
+# Xstd[:,feet]  = 0.9 * Xstd[:,feet]
+# Xstd[:,-7:-5] = 0.9 * X[:,-7:-5].std()
+# Xstd[:,-5:-4] = 0.9 * X[:,-5:-4].std()
+# Xstd[:,-4:]   = 0.5
 
 #np.savez_compressed('preprocess_core.npz', Xmean=Xmean, Xstd=Xstd)
+preprocess = np.load('/media/posefs2b/Users/hanbyulj/pytorch_motionSynth/checkpoint/autoencoder/preprocess_core.npz') #preprocess['Xmean' or 'Xstd']: (1, 73,1)
+Xmean = preprocess['Xmean']
+Xstd = preprocess['Xstd']
 
 X = (X - Xmean) / Xstd
 
@@ -119,7 +120,9 @@ num_epochs = 500
 batch_size = 128
 learning_rate = 1e-3
 
+#model = autoencoder().cuda()
 model = autoencoder().cuda()
+model.load_state_dict(torch.load('/media/posefs2b/Users/hanbyulj/pytorch_motionSynth/checkpoint/autoencoder/motion_autoencoder_naive_dropout_h36mOnly_dropout500.pth', map_location=lambda storage, loc: storage))
 criterion = nn.MSELoss()
 optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate, weight_decay=1e-5)
 
@@ -162,6 +165,6 @@ for epoch in range(num_epochs):
     # if epoch % 10 == 0:
     #     pic = to_img(output.cpu().data)
     #     save_image(pic, './mlp_img/image_{}.png'.format(epoch))
-    if epoch % 100 == 0:
-        fileName = './motion_autoencoder_naive_dropout_h36mOnly_dropout' + str(epoch) + '.pth'
-        torch.save(model.state_dict(), fileName)
+    #if epoch % 100 == 0:
+fileName = './haggling_winner_fineTune' + str(epoch) + '.pth'
+torch.save(model.state_dict(), fileName)
