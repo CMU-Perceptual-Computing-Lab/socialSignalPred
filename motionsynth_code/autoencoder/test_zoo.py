@@ -11,8 +11,9 @@ from Visualize_human_gl import showSkeleton,show_Holden_Data_73 #opengl visualiz
 
 preprocess = np.load('preprocess_core.npz') #preprocess['Xmean' or 'Xstd']: (1, 73,1)
 
-model = modelZoo.autoencoder_vectorize()
-model.load_state_dict(torch.load('autoencoder_vectorize30.pth', map_location=lambda storage, loc: storage))
+#model = modelZoo.autoencoder_vectorize()
+model = modelZoo.autoencoder_2convLayers()
+model.load_state_dict(torch.load('motion_autoencoder_naive_dropout_h36mOnly_dropout50.pth', map_location=lambda storage, loc: storage))
 model.eval()
 
 rng = np.random.RandomState(23455)

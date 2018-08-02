@@ -36,9 +36,11 @@ class autoencoder_first(nn.Module):
         x = self.decoder(x)
         return x
 
-class autoencoder_2convLayers(nn.Module):
+
+
+class autoencoder_3convLayers(nn.Module):
     def __init__(self):
-        super(autoencoder_2convLayers, self).__init__()
+        super(autoencoder_3convLayers, self).__init__()
         self.encoder = nn.Sequential(
             nn.Dropout(0.25),
             nn.Conv1d(73,256,25,padding=12),
@@ -67,6 +69,48 @@ class autoencoder_2convLayers(nn.Module):
     def forward(self, x):
         x = self.encoder(x)
         x = self.decoder(x)
+        return x
+
+
+
+class autoencoder_3convLayers_vect(nn.Module):
+    def __init__(self):
+        super(autoencoder_3convLayers_vect, self).__init__()
+        self.encoder_conv = nn.Sequential(
+            nn.Dropout(0.25),
+            nn.Conv1d(73,256,25,padding=12),
+            nn.ReLU(True),
+            nn.MaxPool1d(kernel_size=2, stride=2),  #(batch, 256, 120)  
+
+            nn.Conv1d(256,256,25,padding=12),
+            nn.ReLU(True),
+            nn.MaxPool1d(kernel_size=2, stride=2),
+
+            nn.Conv1d(256,256,25,padding=12),
+            nn.ReLU(True),
+            nn.MaxPool1d(kernel_size=2, stride=2)   #(batch, 256, 30) 
+        )
+        self.encoder_lin = nn.Linear(256*30,1024)   
+        self.decoder_lin = nn.Linear(1024,256*30)   
+        self.decoder_conv = nn.Sequential(
+            #nn.MaxUnpool1d(kernel_size=2, stride=2),
+            nn.Dropout(0.25),
+            nn.ConvTranspose1d(256, 256, 25, stride=2, padding=12, output_padding=1),
+            nn.ReLU(True),
+            nn.ConvTranspose1d(256, 256, 25, stride=2, padding=12, output_padding=1),
+            nn.ReLU(True),
+            nn.ConvTranspose1d(256, 73, 25, stride=2, padding=12, output_padding=1),
+            #nn.ReLU(True)
+          )  
+
+    def forward(self, x):
+        x = self.encoder_conv(x)
+        x = x.view(-1,256*30)
+        x = self.encoder_lin(x)
+        
+        x = self.decoder_lin(x)
+        x = x.view([x.size(0), 256, 30])
+        x = self.decoder_conv(x)
         return x
 
 
