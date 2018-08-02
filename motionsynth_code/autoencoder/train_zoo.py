@@ -93,7 +93,8 @@ batch_size = 128
 learning_rate = 1e-3
 
 #model = modelZoo.autoencoder_vectorize().cuda()
-model = modelZoo.autoencoder_2convLayers().cuda()
+#model = modelZoo.autoencoder_2convLayers().cuda()
+model = modelZoo.autoencoder_3convLayers_vect().cuda()
 
 for param in model.parameters():
     print(type(param.data), param.size())
@@ -138,6 +139,6 @@ for epoch in range(num_epochs):
     #     logger.histo_summary(tag, value.data.cpu().numpy(), epoch+1)
     #     logger.histo_summary(tag+'/grad', value.grad.data.cpu().numpy(), epoch+1)
             
-    if epoch % 10 == 0:
+    if epoch % 100 == 0:
         fileName = './motion_autoencoder_naive_dropout_h36mOnly_dropout' + str(epoch) + '.pth'
         torch.save(model.state_dict(), fileName)
