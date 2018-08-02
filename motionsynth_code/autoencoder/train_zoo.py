@@ -3,9 +3,14 @@ import sys
 import numpy as np
 import scipy.io as io
 
-sys.path.append('../utils')
-from logger import Logger
-logger = Logger('./logs')
+bLog = False
+try:
+	sys.path.append('../utils')
+	from logger import Logger
+	logger = Logger('./logs')
+	bLog = True
+except ImportError:
+	pass
 
 import torch
 import torchvision
@@ -41,20 +46,20 @@ torch.cuda.manual_seed(23456)
 datapath ='../../motionsynth_data' 
 
 """All available dataset"""
-# Xcmu = np.load(datapath +'/data/processed/data_cmu.npz')['clips'] # (17944, 240, 73)
-# Xhdm05 = np.load(datapath +'/data/processed/data_hdm05.npz')['clips']	#(3190, 240, 73)
-# Xmhad = np.load(datapath +'/data/processed/data_mhad.npz')['clips'] # (2674, 240, 73)
-# #Xstyletransfer = np.load('/data/processed/data_styletransfer.npz')['clips']
-# Xedin_locomotion = np.load(datapath +'/data/processed/data_edin_locomotion.npz')['clips'] #(351, 240, 73)
-# Xedin_xsens = np.load(datapath +'/data/processed/data_edin_xsens.npz')['clips'] #(1399, 240, 73)
-# Xedin_misc = np.load(datapath +'/data/processed/data_edin_misc.npz')['clips'] #(122, 240, 73)
-# Xedin_punching = np.load(datapath +'/data/processed/data_edin_punching.npz')['clips'] #(408, 240, 73)
+Xcmu = np.load(datapath +'/data/processed/data_cmu.npz')['clips'] # (17944, 240, 73)
+Xhdm05 = np.load(datapath +'/data/processed/data_hdm05.npz')['clips']	#(3190, 240, 73)
+Xmhad = np.load(datapath +'/data/processed/data_mhad.npz')['clips'] # (2674, 240, 73)
+#Xstyletransfer = np.load('/data/processed/data_styletransfer.npz')['clips']
+Xedin_locomotion = np.load(datapath +'/data/processed/data_edin_locomotion.npz')['clips'] #(351, 240, 73)
+Xedin_xsens = np.load(datapath +'/data/processed/data_edin_xsens.npz')['clips'] #(1399, 240, 73)
+Xedin_misc = np.load(datapath +'/data/processed/data_edin_misc.npz')['clips'] #(122, 240, 73)
+Xedin_punching = np.load(datapath +'/data/processed/data_edin_punching.npz')['clips'] #(408, 240, 73)
 h36m_training = np.load(datapath +'/data/processed/data_h36m_training.npz')['clips'] #(13156, 240, 73)
 
 #X = np.concatenate([Xcmu, Xhdm05, Xmhad, Xstyletransfer, Xedin_locomotion, Xedin_xsens, Xedin_misc, Xedin_punching], axis=0)
 #X = np.concatenate([Xcmu, Xhdm05, Xmhad, Xedin_locomotion, Xedin_xsens, Xedin_misc, Xedin_punching], axis=0) #(26088,  240, 73 )
 X = h36m_training
-#X = np.concatenate([Xcmu, Xhdm05, Xmhad, Xedin_locomotion, Xedin_xsens, Xedin_misc, Xedin_punching, h36m_training], axis=0) #(26088,  240, 73 )
+X = np.concatenate([Xcmu, Xhdm05, Xmhad, Xedin_locomotion, Xedin_xsens, Xedin_misc, Xedin_punching, h36m_training], axis=0) #(26088,  240, 73 )
 
 """ Compute mean and std"""
 X = np.swapaxes(X, 1, 2).astype(np.float32)
@@ -127,12 +132,12 @@ for epoch in range(num_epochs):
         print('epoch [{}/{}], loss:{:.4f}'
                     .format(epoch + 1, num_epochs, loss.data[0]))
 
-        
-    # 1. Log scalar values (scalar summary)
-    info = { 'loss': loss.data[0] }
-
-    for tag, value in info.items():
-        logger.scalar_summary(tag, value, epoch+1)
+    if bLog:
+	    # 1. Log scalar values (scalar summary)
+	    info = { 'loss': loss.data[0] }
+	
+	    for tag, value in info.items():
+	        logger.scalar_summary(tag, value, epoch+1)
 
     # # 2. Log values and gradients of the parameters (histogram summary)
     # for tag, value in model.named_parameters():
@@ -140,6 +145,6 @@ for epoch in range(num_epochs):
     #     logger.histo_summary(tag, value.data.cpu().numpy(), epoch+1)
     #     logger.histo_summary(tag+'/grad', value.grad.data.cpu().numpy(), epoch+1)
             
-    if epoch % 10 == 0:
+    if epoch % 100 == 0:
         fileName = checkpointFolder+ '/checkpoint_e' + str(epoch) + '.pth'
         torch.save(model.state_dict(), fileName)
