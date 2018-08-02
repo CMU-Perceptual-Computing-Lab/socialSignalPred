@@ -17,7 +17,7 @@ import os
 
 class autoencoder_first(nn.Module):
     def __init__(self):
-        super(autoencoder, self).__init__()
+        super(autoencoder_first, self).__init__()
         self.encoder = nn.Sequential(
             nn.Dropout(0.25),
             nn.Conv1d(73,256,25,padding=12),

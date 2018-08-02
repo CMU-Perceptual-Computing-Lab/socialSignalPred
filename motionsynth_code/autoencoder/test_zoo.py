@@ -9,11 +9,17 @@ from torch.autograd import Variable
 sys.path.append('/ssd/codes/glvis_python/')
 from Visualize_human_gl import showSkeleton,show_Holden_Data_73 #opengl visualization 
 
-preprocess = np.load('preprocess_core.npz') #preprocess['Xmean' or 'Xstd']: (1, 73,1)
 
+checkpointFolder = '/posefs2b/Users/hanbyulj/pytorch_motionSynth/checkpoint/'
+runName = '/autoencoder_3convLayers_hagg/'
+preprocess = np.load(checkpointFolder+ runName + 'preprocess_core.npz') #preprocess['Xmean' or 'Xstd']: (1, 73,1)
+
+model = modelZoo.autoencoder_first()
 #model = modelZoo.autoencoder_vectorize()
-model = modelZoo.autoencoder_2convLayers()
-model.load_state_dict(torch.load('motion_autoencoder_naive_dropout_h36mOnly_dropout50.pth', map_location=lambda storage, loc: storage))
+#model = modelZoo.autoencoder_2convLayers()
+#model = modelZoo.autoencoder_3convLayers()
+trainResultName = checkpointFolder+ runName + 'motion_autoencoder_naive_dropout_h36mOnly_dropout170.pth'
+model.load_state_dict(torch.load(trainResultName, map_location=lambda storage, loc: storage))
 model.eval()
 
 rng = np.random.RandomState(23455)

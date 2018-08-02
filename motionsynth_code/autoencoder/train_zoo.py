@@ -83,9 +83,10 @@ num_epochs = args.epochs#500
 batch_size = 128
 learning_rate = 1e-3
 
+model = modelZoo.autoencoder_first().cuda()
 #model = modelZoo.autoencoder_vectorize().cuda()
 #model = modelZoo.autoencoder_2convLayers().cuda()
-model = modelZoo.autoencoder_3convLayers_vect().cuda()
+#model = modelZoo.autoencoder_3convLayers_vect().cuda()
 
 for param in model.parameters():
     print(type(param.data), param.size())
