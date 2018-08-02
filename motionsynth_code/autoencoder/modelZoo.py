@@ -36,38 +36,38 @@ class autoencoder_first(nn.Module):
         x = self.decoder(x)
         return x
 
-# class autoencoder_2convLayers(nn.Module):
-#     def __init__(self):
-#         super(autoencoder, self).__init__()
-#         self.encoder = nn.Sequential(
-#             nn.Dropout(0.25),
-#             nn.Conv1d(73,256,25,padding=12),
-#             nn.ReLU(True),
-#             nn.MaxPool1d(kernel_size=2, stride=2),
+class autoencoder_2convLayers(nn.Module):
+    def __init__(self):
+        super(autoencoder_2convLayers, self).__init__()
+        self.encoder = nn.Sequential(
+            nn.Dropout(0.25),
+            nn.Conv1d(73,256,25,padding=12),
+            nn.ReLU(True),
+            nn.MaxPool1d(kernel_size=2, stride=2),
 
-#             nn.Conv1d(256,256,25,padding=12),
-#             nn.ReLU(True),
-#             nn.MaxPool1d(kernel_size=2, stride=2)
+            nn.Conv1d(256,256,25,padding=12),
+            nn.ReLU(True),
+            nn.MaxPool1d(kernel_size=2, stride=2),
 
-#             nn.Conv1d(256,256,25,padding=12),
-#             nn.ReLU(True),
-#             nn.MaxPool1d(kernel_size=2, stride=2)
-#         )
-#         self.decoder = nn.Sequential(
-#             #nn.MaxUnpool1d(kernel_size=2, stride=2),
-#             nn.Dropout(0.25),
-#             nn.ConvTranspose1d(256, 256, 25, stride=2, padding=12, output_padding=1),
-#             nn.ReLU(True)
-#             nn.ConvTranspose1d(256, 256, 25, stride=2, padding=12, output_padding=1),
-#             nn.ReLU(True)
-#             nn.ConvTranspose1d(256, 73, 25, stride=2, padding=12, output_padding=1),
-#             #nn.ReLU(True)
-#           )  
+            nn.Conv1d(256,256,25,padding=12),
+            nn.ReLU(True),
+            nn.MaxPool1d(kernel_size=2, stride=2)
+        )
+        self.decoder = nn.Sequential(
+            #nn.MaxUnpool1d(kernel_size=2, stride=2),
+            nn.Dropout(0.25),
+            nn.ConvTranspose1d(256, 256, 25, stride=2, padding=12, output_padding=1),
+            nn.ReLU(True),
+            nn.ConvTranspose1d(256, 256, 25, stride=2, padding=12, output_padding=1),
+            nn.ReLU(True),
+            nn.ConvTranspose1d(256, 73, 25, stride=2, padding=12, output_padding=1),
+            #nn.ReLU(True)
+          )  
 
-#     def forward(self, x):
-#         x = self.encoder(x)
-#         x = self.decoder(x)
-#         return x
+    def forward(self, x):
+        x = self.encoder(x)
+        x = self.decoder(x)
+        return x
 
 
 '''

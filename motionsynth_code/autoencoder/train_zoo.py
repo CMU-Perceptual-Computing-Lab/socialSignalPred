@@ -25,12 +25,12 @@ parser = argparse.ArgumentParser(description='VAE MNIST Example')
 parser.add_argument('--epochs', type=int, default=101, metavar='N',
                     help='number of epochs to train (default: 101)')
 
-parser.add_argument('--gpu_idx', type=int, default=0, metavar='N',
+parser.add_argument('--gpu', type=int, default=0, metavar='N',
                     help='Select gpu (default: 0)')
 
 args = parser.parse_args()  
 
-torch.cuda.set_device(args.gpu_idx)
+torch.cuda.set_device(args.gpu)
 
 rng = np.random.RandomState(23456)
 torch.manual_seed(23456)
@@ -87,7 +87,9 @@ num_epochs = args.epochs#500
 batch_size = 128
 learning_rate = 1e-3
 
-model = modelZoo.autoencoder_vectorize().cuda()
+#model = modelZoo.autoencoder_vectorize().cuda()
+model = modelZoo.autoencoder_2convLayers().cuda()
+
 for param in model.parameters():
     print(type(param.data), param.size())
 criterion = nn.MSELoss()

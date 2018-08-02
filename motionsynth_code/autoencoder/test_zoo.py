@@ -35,7 +35,6 @@ for _ in range(100):
     Xorgi = X[index:index+1,:,:]
     Xorgi_stdd = X_stdd[index:index+1,:,:]  #Input (batchSize,73,240) 
 
-
     #show_Holden_Data_73([ Xorgi[0,:,:]])
 
     """Original"""
