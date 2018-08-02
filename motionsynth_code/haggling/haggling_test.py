@@ -71,7 +71,7 @@ for _ in range(100):
     index = rng.randint(X.shape[0])
     print(index)
     Xorgi = X[index:index+1,:,:]
-    Xorgi_stdd = X_stdd[index:index+1,:,:]
+    Xorgi_stdd = X_stdd[index:index+1,:,:]  #Input (batchSize,73,240) 
 
     """Original"""
     #inputData = Variable(torch.from_numpy(inputData)).cuda()
@@ -80,7 +80,7 @@ for _ in range(100):
     Xrecn[:,-7:-4] = Xorgi[:,-7:-4]
 
     """Adding gaussian noise on latent space"""
-    Xrecn_latentNoisy = model.encoder(Variable(torch.from_numpy(Xorgi_stdd)))    #on CPU     
+    Xrecn_latentNoisy = model.encoder(Variable(torch.from_numpy(Xorgi_stdd)))   #Xrecn_latentNoisy:  [1, 256, 120 ]
     noise = np.random.normal(scale=0.5, size=list(Xrecn_latentNoisy.size())).astype(np.float32)
     #noise = rng.binomial(size=list(Xrecn_latentNoisy.size()), n=1, p=0.5)) / 0.5).astype(np.float32)
     print('noisemax: {0}'.format(max(noise.flatten())))
