@@ -14,11 +14,11 @@ checkpointFolder = '/posefs2b/Users/hanbyulj/pytorch_motionSynth/checkpoint/'
 runName = '/autoencoder_3convLayers_hagg/'
 preprocess = np.load(checkpointFolder+ runName + 'preprocess_core.npz') #preprocess['Xmean' or 'Xstd']: (1, 73,1)
 
-model = modelZoo.autoencoder_first()
+#model = modelZoo.autoencoder_first()
 #model = modelZoo.autoencoder_vectorize()
 #model = modelZoo.autoencoder_2convLayers()
-#model = modelZoo.autoencoder_3convLayers()
-trainResultName = checkpointFolder+ runName + 'motion_autoencoder_naive_dropout_h36mOnly_dropout170.pth'
+model = modelZoo.autoencoder_3convLayers()
+trainResultName = checkpointFolder+ runName + 'motion_autoencoder_naive_dropout_h36mOnly_dropout390.pth'
 model.load_state_dict(torch.load(trainResultName, map_location=lambda storage, loc: storage))
 model.eval()
 
@@ -46,9 +46,10 @@ for _ in range(100):
 
     """Original"""
     #inputData = Variable(torch.from_numpy(inputData)).cuda()
-    Xrecn = model(Variable(torch.from_numpy(Xorgi_stdd)))    #on CPU 
+    Xrecn = model(Variable(torch.from_numpy(Xorgi_stdd)))
     Xrecn = (Xrecn.data.numpy() * preprocess['Xstd']) + preprocess['Xmean']
-    #Xrecn[:,-7:-4] = Xorgi[:,-7:-4]
+    
+    Xrecn[:,-7:-4] = Xorgi[:,-7:-4] #Align Centers for Debug
 
     show_Holden_Data_73([ Xorgi[0,:,:], Xrecn[0,:,:]])
     #show_Holden_Data_73([ Xorgi[0,:,:], Xrecn[0,:,:], Xrecn_winner[0,:,:]])

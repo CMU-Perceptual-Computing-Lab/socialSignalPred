@@ -25,7 +25,6 @@ import argparse
 
 import modelZoo
 
-
 parser = argparse.ArgumentParser(description='VAE MNIST Example')
 parser.add_argument('--epochs', type=int, default=101, metavar='N',
                     help='number of epochs to train (default: 101)')
@@ -75,7 +74,6 @@ Xstd[:,-7:-5] = 0.9 * X[:,-7:-5].std()
 Xstd[:,-5:-4] = 0.9 * X[:,-5:-4].std()
 Xstd[:,-4:]   = 0.5
 
-
 """ Data standardization """
 X = (X - Xmean) / Xstd
 I = np.arange(len(X))
@@ -88,9 +86,9 @@ num_epochs = args.epochs#500
 batch_size = 128
 learning_rate = 1e-3
 
-model = modelZoo.autoencoder_first().cuda()
+#model = modelZoo.autoencoder_first().cuda()
 #model = modelZoo.autoencoder_vectorize().cuda()
-#model = modelZoo.autoencoder_2convLayers().cuda()
+model = modelZoo.autoencoder_2convLayers().cuda()
 #model = modelZoo.autoencoder_3convLayers_vect().cuda()
 
 for param in model.parameters():
