@@ -37,10 +37,6 @@ torch.manual_seed(23456)
 torch.cuda.manual_seed(23456)
 
 
-checkpointFolder = './autoenc_vect/'
-if not os.path.exists(checkpointFolder):
-    os.mkdir(checkpointFolder)
-
 #datapath ='/ssd/codes/pytorch_motionSynth/motionsynth_data' 
 datapath ='../../motionsynth_data' 
 
@@ -73,7 +69,7 @@ Xstd[:,feet]  = 0.9 * Xstd[:,feet]
 Xstd[:,-7:-5] = 0.9 * X[:,-7:-5].std()
 Xstd[:,-5:-4] = 0.9 * X[:,-5:-4].std()
 Xstd[:,-4:]   = 0.5
-np.savez_compressed(checkpointFolder+'preprocess_core.npz', Xmean=Xmean, Xstd=Xstd)
+
 
 """ Data standardization """
 X = (X - Xmean) / Xstd
@@ -98,6 +94,15 @@ optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate, weight_decay=
 #optimizer = torch.optim.SGD(model.parameters(), lr=learning_rate)
 #optimizer = torch.optim.AMSGrad(model.parameters(), lr=learning_rate, weight_decay=1e-5)
 
+
+
+
+#checkpointFolder = './autoenc_vect/'
+checkpointFolder = model.__class__.__name__
+if not os.path.exists(checkpointFolder):
+    os.mkdir(checkpointFolder)
+
+np.savez_compressed(checkpointFolder+'/preprocess_core.npz', Xmean=Xmean, Xstd=Xstd)
 
 for epoch in range(num_epochs):
 
@@ -135,5 +140,5 @@ for epoch in range(num_epochs):
     #     logger.histo_summary(tag+'/grad', value.grad.data.cpu().numpy(), epoch+1)
             
     if epoch % 10 == 0:
-        fileName = './motion_autoencoder_naive_dropout_h36mOnly_dropout' + str(epoch) + '.pth'
+        fileName = checkpointFolder+ '/checkpoint_e' + str(epoch) + '.pth'
         torch.save(model.state_dict(), fileName)
