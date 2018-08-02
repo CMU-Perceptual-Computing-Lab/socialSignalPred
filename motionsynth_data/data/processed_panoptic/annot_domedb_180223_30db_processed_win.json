@@ -1,0 +1,2886 @@
+{
+	"data": [
+		{
+			"seqName": "160422_haggling1",
+			"seqType": "haggling",
+			"subjectInfo": [],
+			"faceInfo": [],
+			"scenes": [
+				{
+					"rangeStart": 275,
+					"rangeEnd": 1707,
+					"rangeStart_hd": 515,
+					"rangeEnd_hd": 2232,
+					"team": [
+						2,
+						[0,1]
+					],
+					"peopleNum": 3,
+					"sellerLR": [1,0]
+				},
+				{
+					"rangeStart": 2353,
+					"rangeEnd": 3535,
+					"rangeStart_hd": 3006,
+					"rangeEnd_hd": 4423,
+					"team": [
+						3,
+						[4,5]
+					],
+					"peopleNum": 3,
+					"sellerLR": [4,5]
+				},
+				{
+					"rangeStart": 4242,
+					"rangeEnd": 5494,
+					"rangeStart_hd": 5271,
+					"rangeEnd_hd": 6772,
+					"team": [
+						8,
+						[7,6]
+					],
+					"peopleNum": 3,
+					"sellerLR": [7,6]
+				},
+				{
+					"rangeStart": 6075,
+					"rangeEnd": 7156,
+					"rangeStart_hd": 7468,
+					"rangeEnd_hd": 8764,
+					"team": [
+						9,
+						[10,11]
+					],
+					"peopleNum": 3,
+					"sellerLR": [11,10]
+				},
+				{
+					"rangeStart": 7637,
+					"rangeEnd": 8789,
+					"rangeStart_hd": 9341,
+					"rangeEnd_hd": 10722,
+					"team": [
+						13,
+						[12,14]
+					],
+					"peopleNum": 3,
+					"sellerLR": [12,14]
+				},
+				{
+					"rangeStart": 9453,
+					"rangeEnd": 10649,
+					"rangeStart_hd": 11518,
+					"rangeEnd_hd": 12951,
+					"team": [
+						17,
+						[15,16]
+					],
+					"peopleNum": 3,
+					"sellerLR": [15,16]
+				}
+			]
+		},
+		{
+			"seqName": "160226_haggling1",
+			"seqType": "haggling",
+			"subjectInfo": [],
+			"faceInfo": [],
+			"scenes": [
+				{
+					"rangeStart": 48,
+					"rangeEnd": 1445,
+					"rangeStart_hd": 175,
+					"rangeEnd_hd": 1850,
+					"team": [
+						1,
+						[0,2]
+					],
+					"peopleNum": 3,
+					"sellerLR": [2,0]
+				},
+				{
+					"rangeStart": 1878,
+					"rangeEnd": 3129,
+					"rangeStart_hd": 2369,
+					"rangeEnd_hd": 3869,
+					"team": [
+						3,
+						[4,5]
+					],
+					"peopleNum": 3,
+					"sellerLR": [5,4]
+				},
+				{
+					"rangeStart": 3521,
+					"rangeEnd": 4586,
+					"rangeStart_hd": 4339,
+					"rangeEnd_hd": 5616,
+					"team": [
+						8,
+						[6,7]
+					],
+					"peopleNum": 3,
+					"sellerLR": [7,6]
+				},
+				{
+					"rangeStart": 4941,
+					"rangeEnd": 6391,
+					"rangeStart_hd": 6041,
+					"rangeEnd_hd": 7779,
+					"team": [
+						10,
+						[9,11]
+					],
+					"peopleNum": 3,
+					"sellerLR": [9,11]
+				},
+				{
+					"rangeStart": 7035,
+					"rangeEnd": 8179,
+					"rangeStart_hd": 8551,
+					"rangeEnd_hd": 9923,
+					"team": [
+						14,
+						[12,13]
+					],
+					"peopleNum": 3,
+					"sellerLR": [12,13]
+				},
+				{
+					"rangeStart": 8583,
+					"rangeEnd": 9490,
+					"rangeStart_hd": 10407,
+					"rangeEnd_hd": 11494,
+					"team": [
+						16,
+						[15,17]
+					],
+					"peopleNum": 3,
+					"sellerLR": [17,15]
+				}
+			]
+		},
+		{
+			"seqName": "160224_haggling1",
+			"seqType": "haggling",
+			"subjectInfo": [],
+			"faceInfo": [],
+			"scenes": [
+				{
+					"rangeStart": 252,
+					"rangeEnd": 1548,
+					"rangeStart_hd": 436,
+					"rangeEnd_hd": 1989,
+					"team": [
+						1,
+						[0,2]
+					],
+					"peopleNum": 3,
+					"sellerLR": [2,0]
+				},
+				{
+					"rangeStart": 2111,
+					"rangeEnd": 3393,
+					"rangeStart_hd": 2664,
+					"rangeEnd_hd": 4201,
+					"team": [
+						5,
+						[3,4]
+					],
+					"peopleNum": 3,
+					"sellerLR": [4,3]
+				},
+				{
+					"rangeStart": 3945,
+					"rangeEnd": 5492,
+					"rangeStart_hd": 4863,
+					"rangeEnd_hd": 6717,
+					"team": [
+						8,
+						[6,7]
+					],
+					"peopleNum": 3,
+					"sellerLR": [7,6]
+				},
+				{
+					"rangeStart": 5933,
+					"rangeEnd": 7082,
+					"rangeStart_hd": 7246,
+					"rangeEnd_hd": 8623,
+					"team": [
+						11,
+						[9,10]
+					],
+					"peopleNum": 3,
+					"sellerLR": [10,9]
+				}
+			]
+		},
+		{
+			"seqName": "161202_haggling1",
+			"seqType": "haggling",
+			"subjectInfo": [],
+			"faceInfo": [],
+			"scenes": [
+				{
+					"rangeStart": 3315,
+					"rangeEnd": 5059,
+					"rangeStart_hd": 4127,
+					"rangeEnd_hd": 6218,
+					"team": [
+						0,
+						[1,2]
+					],
+					"peopleNum": 3,
+					"sellerLR": [2,1]
+				},
+				{
+					"rangeStart": 6156,
+					"rangeEnd": 7525,
+					"rangeStart_hd": 7533,
+					"rangeEnd_hd": 9174,
+					"team": [
+						4,
+						[3,5]
+					],
+					"peopleNum": 3,
+					"sellerLR": [3,5]
+				},
+				{
+					"rangeStart": 8281,
+					"rangeEnd": 9689,
+					"rangeStart_hd": 10080,
+					"rangeEnd_hd": 11768,
+					"team": [
+						8,
+						[6,7]
+					],
+					"peopleNum": 3,
+					"sellerLR": [6,7]
+				},
+				{
+					"rangeStart": 10239,
+					"rangeEnd": 11658,
+					"rangeStart_hd": 12427,
+					"rangeEnd_hd": 14128,
+					"team": [
+						9,
+						[10,11]
+					],
+					"peopleNum": 3,
+					"sellerLR": [10,11]
+				}
+			]
+		},
+		{
+			"seqName": "170221_haggling_m1",
+			"seqType": "haggling",
+			"subjectInfo": [],
+			"faceInfo": [],
+			"scenes": [
+				{
+					"rangeStart": 1693,
+					"rangeEnd": 3157,
+					"rangeStart_hd": 2173,
+					"rangeEnd_hd": 3928,
+					"team": [
+						2,
+						[0,1]
+					],
+					"peopleNum": 3,
+					"sellerLR": [0,1],
+					"winnerIds": 1
+				},
+				{
+					"rangeStart": 3678,
+					"rangeEnd": 4999,
+					"rangeStart_hd": 4553,
+					"rangeEnd_hd": 6136,
+					"team": [
+						5,
+						[3,4]
+					],
+					"peopleNum": 3,
+					"sellerLR": [3,4],
+					"winnerIds": 4
+				},
+				{
+					"rangeStart": 5560,
+					"rangeEnd": 6958,
+					"rangeStart_hd": 6809,
+					"rangeEnd_hd": 8485,
+					"team": [
+						7,
+						[6,8]
+					],
+					"peopleNum": 3,
+					"sellerLR": [6,8],
+					"winnerIds": 8
+				},
+				{
+					"rangeStart": 7950,
+					"rangeEnd": 9419,
+					"rangeStart_hd": 9674,
+					"rangeEnd_hd": 11435,
+					"team": [
+						11,
+						[9,10]
+					],
+					"peopleNum": 3,
+					"sellerLR": [10,9],
+					"winnerIds": 9
+				},
+				{
+					"rangeStart": 9953,
+					"rangeEnd": 11414,
+					"rangeStart_hd": 12075,
+					"rangeEnd_hd": 13826,
+					"team": [
+						13,
+						[12,14]
+					],
+					"peopleNum": 3,
+					"sellerLR": [12,14],
+					"winnerIds": 12
+				},
+				{
+					"rangeStart": 12027,
+					"rangeEnd": 13333,
+					"rangeStart_hd": 14561,
+					"rangeEnd_hd": 16127,
+					"team": [
+						17,
+						[15,16]
+					],
+					"peopleNum": 3,
+					"sellerLR": [15,16],
+					"winnerIds": 15
+				}
+			],
+			"subjectId2AssignedNames": [3,2,1,6,5,4,8,7,9,4,1,5,9,2,10,11,8,3]
+		},
+		{
+			"seqName": "170221_haggling_m2",
+			"seqType": "haggling",
+			"subjectInfo": [],
+			"faceInfo": [],
+			"scenes": [
+				{
+					"rangeStart": 144,
+					"rangeEnd": 1637,
+					"rangeStart_hd": 284,
+					"rangeEnd_hd": 2074,
+					"team": [
+						2,
+						[0,1]
+					],
+					"peopleNum": 3,
+					"sellerLR": [0,1],
+					"winnerIds": 0
+				},
+				{
+					"rangeStart": 2243,
+					"rangeEnd": 3744,
+					"rangeStart_hd": 2800,
+					"rangeEnd_hd": 4600,
+					"team": [
+						3,
+						[4,5]
+					],
+					"peopleNum": 3,
+					"sellerLR": [4,5],
+					"winnerIds": 4
+				},
+				{
+					"rangeStart": 4263,
+					"rangeEnd": 5788,
+					"rangeStart_hd": 5222,
+					"rangeEnd_hd": 7049,
+					"team": [
+						8,
+						[6,7]
+					],
+					"peopleNum": 3,
+					"sellerLR": [6,7],
+					"winnerIds": 6
+				},
+				{
+					"rangeStart": 6320,
+					"rangeEnd": 7824,
+					"rangeStart_hd": 7688,
+					"rangeEnd_hd": 9491,
+					"team": [
+						11,
+						[9,10]
+					],
+					"peopleNum": 3,
+					"sellerLR": [10,9],
+					"winnerIds": 10
+				},
+				{
+					"rangeStart": 8380,
+					"rangeEnd": 9873,
+					"rangeStart_hd": 10157,
+					"rangeEnd_hd": 11947,
+					"team": [
+						14,
+						[12,13]
+					],
+					"peopleNum": 3,
+					"sellerLR": [12,13],
+					"winnerIds": 13
+				},
+				{
+					"rangeStart": 10410,
+					"rangeEnd": 11836,
+					"rangeStart_hd": 12591,
+					"rangeEnd_hd": 14300,
+					"team": [
+						17,
+						[15,16]
+					],
+					"peopleNum": 3,
+					"sellerLR": [15,16],
+					"winnerIds": 16
+				}
+			],
+			"subjectId2AssignedNames": [7,2,6,10,4,1,3,5,11,8,10,1,6,9,2,7,11,3]
+		},
+		{
+			"seqName": "170221_haggling_m3",
+			"seqType": "haggling",
+			"subjectInfo": [],
+			"faceInfo": [],
+			"scenes": [
+				{
+					"rangeStart": 279,
+					"rangeEnd": 1758,
+					"rangeStart_hd": 464,
+					"rangeEnd_hd": 2237,
+					"team": [
+						2,
+						[0,1]
+					],
+					"peopleNum": 3,
+					"sellerLR": [1,0],
+					"winnerIds": 0
+				},
+				{
+					"rangeStart": 2309,
+					"rangeEnd": 3547,
+					"rangeStart_hd": 2897,
+					"rangeEnd_hd": 4381,
+					"team": [
+						5,
+						[3,4]
+					],
+					"peopleNum": 3,
+					"sellerLR": [4,3],
+					"winnerIds": 3
+				},
+				{
+					"rangeStart": 4221,
+					"rangeEnd": 5708,
+					"rangeStart_hd": 5189,
+					"rangeEnd_hd": 6972,
+					"team": [
+						8,
+						[7,9]
+					],
+					"peopleNum": 3,
+					"sellerLR": [9,7],
+					"winnerIds": 9
+				}
+			],
+			"subjectId2AssignedNames": [8,2,1,5,4,6,-1,3,9,10]
+		},
+		{
+			"seqName": "170221_haggling_b1",
+			"seqType": "haggling",
+			"subjectInfo": [],
+			"faceInfo": [],
+			"scenes": [
+				{
+					"rangeStart": 898,
+					"rangeEnd": 2426,
+					"rangeStart_hd": 1223,
+					"rangeEnd_hd": 3055,
+					"team": [
+						2,
+						[0,1]
+					],
+					"peopleNum": 3,
+					"sellerLR": [1,0],
+					"winnerIds": 0
+				},
+				{
+					"rangeStart": 2969,
+					"rangeEnd": 4226,
+					"rangeStart_hd": 3706,
+					"rangeEnd_hd": 5212,
+					"team": [
+						5,
+						[3,4]
+					],
+					"peopleNum": 3,
+					"sellerLR": [4,3],
+					"winnerIds": 4
+				},
+				{
+					"rangeStart": 4767,
+					"rangeEnd": 6321,
+					"rangeStart_hd": 5861,
+					"rangeEnd_hd": 7724,
+					"team": [
+						7,
+						[6,8]
+					],
+					"peopleNum": 3,
+					"sellerLR": [6,8],
+					"winnerIds": 6
+				},
+				{
+					"rangeStart": 6903,
+					"rangeEnd": 8347,
+					"rangeStart_hd": 8422,
+					"rangeEnd_hd": 10153,
+					"team": [
+						11,
+						[9,10]
+					],
+					"peopleNum": 3,
+					"sellerLR": [9,10],
+					"winnerIds": 9
+				},
+				{
+					"rangeStart": 8843,
+					"rangeEnd": 10084,
+					"rangeStart_hd": 10747,
+					"rangeEnd_hd": 12235,
+					"team": [
+						14,
+						[12,13]
+					],
+					"peopleNum": 3,
+					"sellerLR": [12,13],
+					"winnerIds": 12
+				},
+				{
+					"rangeStart": 10773,
+					"rangeEnd": 12274,
+					"rangeStart_hd": 13061,
+					"rangeEnd_hd": 14860,
+					"team": [
+						16,
+						[17,18]
+					],
+					"peopleNum": 3,
+					"sellerLR": [17,18],
+					"winnerIds": 18
+				}
+			],
+			"subjectId2AssignedNames": [3,2,1,6,5,4,9,7,8,4,1,5,9,10,2,-1,3,8,11]
+		},
+		{
+			"seqName": "170221_haggling_b2",
+			"seqType": "haggling",
+			"subjectInfo": [],
+			"faceInfo": [],
+			"scenes": [
+				{
+					"rangeStart": 680,
+					"rangeEnd": 2195,
+					"rangeStart_hd": 949,
+					"rangeEnd_hd": 2766,
+					"team": [
+						0,
+						[1,2]
+					],
+					"peopleNum": 3,
+					"sellerLR": [1,2],
+					"winnerIds": 1
+				},
+				{
+					"rangeStart": 2671,
+					"rangeEnd": 4188,
+					"rangeStart_hd": 3336,
+					"rangeEnd_hd": 5155,
+					"team": [
+						5,
+						[3,4]
+					],
+					"peopleNum": 3,
+					"sellerLR": [4,3],
+					"winnerIds": 3
+				},
+				{
+					"rangeStart": 4621,
+					"rangeEnd": 6141,
+					"rangeStart_hd": 5674,
+					"rangeEnd_hd": 7496,
+					"team": [
+						8,
+						[6,7]
+					],
+					"peopleNum": 3,
+					"sellerLR": [7,6],
+					"winnerIds": 7
+				},
+				{
+					"rangeStart": 6724,
+					"rangeEnd": 8230,
+					"rangeStart_hd": 8195,
+					"rangeEnd_hd": 10000,
+					"team": [
+						11,
+						[9,10]
+					],
+					"peopleNum": 3,
+					"sellerLR": [9,10],
+					"winnerIds": 9
+				},
+				{
+					"rangeStart": 8680,
+					"rangeEnd": 9952,
+					"rangeStart_hd": 10540,
+					"rangeEnd_hd": 12065,
+					"team": [
+						14,
+						[12,13]
+					],
+					"peopleNum": 3,
+					"sellerLR": [13,12],
+					"winnerIds": 12
+				},
+				{
+					"rangeStart": 10663,
+					"rangeEnd": 12205,
+					"rangeStart_hd": 12917,
+					"rangeEnd_hd": 14765,
+					"team": [
+						18,
+						[16,17]
+					],
+					"peopleNum": 3,
+					"sellerLR": [17,16],
+					"winnerIds": 16
+				}
+			],
+			"subjectId2AssignedNames": [6,7,2,1,4,10,3,5,11,10,8,1,9,6,2,-1,7,11,3]
+		},
+		{
+			"seqName": "170221_haggling_b3",
+			"seqType": "haggling",
+			"subjectInfo": [],
+			"faceInfo": [],
+			"scenes": [
+				{
+					"rangeStart": 227,
+					"rangeEnd": 1723,
+					"rangeStart_hd": 415,
+					"rangeEnd_hd": 2208,
+					"team": [
+						2,
+						[0,1]
+					],
+					"peopleNum": 3,
+					"sellerLR": [0,1],
+					"winnerIds": 1
+				},
+				{
+					"rangeStart": 2109,
+					"rangeEnd": 3636,
+					"rangeStart_hd": 2671,
+					"rangeEnd_hd": 4502,
+					"team": [
+						5,
+						[3,4]
+					],
+					"peopleNum": 3,
+					"sellerLR": [4,3],
+					"winnerIds": 3
+				},
+				{
+					"rangeStart": 4133,
+					"rangeEnd": 5595,
+					"rangeStart_hd": 5098,
+					"rangeEnd_hd": 6850,
+					"team": [
+						8,
+						[6,7]
+					],
+					"peopleNum": 3,
+					"sellerLR": [7,6],
+					"winnerIds": 7
+				}
+			],
+			"subjectId2AssignedNames": [1,11,2,9,3,10,7,5,4]
+		},
+		{
+			"seqName": "170224_haggling_a1",
+			"seqType": "haggling",
+			"subjectInfo": [],
+			"faceInfo": [],
+			"scenes": [
+				{
+					"rangeStart": 563,
+					"rangeEnd": 2048,
+					"rangeStart_hd": 830,
+					"rangeEnd_hd": 2610,
+					"team": [
+						2,
+						[0,1]
+					],
+					"peopleNum": 3,
+					"sellerLR": [1,0],
+					"winnerIds": 1
+				},
+				{
+					"rangeStart": 2454,
+					"rangeEnd": 3946,
+					"rangeStart_hd": 3097,
+					"rangeEnd_hd": 4886,
+					"team": [
+						5,
+						[3,4]
+					],
+					"peopleNum": 3,
+					"sellerLR": [4,3],
+					"winnerIds": 4
+				},
+				{
+					"rangeStart": 4449,
+					"rangeEnd": 5970,
+					"rangeStart_hd": 5489,
+					"rangeEnd_hd": 7312,
+					"team": [
+						8,
+						[6,7]
+					],
+					"peopleNum": 3,
+					"sellerLR": [7,6],
+					"winnerIds": 6
+				},
+				{
+					"rangeStart": 6642,
+					"rangeEnd": 8156,
+					"rangeStart_hd": 8117,
+					"rangeEnd_hd": 9932,
+					"team": [
+						11,
+						[9,10]
+					],
+					"peopleNum": 3,
+					"sellerLR": [10,9],
+					"winnerIds": 9
+				},
+				{
+					"rangeStart": 8617,
+					"rangeEnd": 10187,
+					"rangeStart_hd": 10485,
+					"rangeEnd_hd": 12367,
+					"team": [
+						14,
+						[12,13]
+					],
+					"peopleNum": 3,
+					"sellerLR": [13,12],
+					"winnerIds": 12
+				},
+				{
+					"rangeStart": 10645,
+					"rangeEnd": 12152,
+					"rangeStart_hd": 12916,
+					"rangeEnd_hd": 14723,
+					"team": [
+						17,
+						[15,16]
+					],
+					"peopleNum": 3,
+					"sellerLR": [15,16],
+					"winnerIds": 15
+				},
+				{
+					"rangeStart": 12656,
+					"rangeEnd": 14170,
+					"rangeStart_hd": 15327,
+					"rangeEnd_hd": 17142,
+					"team": [
+						20,
+						[18,19]
+					],
+					"peopleNum": 3,
+					"sellerLR": [18,19],
+					"winnerIds": 19
+				},
+				{
+					"rangeStart": 14643,
+					"rangeEnd": 16156,
+					"rangeStart_hd": 17709,
+					"rangeEnd_hd": 19523,
+					"team": [
+						23,
+						[21,22]
+					],
+					"peopleNum": 3,
+					"sellerLR": [22,21],
+					"winnerIds": 21
+				}
+			],
+			"subjectId2AssignedNames": [3,2,1,6,5,4,9,8,7,11,12,10,13,1,5,10,14,2,8,12,3,11,9,6]
+		},
+		{
+			"seqName": "170224_haggling_a2",
+			"seqType": "haggling",
+			"subjectInfo": [],
+			"faceInfo": [],
+			"scenes": [
+				{
+					"rangeStart": 960,
+					"rangeEnd": 2420,
+					"rangeStart_hd": 1319,
+					"rangeEnd_hd": 3069,
+					"team": [
+						1,
+						[0,2]
+					],
+					"peopleNum": 3,
+					"sellerLR": [0,2],
+					"winnerIds": 0
+				},
+				{
+					"rangeStart": 2924,
+					"rangeEnd": 4468,
+					"rangeStart_hd": 3674,
+					"rangeEnd_hd": 5525,
+					"team": [
+						5,
+						[3,4]
+					],
+					"peopleNum": 3,
+					"sellerLR": [3,4],
+					"winnerIds": 4
+				},
+				{
+					"rangeStart": 4939,
+					"rangeEnd": 6386,
+					"rangeStart_hd": 6089,
+					"rangeEnd_hd": 7824,
+					"team": [
+						8,
+						[6,7]
+					],
+					"peopleNum": 3,
+					"sellerLR": [7,6],
+					"winnerIds": 7
+				},
+				{
+					"rangeStart": 7075,
+					"rangeEnd": 8558,
+					"rangeStart_hd": 8650,
+					"rangeEnd_hd": 10428,
+					"team": [
+						11,
+						[9,10]
+					],
+					"peopleNum": 3,
+					"sellerLR": [9,10],
+					"winnerIds": 10
+				},
+				{
+					"rangeStart": 9114,
+					"rangeEnd": 10616,
+					"rangeStart_hd": 11094,
+					"rangeEnd_hd": 12895,
+					"team": [
+						14,
+						[12,13]
+					],
+					"peopleNum": 3,
+					"sellerLR": [12,13],
+					"winnerIds": 12
+				},
+				{
+					"rangeStart": 11069,
+					"rangeEnd": 12588,
+					"rangeStart_hd": 13438,
+					"rangeEnd_hd": 15259,
+					"team": [
+						17,
+						[15,16]
+					],
+					"peopleNum": 3,
+					"sellerLR": [16,15],
+					"winnerIds": 16
+				},
+				{
+					"rangeStart": 13031,
+					"rangeEnd": 14573,
+					"rangeStart_hd": 15790,
+					"rangeEnd_hd": 17638,
+					"team": [
+						20,
+						[18,19]
+					],
+					"peopleNum": 3,
+					"sellerLR": [19,18],
+					"winnerIds": 18
+				},
+				{
+					"rangeStart": 15010,
+					"rangeEnd": 16529,
+					"rangeStart_hd": 18162,
+					"rangeEnd_hd": 19983,
+					"team": [
+						23,
+						[21,22]
+					],
+					"peopleNum": 3,
+					"sellerLR": [22,21],
+					"winnerIds": 22
+				}
+			],
+			"subjectId2AssignedNames": [5,1,8,4,14,13,6,2,11,7,10,12,1,6,9,13,2,14,3,7,10,11,4,8]
+		},
+		{
+			"seqName": "170224_haggling_a3",
+			"seqType": "haggling",
+			"subjectInfo": [],
+			"faceInfo": [],
+			"scenes": [
+				{
+					"rangeStart": 608,
+					"rangeEnd": 2082,
+					"rangeStart_hd": 874,
+					"rangeEnd_hd": 2641,
+					"team": [
+						2,
+						[0,1]
+					],
+					"peopleNum": 3,
+					"sellerLR": [1,0],
+					"winnerIds": 0
+				},
+				{
+					"rangeStart": 2600,
+					"rangeEnd": 4064,
+					"rangeStart_hd": 3262,
+					"rangeEnd_hd": 5017,
+					"team": [
+						5,
+						[3,4]
+					],
+					"peopleNum": 3,
+					"sellerLR": [3,4],
+					"winnerIds": 3
+				},
+				{
+					"rangeStart": 4541,
+					"rangeEnd": 6073,
+					"rangeStart_hd": 5588,
+					"rangeEnd_hd": 7425,
+					"team": [
+						8,
+						[6,7]
+					],
+					"peopleNum": 3,
+					"sellerLR": [6,7],
+					"winnerIds": 6
+				},
+				{
+					"rangeStart": 6501,
+					"rangeEnd": 8029,
+					"rangeStart_hd": 7938,
+					"rangeEnd_hd": 9770,
+					"team": [
+						11,
+						[9,10]
+					],
+					"peopleNum": 3,
+					"sellerLR": [9,10],
+					"winnerIds": 9
+				}
+			],
+			"subjectId2AssignedNames": [12,5,7,9,4,3,8,1,13,14,6,2]
+		},
+		{
+			"seqName": "170224_haggling_b1",
+			"seqType": "haggling",
+			"subjectInfo": [],
+			"faceInfo": [],
+			"scenes": [
+				{
+					"rangeStart": 1363,
+					"rangeEnd": 2773,
+					"rangeStart_hd": 1771,
+					"rangeEnd_hd": 3461,
+					"team": [
+						1,
+						[0,2]
+					],
+					"peopleNum": 3,
+					"sellerLR": [0,2],
+					"winnerIds": 2
+				},
+				{
+					"rangeStart": 3247,
+					"rangeEnd": 4785,
+					"rangeStart_hd": 4029,
+					"rangeEnd_hd": 5873,
+					"team": [
+						5,
+						[3,4]
+					],
+					"peopleNum": 3,
+					"sellerLR": [3,4],
+					"winnerIds": 3
+				},
+				{
+					"rangeStart": 5169,
+					"rangeEnd": 6668,
+					"rangeStart_hd": 6333,
+					"rangeEnd_hd": 8130,
+					"team": [
+						7,
+						[6,8]
+					],
+					"peopleNum": 3,
+					"sellerLR": [6,8],
+					"winnerIds": 8
+				},
+				{
+					"rangeStart": 7244,
+					"rangeEnd": 8688,
+					"rangeStart_hd": 8821,
+					"rangeEnd_hd": 10552,
+					"team": [
+						11,
+						[9,10]
+					],
+					"peopleNum": 3,
+					"sellerLR": [10,9],
+					"winnerIds": 10
+				},
+				{
+					"rangeStart": 9434,
+					"rangeEnd": 10982,
+					"rangeStart_hd": 11446,
+					"rangeEnd_hd": 13302,
+					"team": [
+						13,
+						[12,14]
+					],
+					"peopleNum": 3,
+					"sellerLR": [14,12],
+					"winnerIds": 12
+				},
+				{
+					"rangeStart": 11717,
+					"rangeEnd": 13137,
+					"rangeStart_hd": 14183,
+					"rangeEnd_hd": 15885,
+					"team": [
+						15,
+						[16,17]
+					],
+					"peopleNum": 3,
+					"sellerLR": [17,16],
+					"winnerIds": 16
+				},
+				{
+					"rangeStart": 13616,
+					"rangeEnd": 15106,
+					"rangeStart_hd": 16459,
+					"rangeEnd_hd": 18246,
+					"team": [
+						20,
+						[18,19]
+					],
+					"peopleNum": 3,
+					"sellerLR": [18,19],
+					"winnerIds": 19
+				},
+				{
+					"rangeStart": 15545,
+					"rangeEnd": 17037,
+					"rangeStart_hd": 18772,
+					"rangeEnd_hd": 20560,
+					"team": [
+						23,
+						[21,22]
+					],
+					"peopleNum": 3,
+					"sellerLR": [21,22],
+					"winnerIds": 21
+				}
+			],
+			"subjectId2AssignedNames": [3,1,2,6,5,4,8,7,9,12,11,10,13,5,1,2,14,10,8,12,3,11,9,6]
+		},
+		{
+			"seqName": "170224_haggling_b2",
+			"seqType": "haggling",
+			"subjectInfo": [],
+			"faceInfo": [],
+			"scenes": [
+				{
+					"rangeStart": 1173,
+					"rangeEnd": 2706,
+					"rangeStart_hd": 1521,
+					"rangeEnd_hd": 3359,
+					"team": [
+						2,
+						[0,1]
+					],
+					"peopleNum": 3,
+					"sellerLR": [0,1],
+					"winnerIds": 0
+				},
+				{
+					"rangeStart": 3245,
+					"rangeEnd": 4771,
+					"rangeStart_hd": 4005,
+					"rangeEnd_hd": 5834,
+					"team": [
+						4,
+						[3,5]
+					],
+					"peopleNum": 3,
+					"sellerLR": [3,5],
+					"winnerIds": 5
+				},
+				{
+					"rangeStart": 5178,
+					"rangeEnd": 6758,
+					"rangeStart_hd": 6322,
+					"rangeEnd_hd": 8216,
+					"team": [
+						8,
+						[6,7]
+					],
+					"peopleNum": 3,
+					"sellerLR": [6,7],
+					"winnerIds": 6
+				},
+				{
+					"rangeStart": 7391,
+					"rangeEnd": 8726,
+					"rangeStart_hd": 8975,
+					"rangeEnd_hd": 10575,
+					"team": [
+						10,
+						[9,11]
+					],
+					"peopleNum": 3,
+					"sellerLR": [11,9],
+					"winnerIds": 11
+				},
+				{
+					"rangeStart": 9217,
+					"rangeEnd": 10765,
+					"rangeStart_hd": 11164,
+					"rangeEnd_hd": 13020,
+					"team": [
+						14,
+						[12,13]
+					],
+					"peopleNum": 3,
+					"sellerLR": [13,12],
+					"winnerIds": 13
+				},
+				{
+					"rangeStart": 11293,
+					"rangeEnd": 12830,
+					"rangeStart_hd": 13653,
+					"rangeEnd_hd": 15495,
+					"team": [
+						17,
+						[15,16]
+					],
+					"peopleNum": 3,
+					"sellerLR": [15,16],
+					"winnerIds": 15
+				},
+				{
+					"rangeStart": 13315,
+					"rangeEnd": 14562,
+					"rangeStart_hd": 16077,
+					"rangeEnd_hd": 17571,
+					"team": [
+						20,
+						[18,19]
+					],
+					"peopleNum": 3,
+					"sellerLR": [18,19],
+					"winnerIds": 19
+				},
+				{
+					"rangeStart": 15233,
+					"rangeEnd": 16740,
+					"rangeStart_hd": 18376,
+					"rangeEnd_hd": 20182,
+					"team": [
+						23,
+						[21,22]
+					],
+					"peopleNum": 3,
+					"sellerLR": [21,22],
+					"winnerIds": 22
+				}
+			],
+			"subjectId2AssignedNames": [5,1,8,4,13,14,6,2,11,7,12,10,1,6,9,13,2,14,3,7,10,11,4,8]
+		},
+		{
+			"seqName": "170224_haggling_b3",
+			"seqType": "haggling",
+			"subjectInfo": [],
+			"faceInfo": [],
+			"scenes": [
+				{
+					"rangeStart": 1027,
+					"rangeEnd": 2548,
+					"rangeStart_hd": 1370,
+					"rangeEnd_hd": 3193,
+					"team": [
+						2,
+						[0,1]
+					],
+					"peopleNum": 3,
+					"sellerLR": [1,0],
+					"winnerIds": 1
+				},
+				{
+					"rangeStart": 3006,
+					"rangeEnd": 4504,
+					"rangeStart_hd": 3742,
+					"rangeEnd_hd": 5538,
+					"team": [
+						5,
+						[3,4]
+					],
+					"peopleNum": 3,
+					"sellerLR": [3,4],
+					"winnerIds": 4
+				},
+				{
+					"rangeStart": 5036,
+					"rangeEnd": 6512,
+					"rangeStart_hd": 6176,
+					"rangeEnd_hd": 7945,
+					"team": [
+						8,
+						[6,7]
+					],
+					"peopleNum": 3,
+					"sellerLR": [6,7],
+					"winnerIds": 7
+				},
+				{
+					"rangeStart": 7104,
+					"rangeEnd": 8533,
+					"rangeStart_hd": 8655,
+					"rangeEnd_hd": 10368,
+					"team": [
+						10,
+						[9,11]
+					],
+					"peopleNum": 3,
+					"sellerLR": [11,9],
+					"winnerIds": 11
+				}
+			],
+			"subjectId2AssignedNames": [12,5,7,9,4,3,1,8,13,6,2,14]
+		},
+		{
+			"seqName": "170228_haggling_a1",
+			"seqType": "haggling",
+			"subjectInfo": [],
+			"faceInfo": [],
+			"scenes": [
+				{
+					"rangeStart": 762,
+					"rangeEnd": 22209,
+					"rangeStart_hd": 1048,
+					"rangeEnd_hd": 2782,
+					"team": [
+						1,
+						[0,2]
+					],
+					"peopleNum": 3,
+					"sellerLR": [2,0],
+					"winnerIds": 0
+				},
+				{
+					"rangeStart": 2659,
+					"rangeEnd": 4099,
+					"rangeStart_hd": 3322,
+					"rangeEnd_hd": 5047,
+					"team": [
+						5,
+						[3,4]
+					],
+					"peopleNum": 3,
+					"sellerLR": [3,4],
+					"winnerIds": 3
+				},
+				{
+					"rangeStart": 4633,
+					"rangeEnd": 6106,
+					"rangeStart_hd": 5688,
+					"rangeEnd_hd": 7454,
+					"team": [
+						8,
+						[6,7]
+					],
+					"peopleNum": 3,
+					"sellerLR": [6,7],
+					"winnerIds": 7
+				},
+				{
+					"rangeStart": 6720,
+					"rangeEnd": 8198,
+					"rangeStart_hd": 8193,
+					"rangeEnd_hd": 9962,
+					"team": [
+						11,
+						[9,10]
+					],
+					"peopleNum": 3,
+					"sellerLR": [10,9],
+					"winnerIds": 10
+				},
+				{
+					"rangeStart": 8653,
+					"rangeEnd": 10139,
+					"rangeStart_hd": 10507,
+					"rangeEnd_hd": 12289,
+					"team": [
+						13,
+						[12,14]
+					],
+					"peopleNum": 3,
+					"sellerLR": [12,14],
+					"winnerIds": 14
+				},
+				{
+					"rangeStart": 10600,
+					"rangeEnd": 12059,
+					"rangeStart_hd": 12841,
+					"rangeEnd_hd": 14590,
+					"team": [
+						17,
+						[15,16]
+					],
+					"peopleNum": 3,
+					"sellerLR": [16,15],
+					"winnerIds": 15
+				},
+				{
+					"rangeStart": 12783,
+					"rangeEnd": 14338,
+					"rangeStart_hd": 15458,
+					"rangeEnd_hd": 17322,
+					"team": [
+						19,
+						[18,20]
+					],
+					"peopleNum": 3,
+					"sellerLR": [20,18],
+					"winnerIds": 18
+				},
+				{
+					"rangeStart": 14795,
+					"rangeEnd": 16270,
+					"rangeStart_hd": 17870,
+					"rangeEnd_hd": 19639,
+					"team": [
+						22,
+						[21,23]
+					],
+					"peopleNum": 3,
+					"sellerLR": [23,21],
+					"winnerIds": 21
+				}
+			],
+			"subjectId2AssignedNames": [3,2,1,6,5,4,9,8,7,12,11,10,13,5,1,10,7,2,8,3,12,11,6,9]
+		},
+		{
+			"seqName": "170228_haggling_a2",
+			"seqType": "haggling",
+			"subjectInfo": [],
+			"faceInfo": [],
+			"scenes": [
+				{
+					"rangeStart": 998,
+					"rangeEnd": 2472,
+					"rangeStart_hd": 1286,
+					"rangeEnd_hd": 3053,
+					"team": [
+						2,
+						[0,1]
+					],
+					"peopleNum": 3,
+					"sellerLR": [0,1],
+					"winnerIds": 1
+				},
+				{
+					"rangeStart": 2877,
+					"rangeEnd": 4343,
+					"rangeStart_hd": 3538,
+					"rangeEnd_hd": 5296,
+					"team": [
+						5,
+						[3,4]
+					],
+					"peopleNum": 3,
+					"sellerLR": [3,4],
+					"winnerIds": 4
+				},
+				{
+					"rangeStart": 4780,
+					"rangeEnd": 6238,
+					"rangeStart_hd": 5820,
+					"rangeEnd_hd": 7567,
+					"team": [
+						8,
+						[6,7]
+					],
+					"peopleNum": 3,
+					"sellerLR": [7,6],
+					"winnerIds": 6
+				},
+				{
+					"rangeStart": 6771,
+					"rangeEnd": 8263,
+					"rangeStart_hd": 8206,
+					"rangeEnd_hd": 9995,
+					"team": [
+						11,
+						[9,10]
+					],
+					"peopleNum": 3,
+					"sellerLR": [10,9],
+					"winnerIds": 10
+				},
+				{
+					"rangeStart": 8914,
+					"rangeEnd": 10356,
+					"rangeStart_hd": 10775,
+					"rangeEnd_hd": 12504,
+					"team": [
+						13,
+						[12,14]
+					],
+					"peopleNum": 3,
+					"sellerLR": [14,12],
+					"winnerIds": 14
+				},
+				{
+					"rangeStart": 10955,
+					"rangeEnd": 12401,
+					"rangeStart_hd": 13222,
+					"rangeEnd_hd": 14956,
+					"team": [
+						17,
+						[15,16]
+					],
+					"peopleNum": 3,
+					"sellerLR": [16,15],
+					"winnerIds": 16
+				},
+				{
+					"rangeStart": 12932,
+					"rangeEnd": 14374,
+					"rangeStart_hd": 15592,
+					"rangeEnd_hd": 17321,
+					"team": [
+						20,
+						[18,19]
+					],
+					"peopleNum": 3,
+					"sellerLR": [19,18],
+					"winnerIds": 18
+				},
+				{
+					"rangeStart": 14818,
+					"rangeEnd": 16312,
+					"rangeStart_hd": 17853,
+					"rangeEnd_hd": 19644,
+					"team": [
+						23,
+						[21,22]
+					],
+					"peopleNum": 3,
+					"sellerLR": [22,21],
+					"winnerIds": 21
+				}
+			],
+			"subjectId2AssignedNames": [1,5,8,4,3,13,6,2,11,10,7,12,6,9,1,13,2,5,3,7,10,11,4,8]
+		},
+		{
+			"seqName": "170228_haggling_a3",
+			"seqType": "haggling",
+			"subjectInfo": [],
+			"faceInfo": [],
+			"scenes": [
+				{
+					"rangeStart": 944,
+					"rangeEnd": 2436,
+					"rangeStart_hd": 1275,
+					"rangeEnd_hd": 3064,
+					"team": [
+						2,
+						[0,1]
+					],
+					"peopleNum": 3,
+					"sellerLR": [1,0],
+					"winnerIds": 0
+				},
+				{
+					"rangeStart": 2966,
+					"rangeEnd": 4385,
+					"rangeStart_hd": 3699,
+					"rangeEnd_hd": 5400,
+					"team": [
+						5,
+						[3,4]
+					],
+					"peopleNum": 3,
+					"sellerLR": [4,3],
+					"winnerIds": 3
+				},
+				{
+					"rangeStart": 4838,
+					"rangeEnd": 6328,
+					"rangeStart_hd": 5943,
+					"rangeEnd_hd": 7730,
+					"team": [
+						8,
+						[7,6]
+					],
+					"peopleNum": 3,
+					"sellerLR": [7,6],
+					"winnerIds": 6
+				},
+				{
+					"rangeStart": 6851,
+					"rangeEnd": 8296,
+					"rangeStart_hd": 8357,
+					"rangeEnd_hd": 10089,
+					"team": [
+						11,
+						[9,10]
+					],
+					"peopleNum": 3,
+					"sellerLR": [10,9],
+					"winnerIds": 9
+				}
+			],
+			"subjectId2AssignedNames": [12,5,7,3,4,9,1,8,13,10,6,2]
+		},
+		{
+			"seqName": "170228_haggling_b1",
+			"seqType": "haggling",
+			"subjectInfo": [],
+			"faceInfo": [],
+			"scenes": [
+				{
+					"rangeStart": 1568,
+					"rangeEnd": 3026,
+					"rangeStart_hd": 2004,
+					"rangeEnd_hd": 3752,
+					"team": [
+						2,
+						[0,1]
+					],
+					"peopleNum": 3,
+					"sellerLR": [0,1],
+					"winnerIds": 1
+				},
+				{
+					"rangeStart": 3605,
+					"rangeEnd": 5060,
+					"rangeStart_hd": 4446,
+					"rangeEnd_hd": 6191,
+					"team": [
+						5,
+						[3,4]
+					],
+					"peopleNum": 3,
+					"sellerLR": [4,3],
+					"winnerIds": 4
+				},
+				{
+					"rangeStart": 5515,
+					"rangeEnd": 7015,
+					"rangeStart_hd": 6736,
+					"rangeEnd_hd": 8534,
+					"team": [
+						8,
+						[6,7]
+					],
+					"peopleNum": 3,
+					"sellerLR": [6,7],
+					"winnerIds": 6
+				},
+				{
+					"rangeStart": 7490,
+					"rangeEnd": 9019,
+					"rangeStart_hd": 9104,
+					"rangeEnd_hd": 10937,
+					"team": [
+						11,
+						[9,10]
+					],
+					"peopleNum": 3,
+					"sellerLR": [9,10],
+					"winnerIds": 10
+				},
+				{
+					"rangeStart": 9714,
+					"rangeEnd": 11144,
+					"rangeStart_hd": 11770,
+					"rangeEnd_hd": 13484,
+					"team": [
+						14,
+						[12,13]
+					],
+					"peopleNum": 3,
+					"sellerLR": [13,12],
+					"winnerIds": 12
+				},
+				{
+					"rangeStart": 11639,
+					"rangeEnd": 13104,
+					"rangeStart_hd": 14077,
+					"rangeEnd_hd": 15834,
+					"team": [
+						17,
+						[15,16]
+					],
+					"peopleNum": 3,
+					"sellerLR": [16,15],
+					"winnerIds": 15
+				},
+				{
+					"rangeStart": 13550,
+					"rangeEnd": 15029,
+					"rangeStart_hd": 16368,
+					"rangeEnd_hd": 18141,
+					"team": [
+						19,
+						[18,20]
+					],
+					"peopleNum": 3,
+					"sellerLR": [20,18],
+					"winnerIds": 20
+				},
+				{
+					"rangeStart": 15541,
+					"rangeEnd": 17003,
+					"rangeStart_hd": 18755,
+					"rangeEnd_hd": 20508,
+					"team": [
+						23,
+						[21,22]
+					],
+					"peopleNum": 3,
+					"sellerLR": [21,22],
+					"winnerIds": 22
+				},
+				{
+					"rangeStart": 17439,
+					"rangeEnd": 18954,
+					"rangeStart_hd": 21030,
+					"rangeEnd_hd": 22847,
+					"team": [
+						26,
+						[24,25]
+					],
+					"peopleNum": 3,
+					"sellerLR": [25,24],
+					"winnerIds": 25
+				},
+				{
+					"rangeStart": 19463,
+					"rangeEnd": 20952,
+					"rangeStart_hd": 23457,
+					"rangeEnd_hd": 25242,
+					"team": [
+						29,
+						[27,28]
+					],
+					"peopleNum": 3,
+					"sellerLR": [28,27],
+					"winnerIds": 27
+				}
+			],
+			"subjectId2AssignedNames": [3,2,1,6,5,4,9,8,7,12,11,10,15,14,13,11,1,6,7,2,12,13,8,3,14,4,9,15,10,5]
+		},
+		{
+			"seqName": "170228_haggling_b2",
+			"seqType": "haggling",
+			"subjectInfo": [],
+			"faceInfo": [],
+			"scenes": [
+				{
+					"rangeStart": 1039,
+					"rangeEnd": 2383,
+					"rangeStart_hd": 1344,
+					"rangeEnd_hd": 2955,
+					"team": [
+						1,
+						[0,2]
+					],
+					"peopleNum": 3,
+					"sellerLR": [2,0],
+					"winnerIds": 0
+				},
+				{
+					"rangeStart": 2955,
+					"rangeEnd": 4232,
+					"rangeStart_hd": 3641,
+					"rangeEnd_hd": 5171,
+					"team": [
+						5,
+						[3,4]
+					],
+					"peopleNum": 3,
+					"sellerLR": [4,3],
+					"winnerIds": 3
+				},
+				{
+					"rangeStart": 4901,
+					"rangeEnd": 6326,
+					"rangeStart_hd": 5973,
+					"rangeEnd_hd": 7682,
+					"team": [
+						8,
+						[6,7]
+					],
+					"peopleNum": 3,
+					"sellerLR": [7,6],
+					"winnerIds": 6
+				},
+				{
+					"rangeStart": 6894,
+					"rangeEnd": 8390,
+					"rangeStart_hd": 8363,
+					"rangeEnd_hd": 10156,
+					"team": [
+						11,
+						[9,10]
+					],
+					"peopleNum": 3,
+					"sellerLR": [10,9],
+					"winnerIds": 9
+				},
+				{
+					"rangeStart": 8935,
+					"rangeEnd": 10419,
+					"rangeStart_hd": 10809,
+					"rangeEnd_hd": 12588,
+					"team": [
+						14,
+						[12,13]
+					],
+					"peopleNum": 3,
+					"sellerLR": [13,12],
+					"winnerIds": 13
+				},
+				{
+					"rangeStart": 10912,
+					"rangeEnd": 12367,
+					"rangeStart_hd": 13179,
+					"rangeEnd_hd": 14923,
+					"team": [
+						15,
+						[16,17]
+					],
+					"peopleNum": 3,
+					"sellerLR": [16,17],
+					"winnerIds": 16
+				},
+				{
+					"rangeStart": 12838,
+					"rangeEnd": 14311,
+					"rangeStart_hd": 15488,
+					"rangeEnd_hd": 17254,
+					"team": [
+						18,
+						[19,20]
+					],
+					"peopleNum": 3,
+					"sellerLR": [20,19],
+					"winnerIds": 20
+				},
+				{
+					"rangeStart": 14899,
+					"rangeEnd": 16394,
+					"rangeStart_hd": 17959,
+					"rangeEnd_hd": 19751,
+					"team": [
+						23,
+						[21,22]
+					],
+					"peopleNum": 3,
+					"sellerLR": [21,22],
+					"winnerIds": 21
+				},
+				{
+					"rangeStart": 16873,
+					"rangeEnd": 18376,
+					"rangeStart_hd": 20325,
+					"rangeEnd_hd": 22127,
+					"team": [
+						25,
+						[24,26]
+					],
+					"peopleNum": 3,
+					"sellerLR": [24,26],
+					"winnerIds": 24
+				},
+				{
+					"rangeStart": 18941,
+					"rangeEnd": 20444,
+					"rangeStart_hd": 22804,
+					"rangeEnd_hd": 24606,
+					"team": [
+						29,
+						[27,28]
+					],
+					"peopleNum": 3,
+					"sellerLR": [28,27],
+					"winnerIds": 28
+				}
+			],
+			"subjectId2AssignedNames": [3,14,6,9,5,11,7,1,15,2,13,8,4,10,12,3,7,5,6,10,8,13,11,9,4,2,15,14,12,1]
+		},
+		{
+			"seqName": "170228_haggling_b3",
+			"seqType": "haggling",
+			"subjectInfo": [],
+			"faceInfo": [],
+			"scenes": [
+				{
+					"rangeStart": 955,
+					"rangeEnd": 2443,
+					"rangeStart_hd": 1265,
+					"rangeEnd_hd": 3049,
+					"team": [
+						2,
+						[0,1]
+					],
+					"peopleNum": 3,
+					"sellerLR": [0,1],
+					"winnerIds": 1
+				},
+				{
+					"rangeStart": 2926,
+					"rangeEnd": 4441,
+					"rangeStart_hd": 3628,
+					"rangeEnd_hd": 5444,
+					"team": [
+						5,
+						[3,4]
+					],
+					"peopleNum": 3,
+					"sellerLR": [3,4],
+					"winnerIds": 4
+				},
+				{
+					"rangeStart": 4929,
+					"rangeEnd": 6427,
+					"rangeStart_hd": 6029,
+					"rangeEnd_hd": 7825,
+					"team": [
+						8,
+						[6,7]
+					],
+					"peopleNum": 3,
+					"sellerLR": [6,7],
+					"winnerIds": 6
+				},
+				{
+					"rangeStart": 6965,
+					"rangeEnd": 8442,
+					"rangeStart_hd": 8470,
+					"rangeEnd_hd": 10240,
+					"team": [
+						10,
+						[9,11]
+					],
+					"peopleNum": 3,
+					"sellerLR": [9,11],
+					"winnerIds": 9
+				},
+				{
+					"rangeStart": 8951,
+					"rangeEnd": 10205,
+					"rangeStart_hd": 10851,
+					"rangeEnd_hd": 12354,
+					"team": [
+						14,
+						[12,13]
+					],
+					"peopleNum": 3,
+					"sellerLR": [13,12],
+					"winnerIds": 13
+				}
+			],
+			"subjectId2AssignedNames": [3,9,4,1,13,11,2,7,12,8,14,5,6,10,15]
+		},
+		{
+			"seqName": "170404_haggling_a1",
+			"seqType": "haggling",
+			"subjectInfo": [],
+			"faceInfo": [],
+			"scenes": [
+				{
+					"rangeStart": 1235,
+					"rangeEnd": 2688,
+					"rangeStart_hd": 1611,
+					"rangeEnd_hd": 3353,
+					"team": [
+						1,
+						[2,0]
+					],
+					"peopleNum": 3,
+					"sellerLR": [2,0],
+					"winnerIds": 0
+				},
+				{
+					"rangeStart": 3335,
+					"rangeEnd": 4768,
+					"rangeStart_hd": 4128,
+					"rangeEnd_hd": 5846,
+					"team": [
+						5,
+						[3,4]
+					],
+					"peopleNum": 3,
+					"sellerLR": [3,4],
+					"winnerIds": 4
+				},
+				{
+					"rangeStart": 5394,
+					"rangeEnd": 6586,
+					"rangeStart_hd": 6596,
+					"rangeEnd_hd": 8026,
+					"team": [
+						6,
+						[8,7]
+					],
+					"peopleNum": 3,
+					"sellerLR": [8,7],
+					"winnerIds": 7
+				},
+				{
+					"rangeStart": 7459,
+					"rangeEnd": 8899,
+					"rangeStart_hd": 9072,
+					"rangeEnd_hd": 10798,
+					"team": [
+						11,
+						[9,10]
+					],
+					"peopleNum": 3,
+					"sellerLR": [9,10],
+					"winnerIds": 9
+				}
+			],
+			"subjectId2AssignedNames": [3,1,2,6,5,4,7,1,8,4,6,2]
+		},
+		{
+			"seqName": "170404_haggling_a2",
+			"seqType": "haggling",
+			"subjectInfo": [],
+			"faceInfo": [],
+			"scenes": [
+				{
+					"rangeStart": 1317,
+					"rangeEnd": 2768,
+					"rangeStart_hd": 1699,
+					"rangeEnd_hd": 3438,
+					"team": [
+						2,
+						[0,1]
+					],
+					"peopleNum": 3,
+					"sellerLR": [0,1],
+					"winnerIds": 1
+				},
+				{
+					"rangeStart": 3355,
+					"rangeEnd": 4801,
+					"rangeStart_hd": 4142,
+					"rangeEnd_hd": 5875,
+					"team": [
+						4,
+						[5,3]
+					],
+					"peopleNum": 3,
+					"sellerLR": [5,3],
+					"winnerIds": 3
+				},
+				{
+					"rangeStart": 5549,
+					"rangeEnd": 6963,
+					"rangeStart_hd": 6772,
+					"rangeEnd_hd": 8467,
+					"team": [
+						8,
+						[6,7]
+					],
+					"peopleNum": 3,
+					"sellerLR": [6,7],
+					"winnerIds": 7
+				},
+				{
+					"rangeStart": 7497,
+					"rangeEnd": 9034,
+					"rangeStart_hd": 9107,
+					"rangeEnd_hd": 10949,
+					"team": [
+						11,
+						[9,10]
+					],
+					"peopleNum": 3,
+					"sellerLR": [9,10],
+					"winnerIds": 10
+				}
+			],
+			"subjectId2AssignedNames": [7,5,3,1,8,2,3,4,5,7,8,6]
+		},
+		{
+			"seqName": "170404_haggling_a3",
+			"seqType": "haggling",
+			"subjectInfo": [],
+			"faceInfo": [],
+			"scenes": [
+				{
+					"rangeStart": 327,
+					"rangeEnd": 1843,
+					"rangeStart_hd": 503,
+					"rangeEnd_hd": 2320,
+					"team": [
+						2,
+						[0,1]
+					],
+					"peopleNum": 3,
+					"sellerLR": [1,0],
+					"winnerIds": 1
+				},
+				{
+					"rangeStart": 2407,
+					"rangeEnd": 4110,
+					"rangeStart_hd": 2997,
+					"rangeEnd_hd": 5038,
+					"team": [
+						3,
+						[4,5]
+					],
+					"peopleNum": 3,
+					"sellerLR": [4,5],
+					"winnerIds": 5
+				}
+			],
+			"subjectId2AssignedNames": [6,3,2,1,8,4]
+		},
+		{
+			"seqName": "170404_haggling_b1",
+			"seqType": "haggling",
+			"subjectInfo": [],
+			"faceInfo": [],
+			"scenes": [
+				{
+					"rangeStart": 1311,
+					"rangeEnd": 2756,
+					"rangeStart_hd": 1714,
+					"rangeEnd_hd": 3446,
+					"team": [
+						1,
+						[0,2]
+					],
+					"peopleNum": 3,
+					"sellerLR": [0,2],
+					"winnerIds": 2
+				},
+				{
+					"rangeStart": 3463,
+					"rangeEnd": 4946,
+					"rangeStart_hd": 4293,
+					"rangeEnd_hd": 6071,
+					"team": [
+						5,
+						[3,4]
+					],
+					"peopleNum": 3,
+					"sellerLR": [4,3],
+					"winnerIds": 4
+				},
+				{
+					"rangeStart": 5415,
+					"rangeEnd": 6635,
+					"rangeStart_hd": 6633,
+					"rangeEnd_hd": 8096,
+					"team": [
+						8,
+						[6,7]
+					],
+					"peopleNum": 3,
+					"sellerLR": [7,6],
+					"winnerIds": 7
+				},
+				{
+					"rangeStart": 7508,
+					"rangeEnd": 8816,
+					"rangeStart_hd": 9142,
+					"rangeEnd_hd": 10710,
+					"team": [
+						12,
+						[10,11]
+					],
+					"peopleNum": 3,
+					"sellerLR": [11,10],
+					"winnerIds": 11
+				},
+				{
+					"rangeStart": 9307,
+					"rangeEnd": 10770,
+					"rangeStart_hd": 11299,
+					"rangeEnd_hd": 13053,
+					"team": [
+						15,
+						[13,14]
+					],
+					"peopleNum": 3,
+					"sellerLR": [13,14],
+					"winnerIds": 13
+				},
+				{
+					"rangeStart": 11300,
+					"rangeEnd": 12754,
+					"rangeStart_hd": 13692,
+					"rangeEnd_hd": 15431,
+					"team": [
+						18,
+						[16,17]
+					],
+					"peopleNum": 3,
+					"sellerLR": [17,16],
+					"winnerIds": 16
+				},
+				{
+					"rangeStart": 13289,
+					"rangeEnd": 14746,
+					"rangeStart_hd": 16072,
+					"rangeEnd_hd": 17819,
+					"team": [
+						21,
+						[19,20]
+					],
+					"peopleNum": 3,
+					"sellerLR": [20,19],
+					"winnerIds": 20
+				},
+				{
+					"rangeStart": 15291,
+					"rangeEnd": 16716,
+					"rangeStart_hd": 18472,
+					"rangeEnd_hd": 20181,
+					"team": [
+						24,
+						[22,23]
+					],
+					"peopleNum": 3,
+					"sellerLR": [22,23],
+					"winnerIds": 22
+				}
+			],
+			"subjectId2AssignedNames": [3,1,2,6,5,4,9,8,7,10,12,11,-1,1,13,5,10,14,2,12,8,3,11,9,6]
+		},
+		{
+			"seqName": "170404_haggling_b2",
+			"seqType": "haggling",
+			"subjectInfo": [],
+			"faceInfo": [],
+			"scenes": [
+				{
+					"rangeStart": 1273,
+					"rangeEnd": 2795,
+					"rangeStart_hd": 1622,
+					"rangeEnd_hd": 3447,
+					"team": [
+						2,
+						[0,1]
+					],
+					"peopleNum": 3,
+					"sellerLR": [1,0],
+					"winnerIds": 1
+				},
+				{
+					"rangeStart": 3297,
+					"rangeEnd": 4784,
+					"rangeStart_hd": 4049,
+					"rangeEnd_hd": 5831,
+					"team": [
+						5,
+						[3,4]
+					],
+					"peopleNum": 3,
+					"sellerLR": [4,3],
+					"winnerIds": 3
+				},
+				{
+					"rangeStart": 5286,
+					"rangeEnd": 6833,
+					"rangeStart_hd": 6433,
+					"rangeEnd_hd": 8287,
+					"team": [
+						8,
+						[6,7]
+					],
+					"peopleNum": 3,
+					"sellerLR": [6,7],
+					"winnerIds": 6
+				},
+				{
+					"rangeStart": 7319,
+					"rangeEnd": 8832,
+					"rangeStart_hd": 8870,
+					"rangeEnd_hd": 10684,
+					"team": [
+						10,
+						[9,11]
+					],
+					"peopleNum": 3,
+					"sellerLR": [9,11],
+					"winnerIds": 9
+				},
+				{
+					"rangeStart": 9360,
+					"rangeEnd": 10933,
+					"rangeStart_hd": 11317,
+					"rangeEnd_hd": 13202,
+					"team": [
+						14,
+						[12,13]
+					],
+					"peopleNum": 3,
+					"sellerLR": [12,13],
+					"winnerIds": 12
+				},
+				{
+					"rangeStart": 11476,
+					"rangeEnd": 12981,
+					"rangeStart_hd": 13853,
+					"rangeEnd_hd": 15658,
+					"team": [
+						17,
+						[15,16]
+					],
+					"peopleNum": 3,
+					"sellerLR": [16,15],
+					"winnerIds": 16
+				},
+				{
+					"rangeStart": 13487,
+					"rangeEnd": 15069,
+					"rangeStart_hd": 16264,
+					"rangeEnd_hd": 18161,
+					"team": [
+						20,
+						[18,19]
+					],
+					"peopleNum": 3,
+					"sellerLR": [19,18],
+					"winnerIds": 18
+				},
+				{
+					"rangeStart": 15630,
+					"rangeEnd": 17131,
+					"rangeStart_hd": 18833,
+					"rangeEnd_hd": 20632,
+					"team": [
+						22,
+						[21,23]
+					],
+					"peopleNum": 3,
+					"sellerLR": [23,21],
+					"winnerIds": 21
+				}
+			],
+			"subjectId2AssignedNames": [5,1,8,4,14,13,6,2,11,7,10,12,1,6,9,13,2,14,3,7,10,11,8,4]
+		},
+		{
+			"seqName": "170404_haggling_b3",
+			"seqType": "haggling",
+			"subjectInfo": [],
+			"faceInfo": [],
+			"scenes": [
+				{
+					"rangeStart": 502,
+					"rangeEnd": 1975,
+					"rangeStart_hd": 738,
+					"rangeEnd_hd": 2504,
+					"team": [
+						2,
+						[0,1]
+					],
+					"peopleNum": 3,
+					"sellerLR": [1,0],
+					"winnerIds": 0
+				},
+				{
+					"rangeStart": 2418,
+					"rangeEnd": 3939,
+					"rangeStart_hd": 3035,
+					"rangeEnd_hd": 4858,
+					"team": [
+						5,
+						[3,4]
+					],
+					"peopleNum": 3,
+					"sellerLR": [4,3],
+					"winnerIds": 4
+				},
+				{
+					"rangeStart": 4487,
+					"rangeEnd": 5885,
+					"rangeStart_hd": 5515,
+					"rangeEnd_hd": 7191,
+					"team": [
+						8,
+						[6,7]
+					],
+					"peopleNum": 3,
+					"sellerLR": [6,7],
+					"winnerIds": 7
+				},
+				{
+					"rangeStart": 6446,
+					"rangeEnd": 7905,
+					"rangeStart_hd": 7863,
+					"rangeEnd_hd": 9613,
+					"team": [
+						11,
+						[9,10]
+					],
+					"peopleNum": 3,
+					"sellerLR": [9,10],
+					"winnerIds": 10
+				}
+			],
+			"subjectId2AssignedNames": [12,5,7,9,4,3,1,8,13,6,14,2]
+		},
+		{
+			"seqName": "170407_haggling_a1",
+			"seqType": "haggling",
+			"subjectInfo": [],
+			"faceInfo": [],
+			"scenes": [
+				{
+					"rangeStart": 1373,
+					"rangeEnd": 2862,
+					"rangeStart_hd": 1729,
+					"rangeEnd_hd": 3514,
+					"team": [
+						2,
+						[0,1]
+					],
+					"peopleNum": 3,
+					"sellerLR": [0,1],
+					"winnerIds": 0
+				},
+				{
+					"rangeStart": 3326,
+					"rangeEnd": 4808,
+					"rangeStart_hd": 4070,
+					"rangeEnd_hd": 5847,
+					"team": [
+						5,
+						[3,4]
+					],
+					"peopleNum": 3,
+					"sellerLR": [4,3],
+					"winnerIds": 4
+				},
+				{
+					"rangeStart": 5666,
+					"rangeEnd": 7121,
+					"rangeStart_hd": 6875,
+					"rangeEnd_hd": 8619,
+					"team": [
+						8,
+						[6,7]
+					],
+					"peopleNum": 3,
+					"sellerLR": [6,7],
+					"winnerIds": 7
+				},
+				{
+					"rangeStart": 7564,
+					"rangeEnd": 9084,
+					"rangeStart_hd": 9150,
+					"rangeEnd_hd": 10973,
+					"team": [
+						11,
+						[9,10]
+					],
+					"peopleNum": 3,
+					"sellerLR": [9,10],
+					"winnerIds": 9
+				},
+				{
+					"rangeStart": 9467,
+					"rangeEnd": 10979,
+					"rangeStart_hd": 11432,
+					"rangeEnd_hd": 13244,
+					"team": [
+						14,
+						[12,13]
+					],
+					"peopleNum": 3,
+					"sellerLR": [13,12],
+					"winnerIds": 12
+				},
+				{
+					"rangeStart": 11392,
+					"rangeEnd": 12882,
+					"rangeStart_hd": 13739,
+					"rangeEnd_hd": 15526,
+					"team": [
+						16,
+						[15,17]
+					],
+					"peopleNum": 3,
+					"sellerLR": [15,17],
+					"winnerIds": 15
+				}
+			],
+			"subjectId2AssignedNames": [3,2,1,6,5,4,9,8,7,4,1,5,9,10,2,6,3,8]
+		},
+		{
+			"seqName": "170407_haggling_a2",
+			"seqType": "haggling",
+			"subjectInfo": [],
+			"faceInfo": [],
+			"scenes": [
+				{
+					"rangeStart": 1025,
+					"rangeEnd": 2516,
+					"rangeStart_hd": 1359,
+					"rangeEnd_hd": 3146,
+					"team": [
+						2,
+						[0,1]
+					],
+					"peopleNum": 3,
+					"sellerLR": [0,1],
+					"winnerIds": 1
+				},
+				{
+					"rangeStart": 2876,
+					"rangeEnd": 4498,
+					"rangeStart_hd": 3577,
+					"rangeEnd_hd": 5522,
+					"team": [
+						5,
+						[3,4]
+					],
+					"peopleNum": 3,
+					"sellerLR": [4,3],
+					"winnerIds": 4
+				},
+				{
+					"rangeStart": 4900,
+					"rangeEnd": 6428,
+					"rangeStart_hd": 6004,
+					"rangeEnd_hd": 7835,
+					"team": [
+						8,
+						[6,7]
+					],
+					"peopleNum": 3,
+					"sellerLR": [7,6],
+					"winnerIds": 7
+				},
+				{
+					"rangeStart": 6859,
+					"rangeEnd": 8343,
+					"rangeStart_hd": 8352,
+					"rangeEnd_hd": 10131,
+					"team": [
+						11,
+						[9,10]
+					],
+					"peopleNum": 3,
+					"sellerLR": [10,9],
+					"winnerIds": 10
+				},
+				{
+					"rangeStart": 8826,
+					"rangeEnd": 10352,
+					"rangeStart_hd": 10710,
+					"rangeEnd_hd": 12539,
+					"team": [
+						14,
+						[12,13]
+					],
+					"peopleNum": 3,
+					"sellerLR": [12,13],
+					"winnerIds": 13
+				},
+				{
+					"rangeStart": 10842,
+					"rangeEnd": 12326,
+					"rangeStart_hd": 13127,
+					"rangeEnd_hd": 14906,
+					"team": [
+						16,
+						[15,17]
+					],
+					"peopleNum": 3,
+					"sellerLR": [17,15],
+					"winnerIds": 15
+				}
+			],
+			"subjectId2AssignedNames": [7,2,6,1,4,10,3,5,9,1,10,8,6,2,9,4,3,7]
+		},
+		{
+			"seqName": "170407_haggling_a3",
+			"seqType": "haggling",
+			"subjectInfo": [],
+			"faceInfo": [],
+			"scenes": [
+				{
+					"rangeStart": 1227,
+					"rangeEnd": 2791,
+					"rangeStart_hd": 1574,
+					"rangeEnd_hd": 3449,
+					"team": [
+						1,
+						[0,2]
+					],
+					"peopleNum": 3,
+					"sellerLR": [0,2],
+					"winnerIds": 0
+				},
+				{
+					"rangeStart": 3122,
+					"rangeEnd": 4655,
+					"rangeStart_hd": 3845,
+					"rangeEnd_hd": 5683,
+					"team": [
+						5,
+						[3,4]
+					],
+					"peopleNum": 3,
+					"sellerLR": [4,3],
+					"winnerIds": 4
+				},
+				{
+					"rangeStart": 5054,
+					"rangeEnd": 6555,
+					"rangeStart_hd": 6161,
+					"rangeEnd_hd": 7961,
+					"team": [
+						8,
+						[6,7]
+					],
+					"peopleNum": 3,
+					"sellerLR": [6,7],
+					"winnerIds": 6
+				}
+			],
+			"subjectId2AssignedNames": [3,5,7,1,6,4,10,8,2]
+		},
+		{
+			"seqName": "170407_haggling_b1",
+			"seqType": "haggling",
+			"subjectInfo": [],
+			"faceInfo": [],
+			"scenes": [
+				{
+					"rangeStart": 868,
+					"rangeEnd": 2354,
+					"rangeStart_hd": 1121,
+					"rangeEnd_hd": 2902,
+					"team": [
+						2,
+						[0,1]
+					],
+					"peopleNum": 3,
+					"sellerLR": [1,0],
+					"winnerIds": 0
+				},
+				{
+					"rangeStart": 2866,
+					"rangeEnd": 4415,
+					"rangeStart_hd": 3516,
+					"rangeEnd_hd": 5373,
+					"team": [
+						3,
+						[4,5]
+					],
+					"peopleNum": 3,
+					"sellerLR": [5,4],
+					"winnerIds": 4
+				},
+				{
+					"rangeStart": 4946,
+					"rangeEnd": 6416,
+					"rangeStart_hd": 6009,
+					"rangeEnd_hd": 7771,
+					"team": [
+						8,
+						[6,7]
+					],
+					"peopleNum": 3,
+					"sellerLR": [7,6],
+					"winnerIds": 7
+				},
+				{
+					"rangeStart": 6968,
+					"rangeEnd": 8368,
+					"rangeStart_hd": 8433,
+					"rangeEnd_hd": 10112,
+					"team": [
+						10,
+						[9,11]
+					],
+					"peopleNum": 3,
+					"sellerLR": [11,9],
+					"winnerIds": 9
+				},
+				{
+					"rangeStart": 8976,
+					"rangeEnd": 10503,
+					"rangeStart_hd": 10841,
+					"rangeEnd_hd": 12671,
+					"team": [
+						13,
+						[12,14]
+					],
+					"peopleNum": 3,
+					"sellerLR": [12,14],
+					"winnerIds": 12
+				},
+				{
+					"rangeStart": 11057,
+					"rangeEnd": 12492,
+					"rangeStart_hd": 13335,
+					"rangeEnd_hd": 15055,
+					"team": [
+						17,
+						[15,16]
+					],
+					"peopleNum": 3,
+					"sellerLR": [16,15],
+					"winnerIds": 16
+				},
+				{
+					"rangeStart": 13065,
+					"rangeEnd": 14521,
+					"rangeStart_hd": 15742,
+					"rangeEnd_hd": 17488,
+					"team": [
+						19,
+						[18,20]
+					],
+					"peopleNum": 3,
+					"sellerLR": [20,18],
+					"winnerIds": 18
+				},
+				{
+					"rangeStart": 15089,
+					"rangeEnd": 16573,
+					"rangeStart_hd": 18169,
+					"rangeEnd_hd": 19947,
+					"team": [
+						23,
+						[21,22]
+					],
+					"peopleNum": 3,
+					"sellerLR": [21,22],
+					"winnerIds": 21
+				}
+			],
+			"subjectId2AssignedNames": [2,3,1,4,6,5,9,8,7,11,12,10,1,5,4,7,10,2,8,7,9,11,12,10]
+		},
+		{
+			"seqName": "170407_haggling_b2",
+			"seqType": "haggling",
+			"subjectInfo": [],
+			"faceInfo": [],
+			"scenes": [
+				{
+					"rangeStart": 945,
+					"rangeEnd": 2432,
+					"rangeStart_hd": 1218,
+					"rangeEnd_hd": 3001,
+					"team": [
+						2,
+						[0,1]
+					],
+					"peopleNum": 3,
+					"sellerLR": [1,0],
+					"winnerIds": 0
+				},
+				{
+					"rangeStart": 2889,
+					"rangeEnd": 4388,
+					"rangeStart_hd": 3549,
+					"rangeEnd_hd": 5346,
+					"team": [
+						5,
+						[3,4]
+					],
+					"peopleNum": 3,
+					"sellerLR": [4,3],
+					"winnerIds": 4
+				},
+				{
+					"rangeStart": 4842,
+					"rangeEnd": 6328,
+					"rangeStart_hd": 5890,
+					"rangeEnd_hd": 7672,
+					"team": [
+						8,
+						[7,6]
+					],
+					"peopleNum": 3,
+					"sellerLR": [6,7],
+					"winnerIds": 6
+				},
+				{
+					"rangeStart": 6821,
+					"rangeEnd": 8320,
+					"rangeStart_hd": 8262,
+					"rangeEnd_hd": 10060,
+					"team": [
+						11,
+						[9,10]
+					],
+					"peopleNum": 3,
+					"sellerLR": [10,9],
+					"winnerIds": 9
+				},
+				{
+					"rangeStart": 8864,
+					"rangeEnd": 10351,
+					"rangeStart_hd": 10712,
+					"rangeEnd_hd": 12494,
+					"team": [
+						14,
+						[12,13]
+					],
+					"peopleNum": 3,
+					"sellerLR": [13,12],
+					"winnerIds": 13
+				},
+				{
+					"rangeStart": 10830,
+					"rangeEnd": 12313,
+					"rangeStart_hd": 13068,
+					"rangeEnd_hd": 14846,
+					"team": [
+						15,
+						[16,17]
+					],
+					"peopleNum": 3,
+					"sellerLR": [16,17],
+					"winnerIds": 16
+				},
+				{
+					"rangeStart": 12841,
+					"rangeEnd": 14337,
+					"rangeStart_hd": 15479,
+					"rangeEnd_hd": 17273,
+					"team": [
+						19,
+						[18,20]
+					],
+					"peopleNum": 3,
+					"sellerLR": [18,20],
+					"winnerIds": 20
+				},
+				{
+					"rangeStart": 14849,
+					"rangeEnd": 16328,
+					"rangeStart_hd": 17886,
+					"rangeEnd_hd": 19659,
+					"team": [
+						22,
+						[21,23]
+					],
+					"peopleNum": 3,
+					"sellerLR": [23,21],
+					"winnerIds": 23
+				}
+			],
+			"subjectId2AssignedNames": [5,1,8,4,3,9,6,2,11,7,10,12,1,6,9,5,2,12,7,10,3,11,8,4]
+		},
+		{
+			"seqName": "170407_haggling_b3",
+			"seqType": "haggling",
+			"subjectInfo": [],
+			"faceInfo": [],
+			"scenes": [
+				{
+					"rangeStart": 783,
+					"rangeEnd": 1989,
+					"rangeStart_hd": 1074,
+					"rangeEnd_hd": 2420,
+					"team": [
+						2,
+						[0,1]
+					],
+					"peopleNum": 3,
+					"sellerLR": [1,0],
+					"winnerIds": 1
+				},
+				{
+					"rangeStart": 2643,
+					"rangeEnd": 4148,
+					"rangeStart_hd": 3304,
+					"rangeEnd_hd": 5108,
+					"team": [
+						5,
+						[3,4]
+					],
+					"peopleNum": 3,
+					"sellerLR": [4,3],
+					"winnerIds": 3
+				},
+				{
+					"rangeStart": 4742,
+					"rangeEnd": 6145,
+					"rangeStart_hd": 5820,
+					"rangeEnd_hd": 7502,
+					"team": [
+						7,
+						[6,8]
+					],
+					"peopleNum": 3,
+					"sellerLR": [8,6],
+					"winnerIds": 8
+				},
+				{
+					"rangeStart": 6735,
+					"rangeEnd": 8242,
+					"rangeStart_hd": 8210,
+					"rangeEnd_hd": 10016,
+					"team": [
+						11,
+						[9,10]
+					],
+					"peopleNum": 3,
+					"sellerLR": [10,9],
+					"winnerIds": 10
+				}
+			],
+			"subjectId2AssignedNames": [1,8,6,2,4,7,9,11,3,10,5,12]
+		}
+	]
+}
