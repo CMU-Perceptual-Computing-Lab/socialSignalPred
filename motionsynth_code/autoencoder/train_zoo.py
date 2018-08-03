@@ -7,7 +7,6 @@ bLog = False
 try:
 	sys.path.append('../utils')
 	from logger import Logger
-	logger = Logger('./logs')
 	bLog = True
 except ImportError:
 	pass
@@ -32,6 +31,10 @@ parser.add_argument('--epochs', type=int, default=101, metavar='N',
 parser.add_argument('--gpu', type=int, default=0, metavar='N',
                     help='Select gpu (default: 0)')
 
+parser.add_argument('--checkpoint_freq', type=int, default=10, metavar='N',
+                    help='How frequently save the checkpoint (default: every 10 epoch)')
+
+
 args = parser.parse_args()  
 
 torch.cuda.set_device(args.gpu)
@@ -45,20 +48,20 @@ torch.cuda.manual_seed(23456)
 datapath ='../../motionsynth_data' 
 
 """All available dataset"""
-Xcmu = np.load(datapath +'/data/processed/data_cmu.npz')['clips'] # (17944, 240, 73)
-Xhdm05 = np.load(datapath +'/data/processed/data_hdm05.npz')['clips']	#(3190, 240, 73)
-Xmhad = np.load(datapath +'/data/processed/data_mhad.npz')['clips'] # (2674, 240, 73)
-#Xstyletransfer = np.load('/data/processed/data_styletransfer.npz')['clips']
-Xedin_locomotion = np.load(datapath +'/data/processed/data_edin_locomotion.npz')['clips'] #(351, 240, 73)
-Xedin_xsens = np.load(datapath +'/data/processed/data_edin_xsens.npz')['clips'] #(1399, 240, 73)
-Xedin_misc = np.load(datapath +'/data/processed/data_edin_misc.npz')['clips'] #(122, 240, 73)
-Xedin_punching = np.load(datapath +'/data/processed/data_edin_punching.npz')['clips'] #(408, 240, 73)
+# Xcmu = np.load(datapath +'/data/processed/data_cmu.npz')['clips'] # (17944, 240, 73)
+# Xhdm05 = np.load(datapath +'/data/processed/data_hdm05.npz')['clips']	#(3190, 240, 73)
+# Xmhad = np.load(datapath +'/data/processed/data_mhad.npz')['clips'] # (2674, 240, 73)
+# #Xstyletransfer = np.load('/data/processed/data_styletransfer.npz')['clips']
+# Xedin_locomotion = np.load(datapath +'/data/processed/data_edin_locomotion.npz')['clips'] #(351, 240, 73)
+# Xedin_xsens = np.load(datapath +'/data/processed/data_edin_xsens.npz')['clips'] #(1399, 240, 73)
+# Xedin_misc = np.load(datapath +'/data/processed/data_edin_misc.npz')['clips'] #(122, 240, 73)
+# Xedin_punching = np.load(datapath +'/data/processed/data_edin_punching.npz')['clips'] #(408, 240, 73)
 h36m_training = np.load(datapath +'/data/processed/data_h36m_training.npz')['clips'] #(13156, 240, 73)
 
 #X = np.concatenate([Xcmu, Xhdm05, Xmhad, Xstyletransfer, Xedin_locomotion, Xedin_xsens, Xedin_misc, Xedin_punching], axis=0)
 #X = np.concatenate([Xcmu, Xhdm05, Xmhad, Xedin_locomotion, Xedin_xsens, Xedin_misc, Xedin_punching], axis=0) #(26088,  240, 73 )
 X = h36m_training
-X = np.concatenate([Xcmu, Xhdm05, Xmhad, Xedin_locomotion, Xedin_xsens, Xedin_misc, Xedin_punching, h36m_training], axis=0) #(26088,  240, 73 )
+#X = np.concatenate([Xcmu, Xhdm05, Xmhad, Xedin_locomotion, Xedin_xsens, Xedin_misc, Xedin_punching, h36m_training], axis=0) #(26088,  240, 73 )
 
 """ Compute mean and std"""
 X = np.swapaxes(X, 1, 2).astype(np.float32)
@@ -99,12 +102,13 @@ optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate, weight_decay=
 #optimizer = torch.optim.AMSGrad(model.parameters(), lr=learning_rate, weight_decay=1e-5)
 
 
-
-
 #checkpointFolder = './autoenc_vect/'
 checkpointFolder = model.__class__.__name__
 if not os.path.exists(checkpointFolder):
     os.mkdir(checkpointFolder)
+
+if bLog:
+    logger = Logger(checkpointFolder+'/logs')
 
 np.savez_compressed(checkpointFolder+'/preprocess_core.npz', Xmean=Xmean, Xstd=Xstd)
 
@@ -143,6 +147,6 @@ for epoch in range(num_epochs):
     #     logger.histo_summary(tag, value.data.cpu().numpy(), epoch+1)
     #     logger.histo_summary(tag+'/grad', value.grad.data.cpu().numpy(), epoch+1)
             
-    if epoch % 100 == 0:
+    if epoch % args.checkpoint_freq == 0:
         fileName = checkpointFolder+ '/checkpoint_e' + str(epoch) + '.pth'
         torch.save(model.state_dict(), fileName)
