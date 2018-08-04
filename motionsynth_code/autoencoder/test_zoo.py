@@ -11,17 +11,20 @@ from Visualize_human_gl import showSkeleton,show_Holden_Data_73 #opengl visualiz
 
 
 """Select A Model"""
-model = modelZoo.autoencoder_first()
+#model = modelZoo.autoencoder_2convLayers()
+#model = modelZoo.autoencoder_2convLayers()
 #model = modelZoo.autoencoder_vectorize()
 #model = modelZoo.autoencoder_3convLayers()
 #model = modelZoo.autoencoder_3convLayers()
 
 loadEpoch = 1000
 
-#checkpointFolder = '/posefs2b/Users/hanbyulj/pytorch_motionSynth/checkpoint/'
-checkpointFolder = './'
+checkpointFolder = '/posefs2b/Users/hanbyulj/pytorch_motionSynth/checkpoint/'
+#checkpointFolder = './'
 
 runFolderName = model.__class__.__name__ + '/'#'/autoencoder_3convLayers/'
+#runFolderName = 'autoencoder_2convLayers/'
+#runFolderName = 'autoencoder_2convLayers/'
 preprocess = np.load(checkpointFolder+ runFolderName + 'preprocess_core.npz') #preprocess['Xmean' or 'Xstd']: (1, 73,1)
 
 
