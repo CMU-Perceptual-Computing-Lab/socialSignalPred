@@ -138,15 +138,19 @@ for param in model.parameters():
     print(type(param.data), param.size())
 
 criterion = nn.MSELoss()
-if args.solver is 'adam':
+if args.solver == 'adam':
     optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate, weight_decay=1e-5)
-elif args.solver is 'sgd':
+    print('solver: Adam')
+elif args.solver == 'sgd':
     optimizer = torch.optim.SGD(model.parameters(), lr=learning_rate)
-elif args.solver is 'adam_ams': #only for pytorch 0.4 or later.
+    print('solver: SGD')
+elif args.solver == 'adam_ams': #only for pytorch 0.4 or later.
     optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate, weight_decay=1e-5, amsgrad=True)
+    print('solver: Adam with AMSGrad')
 else:
-    assert(True)
-
+    print('Unknown solver option')
+    assert(False)
+optimizer
 #optimizer = torch.optim.AMSGrad(model.parameters(), lr=learning_rate, weight_decay=1e-5)
 
 #checkpointFolder = './autoenc_vect/'
