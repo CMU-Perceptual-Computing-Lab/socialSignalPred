@@ -73,7 +73,7 @@ parser.add_argument('--checkpoint_freq', type=int, default=10, metavar='N',
 parser.add_argument('--model', type=str, default='autoencoder_first',
                     help='a model name in the model_zoo.py (default: autoencoder_first')
 
-parser.add_argument('--solver', type=str, default='adam_ams',
+parser.add_argument('--solver', type=str, default='adam',
                     help='Optimization solver. adam or sgd, adam_ams. (default: adam')
 
 parser.add_argument('--db', type=str, default='cmu',
@@ -128,24 +128,12 @@ batch_size = 128
 learning_rate = 1e-3
 
 model = getattr(modelZoo,args.model)().cuda()
-#model = modelZoo.autoencoder_first().cuda()
-#model = modelZoo.autoencoder_vectorize().cuda()
-#model = modelZoo.autoencoder_2convLayers().cuda()
-#model = modelZoo.autoencoder_3convLayers_vect().cuda()
-#model = modelZoo.autoencoder_3convLayers().cuda()
 
 for param in model.parameters():
     print(type(param.data), param.size())
 
 criterion = nn.MSELoss()
 if args.solver == 'adam':
-    optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate, weight_decay=1e-5)
-<<<<<<< HEAD
-elif args.solver is 'adam_ams': #only for pytorch 0.4 or later.
-    optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate, weight_decay=1e-5, amsgrad=True)
-elif args.solver is 'sgd':
-    optimizer = torch.optim.SGD(model.parameters(), lr=learning_rate)
-=======
     print('solver: Adam')
 elif args.solver == 'sgd':
     optimizer = torch.optim.SGD(model.parameters(), lr=learning_rate)
@@ -153,12 +141,9 @@ elif args.solver == 'sgd':
 elif args.solver == 'adam_ams': #only for pytorch 0.4 or later.
     optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate, weight_decay=1e-5, amsgrad=True)
     print('solver: Adam with AMSGrad')
->>>>>>> aa27b748156853b7c9dc7d24220536c3d764db21
 else:
     print('Unknown solver option')
     assert(False)
-optimizer
-#optimizer = torch.optim.AMSGrad(model.parameters(), lr=learning_rate, weight_decay=1e-5)
 
 #checkpointFolder = './autoenc_vect/'
 checkpointFolder = model.__class__.__name__
