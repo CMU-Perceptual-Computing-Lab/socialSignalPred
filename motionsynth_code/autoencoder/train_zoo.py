@@ -135,6 +135,7 @@ for param in model.parameters():
 criterion = nn.MSELoss()
 if args.solver == 'adam':
     print('solver: Adam')
+    optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate, weight_decay=1e-5)
 elif args.solver == 'sgd':
     optimizer = torch.optim.SGD(model.parameters(), lr=learning_rate)
     print('solver: SGD')
