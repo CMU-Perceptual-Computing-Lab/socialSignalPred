@@ -72,6 +72,10 @@ parser.add_argument('--checkpoint_freq', type=int, default=10, metavar='N',
 
 parser.add_argument('--model', type=str, default='autoencoder_first',
                     help='a model name in the model_zoo.py (default: autoencoder_first')
+
+parser.add_argument('--solver', type=str, default='adam',
+                    help='Optimization solver. adam or sgd. (default: adam')
+
 args = parser.parse_args()  
 
 torch.cuda.set_device(args.gpu)
@@ -119,8 +123,10 @@ for param in model.parameters():
     print(type(param.data), param.size())
 
 criterion = nn.MSELoss()
-optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate, weight_decay=1e-5)
-#optimizer = torch.optim.SGD(model.parameters(), lr=learning_rate)
+if args.solver is 'adam':
+    optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate, weight_decay=1e-5)
+else:
+    optimizer = torch.optim.SGD(model.parameters(), lr=learning_rate)
 #optimizer = torch.optim.AMSGrad(model.parameters(), lr=learning_rate, weight_decay=1e-5)
 
 #checkpointFolder = './autoenc_vect/'

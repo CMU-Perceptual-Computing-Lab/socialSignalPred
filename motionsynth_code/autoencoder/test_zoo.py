@@ -44,7 +44,6 @@ X = rawdata['clips']
 X = np.swapaxes(X, 1, 2).astype(np.float32) #(17944, 73, 240)
 X_stdd = (X - preprocess['Xmean']) / preprocess['Xstd']
 
-
 batchsize = 1
 window = X.shape[2]
 
