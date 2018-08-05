@@ -74,7 +74,11 @@ parser.add_argument('--model', type=str, default='autoencoder_first',
                     help='a model name in the model_zoo.py (default: autoencoder_first')
 
 parser.add_argument('--solver', type=str, default='adam',
-                    help='Optimization solver. adam or sgd. (default: adam')
+                    help='Optimization solver. adam or sgd, adam_ams. (default: adam')
+
+parser.add_argument('--db', type=str, default='cmu',
+                    help='Database for training cmu...(default: cmu')
+
 
 args = parser.parse_args()  
 
@@ -87,9 +91,13 @@ torch.cuda.manual_seed(23456)
 """All available dataset"""
 #datapath ='/ssd/codes/pytorch_motionSynth/motionsynth_data' 
 datapath ='../../motionsynth_data/data/processed/' 
-dblist = ['data_cmu', 'data_hdm05', 'data_mhad', 'data_edin_locomotion', 'data_edin_xsens',
+
+
+if args.db is 'cmu':
+	dblist = ['data_cmu']
+else:
+	dblist = ['data_cmu', 'data_hdm05', 'data_mhad', 'data_edin_locomotion', 'data_edin_xsens',
             'data_edin_misc', 'data_edin_punching']
-dblist = ['data_cmu']
 #Xcmu = np.load(datapath +'/data/processed/data_cmu.npz')['clips'] # (17944, 240, 73)
 # Xhdm05 = np.load(datapath +'/data/processed/data_hdm05.npz')['clips']	#(3190, 240, 73)
 # Xmhad = np.load(datapath +'/data/processed/data_mhad.npz')['clips'] # (2674, 240, 73)
@@ -125,8 +133,13 @@ for param in model.parameters():
 criterion = nn.MSELoss()
 if args.solver is 'adam':
     optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate, weight_decay=1e-5)
-else:
+elif args.solver is 'sgd':
     optimizer = torch.optim.SGD(model.parameters(), lr=learning_rate)
+elif args.solver is 'adam_ams':
+    optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate, weight_decay=1e-5, amsgrad=True)
+else:
+	assert(True)
+
 #optimizer = torch.optim.AMSGrad(model.parameters(), lr=learning_rate, weight_decay=1e-5)
 
 #checkpointFolder = './autoenc_vect/'
