@@ -73,7 +73,7 @@ parser.add_argument('--checkpoint_freq', type=int, default=10, metavar='N',
 parser.add_argument('--model', type=str, default='autoencoder_first',
                     help='a model name in the model_zoo.py (default: autoencoder_first')
 
-parser.add_argument('--solver', type=str, default='adam',
+parser.add_argument('--solver', type=str, default='adam_ams',
                     help='Optimization solver. adam or sgd, adam_ams. (default: adam')
 
 parser.add_argument('--db', type=str, default='cmu',
@@ -140,10 +140,10 @@ for param in model.parameters():
 criterion = nn.MSELoss()
 if args.solver is 'adam':
     optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate, weight_decay=1e-5)
-elif args.solver is 'sgd':
-    optimizer = torch.optim.SGD(model.parameters(), lr=learning_rate)
 elif args.solver is 'adam_ams': #only for pytorch 0.4 or later.
     optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate, weight_decay=1e-5, amsgrad=True)
+elif args.solver is 'sgd':
+    optimizer = torch.optim.SGD(model.parameters(), lr=learning_rate)
 else:
     assert(True)
 
