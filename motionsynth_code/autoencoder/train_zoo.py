@@ -93,14 +93,14 @@ torch.cuda.manual_seed(23456)
 datapath ='../../motionsynth_data/data/processed/' 
 
 
-if args.db is 'cmu':
+if args.db == 'cmu':
     dblist = ['data_cmu']
-elif args.db is 'holdenAll':
+elif args.db == 'holdenAll':
     dblist = ['data_cmu', 'data_hdm05', 'data_mhad', 'data_edin_locomotion', 'data_edin_xsens',
             'data_edin_misc', 'data_edin_punching']
-elif args.db is 'human36m_train':
+elif args.db == 'human36m_train':
     dblist = ['data_h36m_training']
-elif args.db is 'holden_human36m':
+elif args.db == 'holden_human36m':
     dblist = ['data_cmu', 'data_hdm05', 'data_mhad', 'data_edin_locomotion', 'data_edin_xsens',
             'data_edin_misc', 'data_edin_punching','data_h36m_training']
 else:
@@ -232,7 +232,8 @@ for epoch in range(num_epochs):
 
     if bLog:
         # 1. Log scalar values (scalar summary)
-        info = { 'loss': loss.data[0] }
+        #info = { 'loss': loss.data[0] }
+        info = { 'loss': loss.item() }
 
         for tag, value in info.items():
             logger.scalar_summary(tag, value, epoch+1)
