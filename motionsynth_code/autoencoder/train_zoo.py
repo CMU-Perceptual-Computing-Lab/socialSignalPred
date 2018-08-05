@@ -94,10 +94,17 @@ datapath ='../../motionsynth_data/data/processed/'
 
 
 if args.db is 'cmu':
-	dblist = ['data_cmu']
-else:
-	dblist = ['data_cmu', 'data_hdm05', 'data_mhad', 'data_edin_locomotion', 'data_edin_xsens',
+    dblist = ['data_cmu']
+elif args.db is 'holdenAll':
+    dblist = ['data_cmu', 'data_hdm05', 'data_mhad', 'data_edin_locomotion', 'data_edin_xsens',
             'data_edin_misc', 'data_edin_punching']
+elif args.db is 'human36m_train':
+    dblist = ['data_h36m_training']
+elif args.db is 'holden_human36m':
+    dblist = ['data_cmu', 'data_hdm05', 'data_mhad', 'data_edin_locomotion', 'data_edin_xsens',
+            'data_edin_misc', 'data_edin_punching','data_h36m_training']
+else:
+    assert(False)
 #Xcmu = np.load(datapath +'/data/processed/data_cmu.npz')['clips'] # (17944, 240, 73)
 # Xhdm05 = np.load(datapath +'/data/processed/data_hdm05.npz')['clips']	#(3190, 240, 73)
 # Xmhad = np.load(datapath +'/data/processed/data_mhad.npz')['clips'] # (2674, 240, 73)
@@ -135,10 +142,10 @@ if args.solver is 'adam':
     optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate, weight_decay=1e-5)
 elif args.solver is 'sgd':
     optimizer = torch.optim.SGD(model.parameters(), lr=learning_rate)
-elif args.solver is 'adam_ams':
+elif args.solver is 'adam_ams': #only for pytorch 0.4 or later.
     optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate, weight_decay=1e-5, amsgrad=True)
 else:
-	assert(True)
+    assert(True)
 
 #optimizer = torch.optim.AMSGrad(model.parameters(), lr=learning_rate, weight_decay=1e-5)
 
@@ -146,6 +153,17 @@ else:
 checkpointFolder = model.__class__.__name__
 if not os.path.exists(checkpointFolder):
     os.mkdir(checkpointFolder)
+else: #if already exist
+    tryIdx =1
+    while True:
+        newCheckName = checkpointFolder + '_try' + str(tryIdx)
+        if not os.path.exists(newCheckName):
+            checkpointFolder = newCheckName
+            os.mkdir(checkpointFolder)
+            break
+        else:
+            tryIdx += 1
+
 
 if bLog:
     logger = Logger(checkpointFolder+'/logs')
