@@ -64,6 +64,11 @@ parser = argparse.ArgumentParser(description='VAE MNIST Example')
 parser.add_argument('--epochs', type=int, default=1001, metavar='N',
                     help='number of epochs to train (default: 1001)')
 
+
+parser.add_argument('--batch', type=int, default=128, metavar='N',
+                    help='batch size (default: 128)')
+
+
 parser.add_argument('--gpu', type=int, default=0, metavar='N',
                     help='Select gpu (default: 0)')
 
@@ -124,7 +129,8 @@ X = np.concatenate(db_loaded, axis=0)
 
 """ Training Network """
 num_epochs = args.epochs#500
-batch_size = 128
+#batch_size = 128
+batch_size = args.batch
 learning_rate = 1e-3
 
 model = getattr(modelZoo,args.model)().cuda()
@@ -196,7 +202,7 @@ Xstd[:,-4:]   = 0.5
 """ Data standardization """
 X = (X - Xmean) / Xstd
 I = np.arange(len(X))
-#rng.shuffle(I); X = X[I]
+rng.shuffle(I); X = X[I]
 print('Input data size: {0}'.format(X.shape))
 
 np.savez_compressed(checkpointFolder+'/preprocess_core.npz', Xmean=Xmean, Xstd=Xstd)
@@ -205,7 +211,7 @@ stepNum =0
 for epoch in range(num_epochs):
 
     batchinds = np.arange(X.shape[0] // batch_size)
-    #rng.shuffle(batchinds)
+    rng.shuffle(batchinds)
     
     for bii, bi in enumerate(batchinds):
 
