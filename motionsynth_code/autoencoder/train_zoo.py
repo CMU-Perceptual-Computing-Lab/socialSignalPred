@@ -87,6 +87,9 @@ parser.add_argument('--db', type=str, default='cmu',
 parser.add_argument('--finetune', type=str, default='',
                     help='if a folder is specified, then restart training by loading the last saved model files')
 
+parser.add_argument('--check_root', type=str, default='./',
+                    help='The root dir to make subfolders for the check point (default: ./) ')
+
 
 args = parser.parse_args()  
 
@@ -164,7 +167,7 @@ else:
 pretrain_epoch = 0
 if args.finetune =='':
     pretrain_batch_size =args.batch  #Assume current batch was used in pretraining
-    checkpointFolder = model.__class__.__name__
+    checkpointFolder = args.check_root + '/'+ model.__class__.__name__
     if not os.path.exists(checkpointFolder):
         os.mkdir(checkpointFolder)
     else: #if already exist
