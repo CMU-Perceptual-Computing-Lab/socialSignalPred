@@ -166,19 +166,19 @@ class autoencoder_3convLayers_drop(nn.Module):
             nn.Dropout(0.25),
             nn.Conv1d(73,256,25,padding=12),
             nn.ReLU(True),
-            nn.MaxPool1d(kernel_size=2, stride=2)   #(128, 256, 120)
+            nn.MaxPool1d(kernel_size=2, stride=2)   #(batch, 256, 120)
         )   
 
         self.encoder_l2 = nn.Sequential(
             nn.Conv1d(256,256,25,padding=12),
             nn.ReLU(True),
-            nn.MaxPool1d(kernel_size=2, stride=2)   #(128, 256, 60)
+            nn.MaxPool1d(kernel_size=2, stride=2)   #(batch, 256, 60)
         )
 
         self.encoder_l3 = nn.Sequential(
             nn.Conv1d(256,256,25,padding=12),
             nn.ReLU(True),
-            nn.MaxPool1d(kernel_size=2, stride=2)   #(128, 256, 30)
+            nn.MaxPool1d(kernel_size=2, stride=2)   #(batch, 256, 30)
         )
 
 
@@ -258,7 +258,7 @@ class autoencoder_3convLayers_vect(nn.Module):
 
             nn.Conv1d(256,256,25,padding=12),
             nn.ReLU(True),
-            nn.MaxPool1d(kernel_size=2, stride=2),
+            nn.MaxPool1d(kernel_size=2, stride=2),  #(batch, 256, 60) 
 
             nn.Conv1d(256,256,25,padding=12),
             nn.ReLU(True),

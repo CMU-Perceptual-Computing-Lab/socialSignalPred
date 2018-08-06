@@ -61,21 +61,21 @@ def save_options(checkpoints_dir, message, options_dict):
         json.dump(options_dict,opt_file)
         
 parser = argparse.ArgumentParser(description='VAE MNIST Example')
-parser.add_argument('--epochs', type=int, default=1001, metavar='N',
+parser.add_argument('--epochs', type=int, default=5001, metavar='N',
                     help='number of epochs to train (default: 1001)')
 
 
-parser.add_argument('--batch', type=int, default=128, metavar='N',
-                    help='batch size (default: 128)')
+parser.add_argument('--batch', type=int, default=1024, metavar='N',
+                    help='batch size (default: 1024)')
 
 
 parser.add_argument('--gpu', type=int, default=0, metavar='N',
                     help='Select gpu (default: 0)')
 
-parser.add_argument('--checkpoint_freq', type=int, default=10, metavar='N',
+parser.add_argument('--checkpoint_freq', type=int, default=50, metavar='N',
                     help='How frequently save the checkpoint (default: every 10 epoch)')
 
-parser.add_argument('--model', type=str, default='autoencoder_2convLayers',
+parser.add_argument('--model', type=str, default='autoencoder_first',
                     help='a model name in the model_zoo.py (default: autoencoder_first')
 
 parser.add_argument('--solver', type=str, default='adam',
@@ -84,8 +84,16 @@ parser.add_argument('--solver', type=str, default='adam',
 parser.add_argument('--db', type=str, default='cmu',
                     help='Database for training cmu...(default: cmu')
 
+parser.add_argument('--finetune', type=str, default='',
+                    help='if a folder is specified, then restart training by loading the last saved model files')
+
 
 args = parser.parse_args()  
+
+
+#args.model = 'autoencoder_2convLayers'
+#args.finetune = 'autoencoder_2convLayers'
+#args.model ='autoencoder_3convLayers_vect'
 
 torch.cuda.set_device(args.gpu)
 
@@ -153,19 +161,50 @@ else:
     assert(False)
 
 #checkpointFolder = './autoenc_vect/'
-checkpointFolder = model.__class__.__name__
-if not os.path.exists(checkpointFolder):
-    os.mkdir(checkpointFolder)
-else: #if already exist
-    tryIdx =1
-    while True:
-        newCheckName = checkpointFolder + '_try' + str(tryIdx)
-        if not os.path.exists(newCheckName):
-            checkpointFolder = newCheckName
-            os.mkdir(checkpointFolder)
-            break
-        else:
-            tryIdx += 1
+pretrain_epoch = 0
+if args.finetune =='':
+    pretrain_batch_size =args.batch  #Assume current batch was used in pretraining
+    checkpointFolder = model.__class__.__name__
+    if not os.path.exists(checkpointFolder):
+        os.mkdir(checkpointFolder)
+    else: #if already exist
+        tryIdx =1
+        while True:
+            newCheckName = checkpointFolder + '_try' + str(tryIdx)
+            if not os.path.exists(newCheckName):
+                checkpointFolder = newCheckName
+                os.mkdir(checkpointFolder)
+                break
+            else:
+                tryIdx += 1
+else:       #FineTuning
+    checkpointFolder = args.finetune
+
+    checkpointList =  [os.path.join(checkpointFolder,f) for f in sorted(list(os.listdir(checkpointFolder)))
+                if os.path.isfile(os.path.join(checkpointFolder,f))
+                    and f.endswith('.pth') ] 
+
+    checkpointList.sort(key=lambda x: os.path.getmtime(x))
+
+    trainResultName =checkpointList[-1]
+    pretrain_epoch= int(trainResultName[(trainResultName.find('checkpoint_') + 12):-4])
+    pretrain_epoch = pretrain_epoch+1
+    
+    try:
+        log_file_name = os.path.join(checkpointFolder, 'opt.json')
+        with open(log_file_name, 'r') as opt_file:
+            options_dict = json.load(opt_file)
+        pretrain_batch_size = options_dict['batch']
+
+    except:
+        pretrain_batch_size =args.batch  #Assume current batch was used in pretraining
+        
+
+
+    #Fine Last Epoch file
+    model.load_state_dict(torch.load(trainResultName, map_location=lambda storage, loc: storage))
+    
+
 
 
 if bLog:
@@ -207,7 +246,10 @@ print('Input data size: {0}'.format(X.shape))
 
 np.savez_compressed(checkpointFolder+'/preprocess_core.npz', Xmean=Xmean, Xstd=Xstd)
 
-stepNum =0
+#stepNum =0
+
+#Compute stepNum start point (to be continuos in tensorboard if pretraine data is loaded)
+stepNum = pretrain_epoch* len(np.arange(X.shape[0] // pretrain_batch_size))
 for epoch in range(num_epochs):
 
     batchinds = np.arange(X.shape[0] // batch_size)
@@ -230,8 +272,13 @@ for epoch in range(num_epochs):
         optimizer.step()
 
         # ===================log========================
-        print('epoch [{}/{}], loss:{:.4f}'
-                    .format(epoch + 1, num_epochs, loss.data[0]))
+        if int(torch.__version__[2])==2:
+            print('model: {}, epoch [{}/{}], loss:{:.4f}'
+                    .format(args.model, epoch + pretrain_epoch, num_epochs, loss.data[0]))
+        else:
+            print('model: {}, epoch [{}/{}], loss:{:.4f}'
+                    .format(args.model, epoch +pretrain_epoch, num_epochs, loss.item()))
+        
 
         if bLog:
             # 1. Log scalar values (scalar summary)
@@ -266,27 +313,7 @@ for epoch in range(num_epochs):
     # #     test_loss, correct, len(test_loader.dataset),
     # #     100. * correct / len(test_loader.dataset)))
  
-    if epoch % args.checkpoint_freq == 0:
-        fileName = checkpointFolder+ '/checkpoint_e' + str(epoch) + '.pth'
+    if (epoch + pretrain_epoch) % args.checkpoint_freq == 0:
+        fileName = checkpointFolder+ '/checkpoint_e' + str(epoch + pretrain_epoch) + '.pth'
         torch.save(model.state_dict(), fileName)
         #torch.save(model, fileName)
-
-    # model_load = getattr(modelZoo,args.model)()
-    # model_load.load_state_dict(torch.load(fileName, map_location=lambda storage, loc: storage))
-    # model_load = model_load.cuda()
-    
-    # #Compute Error Again here.
-    # # batchinds = np.arange(X.shape[0] // batch_size)
-    # test_loss = 0
-    # batch_size_new = 128
-    # for bii, bi in enumerate(batchinds):
-    #    # print('{} /{}\n'.format(bii,len(batchinds)))
-    #     Xorgi_stdd = X[bi:(bi+batch_size_new),:,:]  #Input (batchSize,73,240) 
-    #     Xrecn = model_load(Variable(torch.from_numpy(Xorgi_stdd)).cuda())
-    #     loss = criterion(Xrecn, Variable(torch.from_numpy(Xorgi_stdd)).cuda())
-    #     test_loss += loss.data.cpu().numpy().item()* batch_size_new # sum up batch loss   
-    # test_loss /= len(batchinds)*batch_size_new
-    # print('Testing: epoch:{} /Average loss: {:.4f}\n'.format(epoch +1, test_loss))
-    #     test_loss, correct, len(test_loader.dataset),
-    #     100. * correct / len(test_loader.dataset)))
- 
