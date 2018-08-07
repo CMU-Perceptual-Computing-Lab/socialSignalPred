@@ -62,18 +62,18 @@ def save_options(checkpoints_dir, message, options_dict):
         
 parser = argparse.ArgumentParser(description='VAE MNIST Example')
 parser.add_argument('--epochs', type=int, default=5001, metavar='N',
-                    help='number of epochs to train (default: 1001)')
+                    help='number of epochs to train (default: 5001)')
 
 
-parser.add_argument('--batch', type=int, default=1024, metavar='N',
-                    help='batch size (default: 1024)')
+parser.add_argument('--batch', type=int, default=2048, metavar='N',
+                    help='batch size (default: 2048)')
 
 
 parser.add_argument('--gpu', type=int, default=0, metavar='N',
                     help='Select gpu (default: 0)')
 
 parser.add_argument('--checkpoint_freq', type=int, default=50, metavar='N',
-                    help='How frequently save the checkpoint (default: every 10 epoch)')
+                    help='How frequently save the checkpoint (default: every 50 epoch)')
 
 parser.add_argument('--model', type=str, default='autoencoder_first',
                     help='a model name in the model_zoo.py (default: autoencoder_first')
@@ -97,6 +97,7 @@ args = parser.parse_args()
 #args.model = 'autoencoder_2convLayers'
 #args.finetune = 'autoencoder_2convLayers'
 #args.model ='autoencoder_3convLayers_vect'
+#args.model ='autoencoder_3conv_vae'
 
 torch.cuda.set_device(args.gpu)
 
@@ -251,6 +252,8 @@ np.savez_compressed(checkpointFolder+'/preprocess_core.npz', Xmean=Xmean, Xstd=X
 
 #stepNum =0
 
+
+
 #Compute stepNum start point (to be continuos in tensorboard if pretraine data is loaded)
 stepNum = pretrain_epoch* len(np.arange(X.shape[0] // pretrain_batch_size))
 for epoch in range(num_epochs):
@@ -265,14 +268,26 @@ for epoch in range(num_epochs):
         #inputData = X[bi:(bi+batch_size),:,:]      #Huge bug!!
         inputData = Variable(torch.from_numpy(inputData)).cuda()
 
-        # ===================forward=====================
-        output = model(inputData)
-        loss = criterion(output, inputData)
+        if "vae" in args.model:
+            # ===================forward=====================
+            output, mu, logvar = model(inputData)
+            #loss = criterion(output, inputData)
+            loss = modelZoo.vae_loss_function(output, inputData, mu, logvar,criterion)
 
-        # ===================backward====================
-        optimizer.zero_grad()
-        loss.backward()
-        optimizer.step()
+            # ===================backward====================
+            optimizer.zero_grad()
+            loss.backward()
+            optimizer.step()
+
+        else:
+            # ===================forward=====================
+            output = model(inputData)
+            loss = criterion(output, inputData)
+
+            # ===================backward====================
+            optimizer.zero_grad()
+            loss.backward()
+            optimizer.step()
 
         # ===================log========================
         if int(torch.__version__[2])==2:
