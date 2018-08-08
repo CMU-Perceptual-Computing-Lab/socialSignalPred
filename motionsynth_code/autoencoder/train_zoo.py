@@ -103,10 +103,10 @@ args = parser.parse_args()
 #args.model = 'autoencoder_2convLayers'
 
 #args.model ='autoencoder_3convLayers_vect'
-args.model ='autoencoder_3conv_vae'
+#args.model ='autoencoder_3conv_vae'
 #args.finetune = 'autoencoder_3conv_vae_weight'
 #args.check_root = '/posefs2b/Users/hanbyulj/pytorch_motionSynth/checkpoint'
-args.weight_kld = 0.01
+#args.weight_kld = 0.01
 
 torch.cuda.set_device(args.gpu)
 
