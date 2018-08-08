@@ -78,8 +78,8 @@ parser.add_argument('--checkpoint_freq', type=int, default=50, metavar='N',
 parser.add_argument('--model', type=str, default='autoencoder_first',
                     help='a model name in the model_zoo.py (default: autoencoder_first')
 
-parser.add_argument('--solver', type=str, default='adam',
-                    help='Optimization solver. adam or sgd, adam_ams. (default: adam')
+parser.add_argument('--solver', type=str, default='adam_ams',
+                    help='Optimization solver. adam or sgd, adam_ams. (default: adam_ams')
 
 parser.add_argument('--db', type=str, default='cmu',
                     help='Database for training cmu...(default: cmu')
@@ -97,7 +97,7 @@ args = parser.parse_args()
 #args.model = 'autoencoder_2convLayers'
 #args.finetune = 'autoencoder_2convLayers'
 #args.model ='autoencoder_3convLayers_vect'
-#args.model ='autoencoder_3conv_vae'
+args.model ='autoencoder_3conv_vae'
 
 torch.cuda.set_device(args.gpu)
 
@@ -111,7 +111,8 @@ datapath ='../../motionsynth_data/data/processed/'
 
 
 if args.db == 'cmu':
-    dblist = ['data_cmu']
+    #dblist = ['data_cmu']
+    dblist = ['data_mhad']
 elif args.db == 'holdenAll':
     dblist = ['data_cmu', 'data_hdm05', 'data_mhad', 'data_edin_locomotion', 'data_edin_xsens',
             'data_edin_misc', 'data_edin_punching']

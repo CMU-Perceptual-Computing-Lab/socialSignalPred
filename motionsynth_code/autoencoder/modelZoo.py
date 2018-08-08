@@ -339,10 +339,11 @@ class autoencoder_3conv_vae(nn.Module):
     def reparameterize(self, mu, logvar):
         if self.training:
             std = torch.exp(0.5*logvar)
-            #eps = torch.randn_like(std)
+            eps = torch.randn_like(std)
             #eps = Variable(torch.randn(std.size()))#, dtype=std.dtype, layout=std.layout, device=std.device)
-            eps = Variable(std.data.new(std.size()).normal_())
+            #eps = Variable(std.data.new(std.size()).normal_())
             return eps.mul(std).add_(mu)
+            #return std.add_(mu)
         else:
             return mu
 
@@ -356,6 +357,7 @@ class autoencoder_3conv_vae(nn.Module):
         logvar = self.encoder_lin22(x)
 
         z = self.reparameterize(mu, logvar)
+        #z = logvar
         
         x = self.decoder_lin1(z)
         x = self.decoder_lin2(x)
@@ -374,7 +376,8 @@ def vae_loss_function(recon_x, x, mu, logvar,criterion):
     # 0.5 * sum(1 + log(sigma^2) - mu^2 - sigma^2)
     KLD = -0.5 * torch.sum(1 + logvar - mu.pow(2) - logvar.exp())
 
-    return loss + KLD
+    #return loss# + KLD
+    return KLD
 
 '''
 Origial Network Code by Holden
