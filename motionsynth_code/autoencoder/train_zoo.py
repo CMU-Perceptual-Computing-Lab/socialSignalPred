@@ -91,6 +91,11 @@ parser.add_argument('--check_root', type=str, default='./',
                     help='The root dir to make subfolders for the check point (default: ./) ')
 
 
+parser.add_argument('--weight_kld', type=float, default='1.0',
+                    help='Weight for the KLD term in VAE training (default: 1.0) ')
+
+
+
 args = parser.parse_args()  
 
 
@@ -98,10 +103,10 @@ args = parser.parse_args()
 #args.model = 'autoencoder_2convLayers'
 
 #args.model ='autoencoder_3convLayers_vect'
-# args.model ='autoencoder_3conv_vae'
-# args.finetune = 'autoencoder_3conv_vae'
-# args.check_root = '/posefs2b/Users/hanbyulj/pytorch_motionSynth/checkpoint'
-
+args.model ='autoencoder_3conv_vae'
+#args.finetune = 'autoencoder_3conv_vae_weight'
+#args.check_root = '/posefs2b/Users/hanbyulj/pytorch_motionSynth/checkpoint'
+args.weight_kld = 0.01
 
 torch.cuda.set_device(args.gpu)
 
@@ -291,12 +296,18 @@ for epoch in range(num_epochs):
             # ===================forward=====================
             output, mu, logvar = model(inputData)
             #loss = criterion(output, inputData)
-            loss = modelZoo.vae_loss_function(output, inputData, mu, logvar,criterion)
+            #loss = modelZoo.vae_loss_function(output, inputData, mu, logvar,criterion)
+            loss,recon_loss,kld_loss = modelZoo.vae_loss_function(output, inputData, mu, logvar,criterion,args.weight_kld)
+            
 
             # ===================backward====================
             optimizer.zero_grad()
             loss.backward()
             optimizer.step()
+
+            # ===================log========================
+            print('model: {}, epoch [{}/{}], loss:{:.4f} (recon: {:.4f}, kld {:.4f})'
+                        .format(args.model, epoch +pretrain_epoch, num_epochs, loss.item(), recon_loss.item(), kld_loss.item()))
 
         else:
              # ===================forward=====================
@@ -308,13 +319,13 @@ for epoch in range(num_epochs):
             loss.backward()
             optimizer.step()
 
-        # ===================log========================
-        if int(torch.__version__[2])==2:
-            print('model: {}, epoch [{}/{}], loss:{:.4f}'
-                    .format(args.model, epoch + pretrain_epoch, num_epochs, loss.data[0]))
-        else:
-            print('model: {}, epoch [{}/{}], loss:{:.4f}'
-                    .format(args.model, epoch +pretrain_epoch, num_epochs, loss.item()))
+            # ===================log========================
+            if int(torch.__version__[2])==2:
+                print('model: {}, epoch [{}/{}], loss:{:.4f}'
+                        .format(args.model, epoch + pretrain_epoch, num_epochs, loss.data[0]))
+            else:
+                print('model: {}, epoch [{}/{}], loss:{:.4f}'
+                        .format(args.model, epoch +pretrain_epoch, num_epochs, loss.item()))
         
 
         if bLog:

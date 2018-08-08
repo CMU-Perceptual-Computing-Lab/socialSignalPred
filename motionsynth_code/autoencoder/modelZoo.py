@@ -343,10 +343,11 @@ class autoencoder_3conv_vae(nn.Module):
             #eps = Variable(torch.randn(std.size()))#, dtype=std.dtype, layout=std.layout, device=std.device)
             #eps = Variable(std.data.new(std.size()).normal_())
             return eps.mul(std).add_(mu)
+            #return mu
             #return std.add_(mu)
         else:
             return mu
-            
+
     def decode(self,z):
         
         x = self.decoder_lin1(z)
@@ -374,7 +375,7 @@ class autoencoder_3conv_vae(nn.Module):
         return x, mu, logvar
 
 # Reconstruction + KL divergence losses summed over all elements and batch
-def vae_loss_function(recon_x, x, mu, logvar,criterion):
+def vae_loss_function(recon_x, x, mu, logvar,criterion, weight_kld):
     #BCE = F.binary_cross_entropy(recon_x, x.view(-1, 784), size_average=False)
     loss = criterion(recon_x, x)
 
@@ -382,9 +383,9 @@ def vae_loss_function(recon_x, x, mu, logvar,criterion):
     # Kingma and Welling. Auto-Encoding Variational Bayes. ICLR, 2014
     # https://arxiv.org/abs/1312.6114
     # 0.5 * sum(1 + log(sigma^2) - mu^2 - sigma^2)
-    KLD = -0.5 * torch.sum(1 + logvar - mu.pow(2) - logvar.exp())
+    KLD = weight_kld * -0.5 * torch.sum(1 + logvar - mu.pow(2) - logvar.exp())
 
-    return loss + KLD
+    return loss +KLD, loss, KLD
     #return KLD
 
 '''
