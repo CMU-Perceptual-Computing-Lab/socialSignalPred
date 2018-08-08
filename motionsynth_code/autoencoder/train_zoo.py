@@ -94,10 +94,14 @@ parser.add_argument('--check_root', type=str, default='./',
 args = parser.parse_args()  
 
 
+#Debug
 #args.model = 'autoencoder_2convLayers'
-#args.finetune = 'autoencoder_2convLayers'
+
 #args.model ='autoencoder_3convLayers_vect'
-args.model ='autoencoder_3conv_vae'
+# args.model ='autoencoder_3conv_vae'
+# args.finetune = 'autoencoder_3conv_vae'
+# args.check_root = '/posefs2b/Users/hanbyulj/pytorch_motionSynth/checkpoint'
+
 
 torch.cuda.set_device(args.gpu)
 
@@ -183,15 +187,23 @@ if args.finetune =='':
             else:
                 tryIdx += 1
 else:       #FineTuning
-    checkpointFolder = args.finetune
+    checkpointFolder = args.check_root+ '/' + args.finetune
 
     checkpointList =  [os.path.join(checkpointFolder,f) for f in sorted(list(os.listdir(checkpointFolder)))
                 if os.path.isfile(os.path.join(checkpointFolder,f))
                     and f.endswith('.pth') ] 
 
-    checkpointList.sort(key=lambda x: os.path.getmtime(x))
+    #Fine Last Epoch
+    last_epoch =0
+    for name in checkpointList:
+        pretrain_epoch= int(name[(name.find('checkpoint_') + 12):-4])
+        if last_epoch <pretrain_epoch:
+            last_epoch= pretrain_epoch
+            trainResultName = name
 
-    trainResultName =checkpointList[-1]
+
+    #checkpointList.sort(key=lambda x: os.path.getmtime(x))
+    #trainResultName =checkpointList[-1]
     pretrain_epoch= int(trainResultName[(trainResultName.find('checkpoint_') + 12):-4])
     pretrain_epoch = pretrain_epoch+1
     
@@ -204,12 +216,18 @@ else:       #FineTuning
     except:
         pretrain_batch_size =args.batch  #Assume current batch was used in pretraining
         
-
-
     #Fine Last Epoch file
-    model.load_state_dict(torch.load(trainResultName, map_location=lambda storage, loc: storage))
-    
+    print('load previous state: {0}'.format(trainResultName))
+    model.load_state_dict(torch.load(trainResultName, map_location=lambda storage, loc: storage),strict=False)
 
+    #Checking optimizer file
+    trainResultName = trainResultName+'o'
+    if os.path.exists(trainResultName):
+        print('load previous state: {0}'.format(trainResultName))
+        optimizer.load_state_dict(torch.load(trainResultName, map_location=lambda storage, loc: storage))
+
+    model.train()
+    model.eval()
 
 
 if bLog:
@@ -333,6 +351,9 @@ for epoch in range(num_epochs):
     # #     100. * correct / len(test_loader.dataset)))
  
     if (epoch + pretrain_epoch) % args.checkpoint_freq == 0:
+    #if (epoch + pretrain_epoch) % 10 == 0:
         fileName = checkpointFolder+ '/checkpoint_e' + str(epoch + pretrain_epoch) + '.pth'
         torch.save(model.state_dict(), fileName)
+        fileName = checkpointFolder+ '/checkpoint_e' + str(epoch + pretrain_epoch) + '.ptho'
+        torch.save(optimizer.state_dict(), fileName)
         #torch.save(model, fileName)

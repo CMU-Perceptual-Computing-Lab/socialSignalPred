@@ -346,6 +346,14 @@ class autoencoder_3conv_vae(nn.Module):
             #return std.add_(mu)
         else:
             return mu
+            
+    def decode(self,z):
+        
+        x = self.decoder_lin1(z)
+        x = self.decoder_lin2(x)
+        x = x.view([x.size(0), 256, 30])
+        x = self.decoder_conv(x)
+        return x
 
     def forward(self, x):
         x = self.encoder_conv(x)
