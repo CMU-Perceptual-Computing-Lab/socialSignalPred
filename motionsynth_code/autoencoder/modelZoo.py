@@ -210,7 +210,7 @@ class autoencoder_3convLayers_drop(nn.Module):
         return x                #Output: (128, 73, 120)
 
 
-class autoencoder_3convLayers_vect3_64(nn.Module):
+class autoencoder_3conv_vect3_64(nn.Module):
     def __init__(self):
         super(autoencoder_3convLayers_vect3, self).__init__()
         self.encoder_conv = nn.Sequential(
@@ -274,7 +274,7 @@ class autoencoder_3convLayers_vect3_64(nn.Module):
         return x
 
 
-class autoencoder_3convLayers_vect3_8(nn.Module):
+class autoencoder_3conv_vect3_8(nn.Module):
     def __init__(self):
         super(autoencoder_3convLayers_vect3_8, self).__init__()
         self.encoder_conv = nn.Sequential(
@@ -339,7 +339,7 @@ class autoencoder_3convLayers_vect3_8(nn.Module):
 
 
 
-class autoencoder_3convLayers_vect3_2(nn.Module):
+class autoencoder_3conv_vect3_2(nn.Module):
     def __init__(self):
         super(autoencoder_3convLayers_vect3_2, self).__init__()
         self.encoder_conv = nn.Sequential(
