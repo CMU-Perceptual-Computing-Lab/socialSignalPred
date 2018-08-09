@@ -456,7 +456,7 @@ class autoencoder_3convLayers_vect(nn.Module):
 
 class autoencoder_3conv_vae_64(nn.Module):
     def __init__(self):
-        super(autoencoder_3conv_vae, self).__init__()
+        super(autoencoder_3conv_vae_64, self).__init__()
         self.encoder_conv = nn.Sequential(
             #nn.Dropout(0.25),
             nn.Conv1d(73,256,25,padding=12),
