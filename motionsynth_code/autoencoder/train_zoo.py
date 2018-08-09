@@ -61,13 +61,11 @@ def save_options(checkpoints_dir, message, options_dict):
         json.dump(options_dict,opt_file)
         
 parser = argparse.ArgumentParser(description='VAE MNIST Example')
-parser.add_argument('--epochs', type=int, default=5001, metavar='N',
-                    help='number of epochs to train (default: 5001)')
-
+parser.add_argument('--epochs', type=int, default=50001, metavar='N',
+                    help='number of epochs to train (default: 50001)')
 
 parser.add_argument('--batch', type=int, default=2048, metavar='N',
                     help='batch size (default: 2048)')
-
 
 parser.add_argument('--gpu', type=int, default=0, metavar='N',
                     help='Select gpu (default: 0)')
@@ -94,17 +92,16 @@ parser.add_argument('--check_root', type=str, default='./',
 parser.add_argument('--weight_kld', type=float, default='1.0',
                     help='Weight for the KLD term in VAE training (default: 1.0) ')
 
-
-
 args = parser.parse_args()  
-
 
 #Debug
 #args.model = 'autoencoder_2convLayers'
 
 #args.model ='autoencoder_3convLayers_vect'
-#args.model ='autoencoder_3conv_vae'
-#args.finetune = 'autoencoder_3conv_vae_weight'
+#args.model ='autoencoder_3convLayers_vect3_64'
+args.model ='autoencoder_3convLayers_vect3_2'
+#args.model ='autoencoder_3convLayers_vect3_2'
+#args.finetune = 'autoencoder_3convLayers_vect3'
 #args.check_root = '/posefs2b/Users/hanbyulj/pytorch_motionSynth/checkpoint'
 #args.weight_kld = 0.01
 
@@ -120,8 +117,8 @@ datapath ='../../motionsynth_data/data/processed/'
 
 
 if args.db == 'cmu':
-    #dblist = ['data_cmu']
-    dblist = ['data_mhad']
+    dblist = ['data_cmu']
+    #dblist = ['data_mhad']
 elif args.db == 'holdenAll':
     dblist = ['data_cmu', 'data_hdm05', 'data_mhad', 'data_edin_locomotion', 'data_edin_xsens',
             'data_edin_misc', 'data_edin_punching']
@@ -285,6 +282,7 @@ for epoch in range(num_epochs):
     batchinds = np.arange(X.shape[0] // batch_size)
     rng.shuffle(batchinds)
     
+    avgLoss =0
     for bii, bi in enumerate(batchinds):
 
         idxStart  = bi*batch_size
@@ -320,14 +318,10 @@ for epoch in range(num_epochs):
             optimizer.step()
 
             # ===================log========================
-            if int(torch.__version__[2])==2:
-                print('model: {}, epoch [{}/{}], loss:{:.4f}'
-                        .format(args.model, epoch + pretrain_epoch, num_epochs, loss.data[0]))
-            else:
-                print('model: {}, epoch [{}/{}], loss:{:.4f}'
+            print('model: {}, epoch [{}/{}], loss:{:.4f}'
                         .format(args.model, epoch +pretrain_epoch, num_epochs, loss.item()))
+            avgLoss += loss.item()*batch_size
         
-
         if bLog:
             # 1. Log scalar values (scalar summary)
             if int(torch.__version__[2])==2:
@@ -346,23 +340,11 @@ for epoch in range(num_epochs):
         #     logger.histo_summary(tag, value.data.cpu().numpy(), epoch+1)
         #     logger.histo_summary(tag+'/grad', value.grad.data.cpu().numpy(), epoch+1)
     
+    print('## model: {}, epoch [{}/{}], avg loss:{:.4f}'
+                        .format(args.model, epoch +pretrain_epoch, num_epochs, avgLoss/ (len(batchinds)*batch_size) ))
 
-    # #Compute Error Again here.
-    # # batchinds = np.arange(X.shape[0] // batch_size)
-    # test_loss = 0
-    # for bii, bi in enumerate(batchinds):
-    #    # print('{} /{}\n'.format(bii,len(batchinds)))
-    #     Xorgi_stdd = X[bi:(bi+batch_size),:,:]  #Input (batchSize,73,240) 
-    #     Xrecn = model(Variable(torch.from_numpy(Xorgi_stdd)).cuda())
-    #     loss = criterion(Xrecn, Variable(torch.from_numpy(Xorgi_stdd)).cuda())
-    #     test_loss += loss.data.cpu().numpy().item()* batch_size # sum up batch loss   
-    # test_loss /= len(batchinds)*batch_size
-    # print('Testing: epoch:{} /Average loss: {:.4f}\n'.format(epoch +1, test_loss))
-    # #     test_loss, correct, len(test_loader.dataset),
-    # #     100. * correct / len(test_loader.dataset)))
- 
     if (epoch + pretrain_epoch) % args.checkpoint_freq == 0:
-    #if (epoch + pretrain_epoch) % 10 == 0:
+    #if (epoch + pretrain_epoch) % 1 == 0:
         fileName = checkpointFolder+ '/checkpoint_e' + str(epoch + pretrain_epoch) + '.pth'
         torch.save(model.state_dict(), fileName)
         fileName = checkpointFolder+ '/checkpoint_e' + str(epoch + pretrain_epoch) + '.ptho'

@@ -210,40 +210,198 @@ class autoencoder_3convLayers_drop(nn.Module):
         return x                #Output: (128, 73, 120)
 
 
+class autoencoder_3convLayers_vect3_64(nn.Module):
+    def __init__(self):
+        super(autoencoder_3convLayers_vect3, self).__init__()
+        self.encoder_conv = nn.Sequential(
+            #nn.Dropout(0.25),
+            nn.Conv1d(73,256,25,padding=12),
+            nn.ReLU(True),
+            nn.BatchNorm1d(256),
+            nn.MaxPool1d(kernel_size=2, stride=2),  #(batch, 256, 120)  
+
+            nn.Conv1d(256,256,25,padding=12),
+            nn.ReLU(True),
+            nn.BatchNorm1d(256),
+            nn.MaxPool1d(kernel_size=2, stride=2),  #(batch, 256, 60) 
+
+            nn.Conv1d(256,256,25,padding=12),
+            nn.ReLU(True),
+            nn.BatchNorm1d(256),
+            nn.MaxPool1d(kernel_size=2, stride=2)   #(batch, 256, 30) 
+        )
+        self.encoder_lin = nn.Sequential(
+            nn.Linear(256*30,1024),
+            nn.ReLU(True),
+            nn.BatchNorm1d(1024),
+            nn.Linear(1024,512),
+            nn.ReLU(True),
+            nn.BatchNorm1d(512),
+            nn.Linear(512,64)
+            )
+        self.decoder_lin = nn.Sequential(
+                nn.Linear(64,512),
+                nn.ReLU(True),
+                nn.BatchNorm1d(512),
+                nn.Linear(512,1024),
+                nn.ReLU(True),
+                nn.BatchNorm1d(1024),
+                nn.Linear(1024,256*30),
+                nn.ReLU(True),
+                nn.BatchNorm1d(256*30),
+                )
+        self.decoder_conv = nn.Sequential(
+            #nn.MaxUnpool1d(kernel_size=2, stride=2),
+            #nn.Dropout(0.25),
+            nn.ConvTranspose1d(256, 256, 25, stride=2, padding=12, output_padding=1),
+            nn.ReLU(True),
+            nn.BatchNorm1d(256),
+            nn.ConvTranspose1d(256, 256, 25, stride=2, padding=12, output_padding=1),
+            nn.ReLU(True),
+            nn.BatchNorm1d(256),
+            nn.ConvTranspose1d(256, 73, 25, stride=2, padding=12, output_padding=1),
+            #nn.ReLU(True)
+          )
+
+    def forward(self, x):
+        x = self.encoder_conv(x)
+        x = x.view(-1,256*30)
+        x = self.encoder_lin(x)
+        
+        x = self.decoder_lin(x)
+        x = x.view([x.size(0), 256, 30])
+        x = self.decoder_conv(x)
+        return x
 
 
-# class autoencoder_3convLayers(nn.Module):
-#     def __init__(self):
-#         super(autoencoder_3convLayers, self).__init__()
-#         self.encoder = nn.Sequential(
-#             nn.Dropout(0.25),
-#             nn.Conv1d(73,256,25,padding=12),
-#             nn.ReLU(True),
-#             nn.MaxPool1d(kernel_size=2, stride=2),
+class autoencoder_3convLayers_vect3_8(nn.Module):
+    def __init__(self):
+        super(autoencoder_3convLayers_vect3_8, self).__init__()
+        self.encoder_conv = nn.Sequential(
+            #nn.Dropout(0.25),
+            nn.Conv1d(73,256,25,padding=12),
+            nn.ReLU(True),
+            nn.BatchNorm1d(256),
+            nn.MaxPool1d(kernel_size=2, stride=2),  #(batch, 256, 120)  
 
-#             nn.Conv1d(256,256,25,padding=12),
-#             nn.ReLU(True),
-#             nn.MaxPool1d(kernel_size=2, stride=2),
+            nn.Conv1d(256,256,25,padding=12),
+            nn.ReLU(True),
+            nn.BatchNorm1d(256),
+            nn.MaxPool1d(kernel_size=2, stride=2),  #(batch, 256, 60) 
 
-#             nn.Conv1d(256,256,25,padding=12),
-#             nn.ReLU(True),
-#             nn.MaxPool1d(kernel_size=2, stride=2)
-#         )
-#         self.decoder = nn.Sequential(
-#             #nn.MaxUnpool1d(kernel_size=2, stride=2),
-#             nn.Dropout(0.25),
-#             nn.ConvTranspose1d(256, 256, 25, stride=2, padding=12, output_padding=1),
-#             nn.ReLU(True),
-#             nn.ConvTranspose1d(256, 256, 25, stride=2, padding=12, output_padding=1),
-#             nn.ReLU(True),
-#             nn.ConvTranspose1d(256, 73, 25, stride=2, padding=12, output_padding=1),
-#             #nn.ReLU(True)
-#           )  
+            nn.Conv1d(256,256,25,padding=12),
+            nn.ReLU(True),
+            nn.BatchNorm1d(256),
+            nn.MaxPool1d(kernel_size=2, stride=2)   #(batch, 256, 30) 
+        )
+        self.encoder_lin = nn.Sequential(
+            nn.Linear(256*30,1024),
+            nn.ReLU(True),
+            nn.BatchNorm1d(1024),
+            nn.Linear(1024,128),
+            nn.ReLU(True),
+            nn.BatchNorm1d(128),
+            nn.Linear(128,8)
+            )
+        self.decoder_lin = nn.Sequential(
+                nn.Linear(8,128),
+                nn.ReLU(True),
+                nn.BatchNorm1d(128),
+                nn.Linear(128,1024),
+                nn.ReLU(True),
+                nn.BatchNorm1d(1024),
+                nn.Linear(1024,256*30),
+                nn.ReLU(True),
+                nn.BatchNorm1d(256*30),
+                )
+        self.decoder_conv = nn.Sequential(
+            #nn.MaxUnpool1d(kernel_size=2, stride=2),
+            #nn.Dropout(0.25),
+            nn.ConvTranspose1d(256, 256, 25, stride=2, padding=12, output_padding=1),
+            nn.ReLU(True),
+            nn.BatchNorm1d(256),
+            nn.ConvTranspose1d(256, 256, 25, stride=2, padding=12, output_padding=1),
+            nn.ReLU(True),
+            nn.BatchNorm1d(256),
+            nn.ConvTranspose1d(256, 73, 25, stride=2, padding=12, output_padding=1),
+            #nn.ReLU(True)
+          )
 
-#     def forward(self, x):
-#         x = self.encoder(x)
-#         x = self.decoder(x)
-#         return x
+    def forward(self, x):
+        x = self.encoder_conv(x)
+        x = x.view(-1,256*30)
+        x = self.encoder_lin(x)
+        
+        x = self.decoder_lin(x)
+        x = x.view([x.size(0), 256, 30])
+        x = self.decoder_conv(x)
+        return x
+
+
+
+class autoencoder_3convLayers_vect3_2(nn.Module):
+    def __init__(self):
+        super(autoencoder_3convLayers_vect3_2, self).__init__()
+        self.encoder_conv = nn.Sequential(
+            #nn.Dropout(0.25),
+            nn.Conv1d(73,256,25,padding=12),
+            nn.ReLU(True),
+            nn.BatchNorm1d(256),
+            nn.MaxPool1d(kernel_size=2, stride=2),  #(batch, 256, 120)  
+
+            nn.Conv1d(256,256,25,padding=12),
+            nn.ReLU(True),
+            nn.BatchNorm1d(256),
+            nn.MaxPool1d(kernel_size=2, stride=2),  #(batch, 256, 60) 
+
+            nn.Conv1d(256,256,25,padding=12),
+            nn.ReLU(True),
+            nn.BatchNorm1d(256),
+            nn.MaxPool1d(kernel_size=2, stride=2)   #(batch, 256, 30) 
+        )
+        self.encoder_lin = nn.Sequential(
+            nn.Linear(256*30,1024),
+            nn.ReLU(True),
+            nn.BatchNorm1d(1024),
+            nn.Linear(1024,128),
+            nn.ReLU(True),
+            nn.BatchNorm1d(128),
+            nn.Linear(128,2)
+            )
+        self.decoder_lin = nn.Sequential(
+                nn.Linear(2,128),
+                nn.ReLU(True),
+                nn.BatchNorm1d(128),
+                nn.Linear(128,1024),
+                nn.ReLU(True),
+                nn.BatchNorm1d(1024),
+                nn.Linear(1024,256*30),
+                nn.ReLU(True),
+                nn.BatchNorm1d(256*30),
+                )
+        self.decoder_conv = nn.Sequential(
+            #nn.MaxUnpool1d(kernel_size=2, stride=2),
+            #nn.Dropout(0.25),
+            nn.ConvTranspose1d(256, 256, 25, stride=2, padding=12, output_padding=1),
+            nn.ReLU(True),
+            nn.BatchNorm1d(256),
+            nn.ConvTranspose1d(256, 256, 25, stride=2, padding=12, output_padding=1),
+            nn.ReLU(True),
+            nn.BatchNorm1d(256),
+            nn.ConvTranspose1d(256, 73, 25, stride=2, padding=12, output_padding=1),
+            #nn.ReLU(True)
+          )
+
+    def forward(self, x):
+        x = self.encoder_conv(x)
+        x = x.view(-1,256*30)
+        x = self.encoder_lin(x)
+        
+        x = self.decoder_lin(x)
+        x = x.view([x.size(0), 256, 30])
+        x = self.decoder_conv(x)
+        return x
+
 
 class autoencoder_3convLayers_vect(nn.Module):
     def __init__(self):
