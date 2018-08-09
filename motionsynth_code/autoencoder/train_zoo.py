@@ -99,7 +99,7 @@ args = parser.parse_args()
 
 #args.model ='autoencoder_3convLayers_vect'
 #args.model ='autoencoder_3convLayers_vect3_64'
-args.model ='autoencoder_3convLayers_vect3_2'
+#args.model ='autoencoder_3convLayers_vect3_2'
 #args.model ='autoencoder_3convLayers_vect3_2'
 #args.finetune = 'autoencoder_3convLayers_vect3'
 #args.check_root = '/posefs2b/Users/hanbyulj/pytorch_motionSynth/checkpoint'
