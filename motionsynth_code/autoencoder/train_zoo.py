@@ -97,7 +97,7 @@ args = parser.parse_args()
 #Debug
 #args.model = 'autoencoder_2convLayers'
 
-args.model ='autoencoder_3conv_vae'
+#args.model ='autoencoder_3conv_vae'
 #args.model ='autoencoder_3convLayers_vect3_64'
 #args.model ='autoencoder_3convLayers_vect3_2'
 #args.model ='autoencoder_3convLayers_vect3_2'
