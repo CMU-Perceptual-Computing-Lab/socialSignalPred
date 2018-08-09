@@ -97,7 +97,7 @@ args = parser.parse_args()
 #Debug
 #args.model = 'autoencoder_2convLayers'
 
-#args.model ='autoencoder_3convLayers_vect'
+args.model ='autoencoder_3conv_vae'
 #args.model ='autoencoder_3convLayers_vect3_64'
 #args.model ='autoencoder_3convLayers_vect3_2'
 #args.model ='autoencoder_3convLayers_vect3_2'
@@ -306,6 +306,7 @@ for epoch in range(num_epochs):
             # ===================log========================
             print('model: {}, epoch [{}/{}], loss:{:.4f} (recon: {:.4f}, kld {:.4f})'
                         .format(args.model, epoch +pretrain_epoch, num_epochs, loss.item(), recon_loss.item(), kld_loss.item()))
+            avgLoss += loss.item()*batch_size
 
         else:
              # ===================forward=====================

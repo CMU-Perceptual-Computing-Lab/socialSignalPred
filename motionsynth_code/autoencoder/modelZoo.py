@@ -454,7 +454,7 @@ class autoencoder_3convLayers_vect(nn.Module):
 
 
 
-class autoencoder_3conv_vae(nn.Module):
+class autoencoder_3conv_vae_64(nn.Module):
     def __init__(self):
         super(autoencoder_3conv_vae, self).__init__()
         self.encoder_conv = nn.Sequential(
@@ -474,12 +474,30 @@ class autoencoder_3conv_vae(nn.Module):
             nn.BatchNorm1d(256),
             nn.MaxPool1d(kernel_size=2, stride=2)   #(batch, 256, 30) 
         )
-        self.encoder_lin1 = nn.Linear(256*30,1024)
-        self.encoder_lin21 = nn.Linear(1024,512)
-        self.encoder_lin22 = nn.Linear(1024,512)
+        self.encoder_lin1 =  nn.Sequential(
+            nn.Linear(256*30,1024),
+            nn.ReLU(True),
+            nn.BatchNorm1d(1024),
+            nn.Linear(1024,512),
+            nn.ReLU(True),
+            nn.BatchNorm1d(512)
+        )
+        self.encoder_lin21 = nn.Linear(512,64)
+        self.encoder_lin22 = nn.Linear(512,64)
        
-        self.decoder_lin1 = nn.Linear(512,1024)
-        self.decoder_lin2 = nn.Linear(1024,256*30)
+        self.decoder_lin1 = nn.Sequential(
+            nn.Linear(64,512),
+            nn.ReLU(True),
+            nn.BatchNorm1d(512),
+            nn.Linear(512,1024),
+            nn.ReLU(True),
+            nn.BatchNorm1d(1024)
+        )
+        self.decoder_lin2 = nn.Sequential(
+            nn.Linear(1024,256*30),
+            nn.ReLU(True),
+            nn.BatchNorm1d(256*30)
+        )
         self.decoder_conv = nn.Sequential(
             #nn.MaxUnpool1d(kernel_size=2, stride=2),
             #nn.Dropout(0.25),
@@ -500,7 +518,8 @@ class autoencoder_3conv_vae(nn.Module):
             eps = torch.randn_like(std)
             #eps = Variable(torch.randn(std.size()))#, dtype=std.dtype, layout=std.layout, device=std.device)
             #eps = Variable(std.data.new(std.size()).normal_())
-            return eps.mul(std).add_(mu)
+            # return eps.mul(std).add_(mu)
+            return eps.mul(std).add(mu)
             #return mu
             #return std.add_(mu)
         else:
@@ -531,6 +550,99 @@ class autoencoder_3conv_vae(nn.Module):
         x = x.view([x.size(0), 256, 30])
         x = self.decoder_conv(x)
         return x, mu, logvar
+
+class autoencoder_3conv_vae(nn.Module):
+    def __init__(self):
+        super(autoencoder_3conv_vae, self).__init__()
+        self.encoder_conv = nn.Sequential(
+            #nn.Dropout(0.25),
+            nn.Conv1d(73,256,25,padding=12),
+            nn.ReLU(True),
+            nn.BatchNorm1d(256),
+            nn.MaxPool1d(kernel_size=2, stride=2),  #(batch, 256, 120)  
+
+            nn.Conv1d(256,256,25,padding=12),
+            nn.ReLU(True),
+            nn.BatchNorm1d(256),
+            nn.MaxPool1d(kernel_size=2, stride=2),  #(batch, 256, 60) 
+
+            nn.Conv1d(256,256,25,padding=12),
+            nn.ReLU(True),
+            nn.BatchNorm1d(256),
+            nn.MaxPool1d(kernel_size=2, stride=2)   #(batch, 256, 30) 
+        )
+        self.encoder_lin1 =  nn.Sequential(
+            nn.Linear(256*30,1024),
+            nn.ReLU(True),
+            nn.BatchNorm1d(1024)
+        )
+        self.encoder_lin21 = nn.Linear(1024,512)
+        self.encoder_lin22 = nn.Linear(1024,512)
+       
+        self.decoder_lin1 = nn.Sequential(
+            nn.Linear(512,1024),
+            nn.ReLU(True),
+            nn.BatchNorm1d(1024)
+        )
+        self.decoder_lin2 = nn.Sequential(
+            nn.Linear(1024,256*30),
+            nn.ReLU(True),
+            nn.BatchNorm1d(256*30)
+        )
+        self.decoder_conv = nn.Sequential(
+            #nn.MaxUnpool1d(kernel_size=2, stride=2),
+            #nn.Dropout(0.25),
+            nn.ConvTranspose1d(256, 256, 25, stride=2, padding=12, output_padding=1),
+            nn.ReLU(True),
+            nn.BatchNorm1d(256),
+            nn.ConvTranspose1d(256, 256, 25, stride=2, padding=12, output_padding=1),
+            nn.ReLU(True),
+            nn.BatchNorm1d(256),
+            nn.ConvTranspose1d(256, 73, 25, stride=2, padding=12, output_padding=1),
+            #nn.ReLU(True)
+          )
+
+
+    def reparameterize(self, mu, logvar):
+        if self.training:
+            std = torch.exp(0.5*logvar)
+            eps = torch.randn_like(std)
+            #eps = Variable(torch.randn(std.size()))#, dtype=std.dtype, layout=std.layout, device=std.device)
+            #eps = Variable(std.data.new(std.size()).normal_())
+            # return eps.mul(std).add_(mu)
+            return eps.mul(std).add(mu)
+            #return mu
+            #return std.add_(mu)
+        else:
+            return mu
+
+    def decode(self,z):
+        
+        x = self.decoder_lin1(z)
+        x = self.decoder_lin2(x)
+        x = x.view([x.size(0), 256, 30])
+        x = self.decoder_conv(x)
+        return x
+
+    def forward(self, x):
+        x = self.encoder_conv(x)
+        x = x.view(-1,256*30)
+        x = self.encoder_lin1(x)
+
+
+        mu = self.encoder_lin21(x)
+        logvar = self.encoder_lin22(x)
+
+        z = self.reparameterize(mu, logvar)
+        #z = logvar
+        
+        x = self.decoder_lin1(z)
+        x = self.decoder_lin2(x)
+        x = x.view([x.size(0), 256, 30])
+        x = self.decoder_conv(x)
+        return x, mu, logvar
+
+
 
 # Reconstruction + KL divergence losses summed over all elements and batch
 def vae_loss_function(recon_x, x, mu, logvar,criterion, weight_kld):
