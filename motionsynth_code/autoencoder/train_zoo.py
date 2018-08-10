@@ -89,13 +89,16 @@ parser.add_argument('--check_root', type=str, default='./',
                     help='The root dir to make subfolders for the check point (default: ./) ')
 
 parser.add_argument('--weight_kld', type=float, default='0.1',
-                    help='Weight for the KLD term in VAE training (default: 1.0) ')
+                    help='Weight for the KLD term in VAE training (default: 0.1) ')
+
+parser.add_argument('--autoreg', type=int, default='0',
+                    help='If >0, train with autoregressive mode. (using init 150 frames input and later 150 frames as output) (default: 0')
+
 
 args = parser.parse_args()  
 
 #Debug
 #args.model = 'autoencoder_2convLayers'
-
 #args.model ='autoencoder_3conv_vae'
 #args.model ='autoencoder_3convLayers_vect3_64'
 #args.model ='autoencoder_3convLayers_vect3_2'
@@ -103,6 +106,7 @@ args = parser.parse_args()
 #args.finetune = 'autoencoder_3conv_vae_try6'
 #args.check_root = '/posefs2b/Users/hanbyulj/pytorch_motionSynth/checkpoint'
 #args.weight_kld = 0.01
+#args.autoreg = 1     #turn on autoregressive mode
 
 torch.cuda.set_device(args.gpu)
 
@@ -251,7 +255,7 @@ save_options(checkpointFolder, option_str, options_dict)
 
 
 """ Compute mean and std """
-X = np.swapaxes(X, 1, 2).astype(np.float32)
+X = np.swapaxes(X, 1, 2).astype(np.float32) #(num, 73, 240)
 feet = np.array([12,13,14,15,16,17,24,25,26,27,28,29])
 
 Xmean = X.mean(axis=2).mean(axis=0)[np.newaxis,:,np.newaxis]
@@ -288,17 +292,24 @@ for epoch in range(num_epochs):
     for bii, bi in enumerate(batchinds):
 
         idxStart  = bi*batch_size
-        inputData = X[idxStart:(idxStart+batch_size),:,:]      #Huge bug!!
+        inputDataAll = X[idxStart:(idxStart+batch_size),:,:]      #Huge bug!!
         #inputData = X[bi:(bi+batch_size),:,:]      #Huge bug!!
-        inputData = Variable(torch.from_numpy(inputData)).cuda()
+
+        if args.autoreg ==0:
+            inputData = Variable(torch.from_numpy(inputDataAll)).cuda()
+            outputGT = inputData
+        else:
+            inputData = inputDataAll[:,:,:160] # inputDataAll== (num, 73,240). So we use inital 160 frames
+            inputData = Variable(torch.from_numpy(inputData)).cuda()
+            outputGT = inputDataAll[:,:,80:] #later 160 frames
+            outputGT = Variable(torch.from_numpy(outputGT)).cuda()
 
         if "vae" in args.model:
             # ===================forward=====================
             output, mu, logvar = model(inputData)
             #loss = criterion(output, inputData)
             #loss = modelZoo.vae_loss_function(output, inputData, mu, logvar,criterion)
-            loss,recon_loss,kld_loss = modelZoo.vae_loss_function(output, inputData, mu, logvar,criterion,args.weight_kld)
-            
+            loss,recon_loss,kld_loss = modelZoo.vae_loss_function(output, outputGT, mu, logvar,criterion,args.weight_kld)
 
             # ===================backward====================
             optimizer.zero_grad()
@@ -313,7 +324,7 @@ for epoch in range(num_epochs):
         else:
              # ===================forward=====================
             output = model(inputData)
-            loss = criterion(output, inputData)
+            loss = criterion(output, outputGT)
 
             # ===================backward====================
             optimizer.zero_grad()
