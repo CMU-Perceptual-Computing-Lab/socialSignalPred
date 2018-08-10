@@ -64,8 +64,8 @@ parser = argparse.ArgumentParser(description='VAE MNIST Example')
 parser.add_argument('--epochs', type=int, default=50001, metavar='N',
                     help='number of epochs to train (default: 50001)')
 
-parser.add_argument('--batch', type=int, default=2048, metavar='N',
-                    help='batch size (default: 2048)')
+parser.add_argument('--batch', type=int, default=3072, metavar='N',
+                    help='batch size (default: 3072)')
 
 parser.add_argument('--gpu', type=int, default=0, metavar='N',
                     help='Select gpu (default: 0)')
@@ -101,7 +101,7 @@ args = parser.parse_args()
 #args.model ='autoencoder_3convLayers_vect3_64'
 #args.model ='autoencoder_3convLayers_vect3_2'
 #args.model ='autoencoder_3convLayers_vect3_2'
-#args.finetune = 'autoencoder_3convLayers_vect3'
+#args.finetune = 'autoencoder_3conv_vae_try6'
 #args.check_root = '/posefs2b/Users/hanbyulj/pytorch_motionSynth/checkpoint'
 #args.weight_kld = 0.01
 
@@ -273,7 +273,7 @@ np.savez_compressed(checkpointFolder+'/preprocess_core.npz', Xmean=Xmean, Xstd=X
 
 #stepNum =0
 
-
+checkpointFolder_base = os.path.basename(checkpointFolder) 
 
 #Compute stepNum start point (to be continuos in tensorboard if pretraine data is loaded)
 stepNum = pretrain_epoch* len(np.arange(X.shape[0] // pretrain_batch_size))
@@ -320,7 +320,7 @@ for epoch in range(num_epochs):
 
             # ===================log========================
             print('model: {}, epoch [{}/{}], loss:{:.4f}'
-                        .format(args.model, epoch +pretrain_epoch, num_epochs, loss.item()))
+                        .format(checkpointFolder_base, epoch +pretrain_epoch, num_epochs, loss.item()))
             avgLoss += loss.item()*batch_size
         
         if bLog:
@@ -342,12 +342,12 @@ for epoch in range(num_epochs):
         #     logger.histo_summary(tag+'/grad', value.grad.data.cpu().numpy(), epoch+1)
     
     print('## model: {}, epoch [{}/{}], avg loss:{:.4f}'
-                        .format(args.model, epoch +pretrain_epoch, num_epochs, avgLoss/ (len(batchinds)*batch_size) ))
+                        .format(checkpointFolder_base, epoch +pretrain_epoch, num_epochs, avgLoss/ (len(batchinds)*batch_size) ))
 
     if (epoch + pretrain_epoch) % args.checkpoint_freq == 0:
     #if (epoch + pretrain_epoch) % 1 == 0:
         fileName = checkpointFolder+ '/checkpoint_e' + str(epoch + pretrain_epoch) + '.pth'
         torch.save(model.state_dict(), fileName)
-        fileName = checkpointFolder+ '/checkpoint_e' + str(epoch + pretrain_epoch) + '.ptho'
+        fileName = checkpointFolder+ '/opt_state.pth'    #overwrite
         torch.save(optimizer.state_dict(), fileName)
         #torch.save(model, fileName)
