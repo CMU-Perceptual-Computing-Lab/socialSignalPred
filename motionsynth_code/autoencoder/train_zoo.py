@@ -107,6 +107,7 @@ args = parser.parse_args()
 #args.check_root = '/posefs2b/Users/hanbyulj/pytorch_motionSynth/checkpoint'
 #args.weight_kld = 0.01
 #args.autoreg = 1     #turn on autoregressive mode
+args.db = 'edin_loco'
 
 torch.cuda.set_device(args.gpu)
 
@@ -118,13 +119,14 @@ torch.cuda.manual_seed(23456)
 #datapath ='/ssd/codes/pytorch_motionSynth/motionsynth_data' 
 datapath ='../../motionsynth_data/data/processed/' 
 
-
 if args.db == 'cmu':
     dblist = ['data_cmu']
     #dblist = ['data_mhad']
 elif args.db == 'holdenAll':
     dblist = ['data_cmu', 'data_hdm05', 'data_mhad', 'data_edin_locomotion', 'data_edin_xsens',
             'data_edin_misc', 'data_edin_punching']
+elif args.db == 'edin_loco':
+    dblist = ['data_edin_locomotion']
 elif args.db == 'human36m_train':
     dblist = ['data_h36m_training']
 elif args.db == 'holden_human36m':
