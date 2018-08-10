@@ -107,7 +107,7 @@ args = parser.parse_args()
 #args.check_root = '/posefs2b/Users/hanbyulj/pytorch_motionSynth/checkpoint'
 #args.weight_kld = 0.01
 #args.autoreg = 1     #turn on autoregressive mode
-args.db = 'edin_loco'
+#args.db = 'edin_loco'
 
 torch.cuda.set_device(args.gpu)
 
