@@ -124,6 +124,8 @@ elif args.db == 'holdenAll':
             'data_edin_misc', 'data_edin_punching']
 elif args.db == 'human36m_train':
     dblist = ['data_h36m_training']
+elif args.db == 'haggling_sellers':
+	dblist = ['data_panoptic_haggling_sellers']
 elif args.db == 'holden_human36m':
     dblist = ['data_cmu', 'data_hdm05', 'data_mhad', 'data_edin_locomotion', 'data_edin_xsens',
             'data_edin_misc', 'data_edin_punching','data_h36m_training']
