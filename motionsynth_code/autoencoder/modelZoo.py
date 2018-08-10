@@ -457,6 +457,8 @@ class autoencoder_3convLayers_vect(nn.Module):
 class autoencoder_3conv_vae_64(nn.Module):
     def __init__(self):
         super(autoencoder_3conv_vae_64, self).__init__()
+
+        
         self.encoder_conv = nn.Sequential(
             #nn.Dropout(0.25),
             nn.Conv1d(73,256,25,padding=12),
@@ -511,7 +513,8 @@ class autoencoder_3conv_vae_64(nn.Module):
             #nn.ReLU(True)
           )
 
-
+    def latent_size(self):
+        return 64
     def reparameterize(self, mu, logvar):
         if self.training:
             std = torch.exp(0.5*logvar)
@@ -602,6 +605,8 @@ class autoencoder_3conv_vae(nn.Module):
             #nn.ReLU(True)
           )
 
+    def latent_size(self):
+        return 512
 
     def reparameterize(self, mu, logvar):
         if self.training:
@@ -629,7 +634,6 @@ class autoencoder_3conv_vae(nn.Module):
         x = x.view(-1,256*30)
         x = self.encoder_lin1(x)
 
-
         mu = self.encoder_lin21(x)
         logvar = self.encoder_lin22(x)
 
@@ -641,7 +645,6 @@ class autoencoder_3conv_vae(nn.Module):
         x = x.view([x.size(0), 256, 30])
         x = self.decoder_conv(x)
         return x, mu, logvar
-
 
 
 # Reconstruction + KL divergence losses summed over all elements and batch
