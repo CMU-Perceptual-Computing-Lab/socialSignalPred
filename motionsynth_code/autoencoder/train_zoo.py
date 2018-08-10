@@ -88,8 +88,7 @@ parser.add_argument('--finetune', type=str, default='',
 parser.add_argument('--check_root', type=str, default='./',
                     help='The root dir to make subfolders for the check point (default: ./) ')
 
-
-parser.add_argument('--weight_kld', type=float, default='1.0',
+parser.add_argument('--weight_kld', type=float, default='0.1',
                     help='Weight for the KLD term in VAE training (default: 1.0) ')
 
 args = parser.parse_args()  
@@ -276,6 +275,7 @@ np.savez_compressed(checkpointFolder+'/preprocess_core.npz', Xmean=Xmean, Xstd=X
 checkpointFolder_base = os.path.basename(checkpointFolder) 
 
 #Compute stepNum start point (to be continuos in tensorboard if pretraine data is loaded)
+filelog_str = ''
 stepNum = pretrain_epoch* len(np.arange(X.shape[0] // pretrain_batch_size))
 for epoch in range(num_epochs):
 
@@ -305,7 +305,7 @@ for epoch in range(num_epochs):
 
             # ===================log========================
             print('model: {}, epoch [{}/{}], loss:{:.4f} (recon: {:.4f}, kld {:.4f})'
-                        .format(args.model, epoch +pretrain_epoch, num_epochs, loss.item(), recon_loss.item(), kld_loss.item()))
+                        .format(checkpointFolder_base, epoch +pretrain_epoch, num_epochs, loss.item(), recon_loss.item(), kld_loss.item()))
             avgLoss += loss.item()*batch_size
 
         else:
@@ -341,9 +341,9 @@ for epoch in range(num_epochs):
         #     logger.histo_summary(tag, value.data.cpu().numpy(), epoch+1)
         #     logger.histo_summary(tag+'/grad', value.grad.data.cpu().numpy(), epoch+1)
     
-    print('## model: {}, epoch [{}/{}], avg loss:{:.4f}'
-                        .format(checkpointFolder_base, epoch +pretrain_epoch, num_epochs, avgLoss/ (len(batchinds)*batch_size) ))
-
+    temp_str = '## model: {}, epoch [{}/{}], avg loss:{:.4f}\n'.format(checkpointFolder_base, epoch +pretrain_epoch, num_epochs, avgLoss/ (len(batchinds)*batch_size) )
+    print(temp_str)
+    filelog_str +=temp_str
     if (epoch + pretrain_epoch) % args.checkpoint_freq == 0:
     #if (epoch + pretrain_epoch) % 1 == 0:
         fileName = checkpointFolder+ '/checkpoint_e' + str(epoch + pretrain_epoch) + '.pth'
@@ -351,3 +351,10 @@ for epoch in range(num_epochs):
         fileName = checkpointFolder+ '/opt_state.pth'    #overwrite
         torch.save(optimizer.state_dict(), fileName)
         #torch.save(model, fileName)
+
+        file_name = os.path.join(checkpointFolder, 'log.txt')
+        with open(file_name, 'a') as opt_file:
+            opt_file.write(filelog_str)
+            opt_file.write('\n')
+            opt_file.close()
+        filelog_str =''
