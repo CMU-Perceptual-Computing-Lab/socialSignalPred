@@ -404,8 +404,17 @@ class autoencoder_3conv_vect3_2(nn.Module):
 
 
 class autoencoder_3convLayers_vect(nn.Module):
-    def __init__(self):
+    def __init__(self, frameLeng=240):
         super(autoencoder_3convLayers_vect, self).__init__()
+
+        #self.m_frameLeng = frameLeng
+        if frameLeng==160:
+            finalFrameLeng = 20
+        else:# frameLeng==240:
+            finalFrameLeng = 30
+        #self.m_finalFrameLeng = finalFrameLeng
+
+
         self.encoder_conv = nn.Sequential(
             #nn.Dropout(0.25),
             nn.Conv1d(73,256,25,padding=12),
@@ -424,10 +433,10 @@ class autoencoder_3convLayers_vect(nn.Module):
             nn.MaxPool1d(kernel_size=2, stride=2)   #(batch, 256, 30) 
         )
         self.encoder_lin = nn.Sequential(
-            nn.Linear(256*30,1024)
+            nn.Linear(256*finalFrameLeng,1024)
             )
         self.decoder_lin = nn.Sequential(
-                nn.Linear(1024,256*30)
+                nn.Linear(1024,256*finalFrameLeng)
                 )
         self.decoder_conv = nn.Sequential(
             #nn.MaxUnpool1d(kernel_size=2, stride=2),
@@ -444,11 +453,13 @@ class autoencoder_3convLayers_vect(nn.Module):
 
     def forward(self, x):
         x = self.encoder_conv(x)
-        x = x.view(-1,256*30)
+        #x = x.view(-1,256*30)
+        x = x.view(x.size(0),-1)
         x = self.encoder_lin(x)
         
         x = self.decoder_lin(x)
-        x = x.view([x.size(0), 256, 30])
+        #x = x.view([x.size(0), 256, 30])
+        x = x.view([x.size(0), 256, -1])
         x = self.decoder_conv(x)
         return x
 
@@ -565,7 +576,7 @@ class autoencoder_3conv_vae(nn.Module):
             finalFrameLeng = 20
         else:# frameLeng==240:
             finalFrameLeng = 30
-        self.m_finalFrameLeng = finalFrameLeng
+        #self.m_finalFrameLeng = finalFrameLeng
 
         self.encoder_conv = nn.Sequential(
             #nn.Dropout(0.25),
@@ -635,13 +646,15 @@ class autoencoder_3conv_vae(nn.Module):
         
         x = self.decoder_lin1(z)
         x = self.decoder_lin2(x)
-        x = x.view([x.size(0), 256, self.m_finalFrameLeng])
+        #x = x.view([x.size(0), 256, 30])
+        x = x.view([x.size(0), 256, -1])
         x = self.decoder_conv(x)
         return x
 
     def forward(self, x):
         x = self.encoder_conv(x)
-        x = x.view(-1,256*self.m_finalFrameLeng)
+        #x = x.view(x.size(0),256*self.m_finalFrameLeng)
+        x = x.view(x.size(0),-1)
         x = self.encoder_lin1(x)
 
         mu = self.encoder_lin21(x)
@@ -652,7 +665,8 @@ class autoencoder_3conv_vae(nn.Module):
         
         x = self.decoder_lin1(z)
         x = self.decoder_lin2(x)
-        x = x.view([x.size(0), 256, self.m_finalFrameLeng])
+        #x = x.view([x.size(0), 256, self.m_finalFrameLeng])
+        x = x.view([x.size(0), 256, -1])
         x = self.decoder_conv(x)
         return x, mu, logvar
 

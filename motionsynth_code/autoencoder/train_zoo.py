@@ -103,7 +103,8 @@ args.model ='autoencoder_3conv_vae'
 #args.model ='autoencoder_3convLayers_vect3_64'
 #args.model ='autoencoder_3convLayers_vect3_2'
 #args.model ='autoencoder_3convLayers_vect3_2'
-#args.finetune = 'autoencoder_3conv_vae_try6'
+#args.model ='autoencoder_3convLayers_vect'
+#args.finetune = 'autoencoder_3conv_vae'
 #args.check_root = '/posefs2b/Users/hanbyulj/pytorch_motionSynth/checkpoint'
 #args.weight_kld = 0.01
 args.autoreg = 1     #turn on autoregressive mode
@@ -159,7 +160,7 @@ num_epochs = args.epochs#500
 batch_size = args.batch
 learning_rate = 1e-3
 
-if args.autoreg ==1 and "vae" in args.model:
+if args.autoreg ==1: #and "vae" in args.model:
     model = getattr(modelZoo,args.model)(frameLeng=160).cuda()
 else:
     model = getattr(modelZoo,args.model)().cuda()
