@@ -99,7 +99,7 @@ args = parser.parse_args()
 
 #Debug
 #args.model = 'autoencoder_2convLayers'
-args.model ='autoencoder_3conv_vae'
+#args.model ='autoencoder_3conv_vae'
 #args.model ='autoencoder_3convLayers_vect3_64'
 #args.model ='autoencoder_3convLayers_vect3_2'
 #args.model ='autoencoder_3convLayers_vect3_2'
@@ -107,7 +107,7 @@ args.model ='autoencoder_3conv_vae'
 #args.finetune = 'autoencoder_3conv_vae'
 #args.check_root = '/posefs2b/Users/hanbyulj/pytorch_motionSynth/checkpoint'
 #args.weight_kld = 0.01
-args.autoreg = 1     #turn on autoregressive mode
+#args.autoreg = 1     #turn on autoregressive mode
 #args.db = 'edin_loco'
 
 torch.cuda.set_device(args.gpu)
