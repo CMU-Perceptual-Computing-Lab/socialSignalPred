@@ -337,8 +337,6 @@ class autoencoder_3conv_vect3_8(nn.Module):
         x = self.decoder_conv(x)
         return x
 
-
-
 class autoencoder_3conv_vect3_2(nn.Module):
     def __init__(self):
         super(autoencoder_3conv_vect3_2, self).__init__()

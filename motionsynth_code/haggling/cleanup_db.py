@@ -1,3 +1,7 @@
+"""Using pretrained Autoencoder Network to clean up(e.g., missing frames, jitters) the raw reconstruction data
+Of course, this may produce artifacts on the motion data, and the output is not exactly same as the input although they are correct)
+"""
+
 import sys
 import numpy as np
 import time

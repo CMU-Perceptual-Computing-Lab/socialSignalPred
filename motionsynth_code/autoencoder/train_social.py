@@ -79,7 +79,7 @@ parser.add_argument('--model', type=str, default='autoencoder_first',
 parser.add_argument('--solver', type=str, default='adam_ams',
                     help='Optimization solver. adam or sgd, adam_ams. (default: adam_ams')
 
-parser.add_argument('--db', type=str, default='cmu',
+parser.add_argument('--db', type=str, default='haggling_socialmodel_wl',
                     help='Database for training cmu...(default: cmu')
 
 parser.add_argument('--finetune', type=str, default='',
@@ -109,7 +109,7 @@ args = parser.parse_args()
 #args.weight_kld = 0.01
 #args.autoreg = 1     #turn on autoregressive mode
 #args.db = 'edin_loco'
-#args.db = 'haggling_winner'
+#args.db = 'haggling_winner_loser'
 
 torch.cuda.set_device(args.gpu)
 
@@ -121,23 +121,8 @@ torch.cuda.manual_seed(23456)
 #datapath ='/ssd/codes/pytorch_motionSynth/motionsynth_data' 
 datapath ='../../motionsynth_data/data/processed/' 
 
-if args.db == 'cmu':
-    dblist = ['data_cmu']
-    #dblist = ['data_mhad']
-elif args.db == 'holdenAll':
-    dblist = ['data_cmu', 'data_hdm05', 'data_mhad', 'data_edin_locomotion', 'data_edin_xsens',
-            'data_edin_misc', 'data_edin_punching']
-elif args.db == 'edin_loco':
-    dblist = ['data_edin_locomotion']
-elif args.db == 'human36m_train':
-    dblist = ['data_h36m_training']
-elif args.db == 'haggling_sellers':
-	dblist = ['data_panoptic_haggling_sellers']
-elif args.db == 'haggling_winner':
+if args.db == 'haggling_socialmodel_wl':
 	dblist = ['data_panoptic_haggling_winners', 'data_panoptic_haggling_losers']
-elif args.db == 'holden_human36m':
-    dblist = ['data_cmu', 'data_hdm05', 'data_mhad', 'data_edin_locomotion', 'data_edin_xsens',
-            'data_edin_misc', 'data_edin_punching','data_h36m_training']
 else:
     assert(False)
 #Xcmu = np.load(datapath +'/data/processed/data_cmu.npz')['clips'] # (17944, 240, 73)
@@ -150,15 +135,29 @@ else:
 # Xedin_punching = np.load(datapath +'/data/processed/data_edin_punching.npz')['clips'] #(408, 240, 73)
 #h36m_training = np.load(datapath +'/data/processed/data_h36m_training.npz')['clips'] #(13156, 240, 73)
 
-db_loaded =list()
-for dbname in dblist:
-    X_temp = np.load(datapath + dbname + '.npz')['clips'] 
-    db_loaded.append(X_temp)
-X = np.concatenate(db_loaded, axis=0)
+# db_loaded =list()
+# for dbname in dblist:
+#     X_temp = np.load(datapath + dbname + '.npz')['clips'] 
+#     db_loaded.append(X_temp)
+# X = np.concatenate(db_loaded, axis=0)
 
+X = np.load(datapath + dblist[0] + '.npz')['clips']  #Input (2683,240,73)
+Y = np.load(datapath + dblist[1] + '.npz')['clips']  #Output (2683,240,73)
+
+data_all = np.concatenate( (X,Y), axis=0) #(5366,240,73)
+
+# X = np.swapaxes(X, 1, 2).astype(np.float32) #(num, 73, 240)
+# Y = np.swapaxes(Y, 1, 2).astype(np.float32) #(num, 73, 240)
+
+# """Visualize X and Y"""
+# #by jhugestar
+# for frameIdx in range(1,X.shape[0],10):
+#     sys.path.append('/ssd/codes/glvis_python/')
+#     from Visualize_human_gl import showSkeleton,show_Holden_Data_73 #opengl visualization 
+#     show_Holden_Data_73([ X[frameIdx,:,:], Y[frameIdx,:,:]])
 
 """ Training Network """
-num_epochs = args.epochs#500
+num_epochs = args.epochs #500
 #batch_size = 128
 batch_size = args.batch
 learning_rate = 1e-3
@@ -189,7 +188,14 @@ else:
 pretrain_epoch = 0
 if args.finetune =='':
     pretrain_batch_size =args.batch  #Assume current batch was used in pretraining
-    checkpointFolder = args.check_root + '/'+ model.__class__.__name__
+
+
+    if 'socialmodel' in args.db:
+        checkpointFolder = args.check_root + '/social_'+ model.__class__.__name__
+    else:
+        checkpointFolder = args.check_root + '/'+ model.__class__.__name__
+
+    
     if not os.path.exists(checkpointFolder):
         os.mkdir(checkpointFolder)
     else: #if already exist
@@ -256,7 +262,7 @@ option_str, options_dict = print_options(parser,args)
 
 option_str += '\nDBList: \n'
 for i, dbname in enumerate(dblist):
-    option_str +=  '{0}:  {1}\n'.format(dbname,db_loaded[i].shape)
+    option_str +=  '{0}:  {1}\n'.format(dbname,X.shape)
 option_str += 'All: {0}'.format(X.shape)
 options_dict['dblist']= dblist
 
@@ -265,22 +271,32 @@ save_options(checkpointFolder, option_str, options_dict)
 
 """ Compute mean and std """
 X = np.swapaxes(X, 1, 2).astype(np.float32) #(num, 73, 240)
+Y = np.swapaxes(Y, 1, 2).astype(np.float32) #(num, 73, 240)
+
+data_all = np.swapaxes(data_all, 1, 2).astype(np.float32) #(num, 73, 240)
 feet = np.array([12,13,14,15,16,17,24,25,26,27,28,29])
 
-Xmean = X.mean(axis=2).mean(axis=0)[np.newaxis,:,np.newaxis]
+Xmean = data_all.mean(axis=2).mean(axis=0)[np.newaxis,:,np.newaxis]
 Xmean[:,-7:-4] = 0.0
 Xmean[:,-4:]   = 0.5
 
-Xstd = np.array([[[X.std()]]]).repeat(X.shape[1], axis=1)
+Xstd = np.array([[[data_all.std()]]]).repeat(data_all.shape[1], axis=1)
 Xstd[:,feet]  = 0.9 * Xstd[:,feet]
-Xstd[:,-7:-5] = 0.9 * X[:,-7:-5].std()
-Xstd[:,-5:-4] = 0.9 * X[:,-5:-4].std()
+Xstd[:,-7:-5] = 0.9 * data_all[:,-7:-5].std()
+Xstd[:,-5:-4] = 0.9 * data_all[:,-5:-4].std()
 Xstd[:,-4:]   = 0.5
 
 """ Data standardization """
 X = (X - Xmean) / Xstd
+Y = (Y - Xmean) / Xstd
+
+
+"""Data Shuffle"""
 I = np.arange(len(X))
-rng.shuffle(I); X = X[I]
+rng.shuffle(I); 
+X = X[I]
+Y = Y[I]
+
 print('Input data size: {0}'.format(X.shape))
 
 np.savez_compressed(checkpointFolder+'/preprocess_core.npz', Xmean=Xmean, Xstd=Xstd)
@@ -288,6 +304,10 @@ np.savez_compressed(checkpointFolder+'/preprocess_core.npz', Xmean=Xmean, Xstd=X
 #stepNum =0
 
 checkpointFolder_base = os.path.basename(checkpointFolder) 
+
+
+if X.shape[0]  < batch_size:
+    batch_size = X.shape[0]
 
 #Compute stepNum start point (to be continuos in tensorboard if pretraine data is loaded)
 filelog_str = ''
@@ -302,11 +322,13 @@ for epoch in range(num_epochs):
 
         idxStart  = bi*batch_size
         inputDataAll = X[idxStart:(idxStart+batch_size),:,:]      #Huge bug!!
+        outputDataAll = Y[idxStart:(idxStart+batch_size),:,:]      #Huge bug!!
+
         #inputData = X[bi:(bi+batch_size),:,:]      #Huge bug!!
 
         if args.autoreg ==0:
             inputData = Variable(torch.from_numpy(inputDataAll)).cuda()
-            outputGT = inputData
+            outputGT = Variable(torch.from_numpy(outputDataAll)).cuda()
         else:
             inputData = inputDataAll[:,:,:160] # inputDataAll== (num, 73,240). So we use inital 160 frames
             inputData = Variable(torch.from_numpy(inputData)).cuda()
