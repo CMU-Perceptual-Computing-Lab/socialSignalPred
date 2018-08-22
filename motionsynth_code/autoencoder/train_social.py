@@ -111,6 +111,13 @@ args = parser.parse_args()
 #args.db = 'edin_loco'
 #args.db = 'haggling_winner_loser'
 
+#args.model ='autoencoder_3conv_vae'
+#args.solver = 'sgd'
+# args.finetune = 'social_autoencoder_3conv_vae'
+# args.check_root = '/posefs2b/Users/hanbyulj/pytorch_motionSynth/checkpoint'
+#args.batch = 128
+#args.weight_kld = 0.0001
+
 torch.cuda.set_device(args.gpu)
 
 rng = np.random.RandomState(23456)
@@ -123,6 +130,7 @@ datapath ='../../motionsynth_data/data/processed/'
 
 if args.db == 'haggling_socialmodel_wl':
 	dblist = ['data_panoptic_haggling_winners', 'data_panoptic_haggling_losers']
+    #dblist = ['data_cmu', 'data_cmu']
 else:
     assert(False)
 #Xcmu = np.load(datapath +'/data/processed/data_cmu.npz')['clips'] # (17944, 240, 73)
@@ -322,6 +330,7 @@ for epoch in range(num_epochs):
 
         idxStart  = bi*batch_size
         inputDataAll = X[idxStart:(idxStart+batch_size),:,:]      #Huge bug!!
+        #outputDataAll = X[idxStart:(idxStart+batch_size),:,:]      #Huge bug!!
         outputDataAll = Y[idxStart:(idxStart+batch_size),:,:]      #Huge bug!!
 
         #inputData = X[bi:(bi+batch_size),:,:]      #Huge bug!!
@@ -332,7 +341,7 @@ for epoch in range(num_epochs):
         else:
             inputData = inputDataAll[:,:,:160] # inputDataAll== (num, 73,240). So we use inital 160 frames
             inputData = Variable(torch.from_numpy(inputData)).cuda()
-            outputGT = inputDataAll[:,:,80:] #later 160 frames
+            outputGT = outputDataAll[:,:,80:] #later 160 frames
             outputGT = Variable(torch.from_numpy(outputGT)).cuda()
 
         if "vae" in args.model:
