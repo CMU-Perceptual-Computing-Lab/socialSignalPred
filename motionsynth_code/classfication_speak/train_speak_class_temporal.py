@@ -131,8 +131,8 @@ datapath ='../../motionsynth_data/data/processed/'
 
 # train_dblist = ['data_panoptic_speech_haggling_sellers_training_byFrame']
 # test_dblist = ['data_panoptic_speech_haggling_sellers_testing_byFrame']
-train_dblist = ['data_panoptic_speech_haggling_sellers_training_byFrame_white_30frm_tiny']
-#train_dblist = ['data_panoptic_speech_haggling_sellers_training_byFrame_white_30frm']
+#train_dblist = ['data_panoptic_speech_haggling_sellers_training_byFrame_white_30frm_tiny']
+train_dblist = ['data_panoptic_speech_haggling_sellers_training_byFrame_white_30frm']
 #train_dblist = ['data_panoptic_speech_haggling_sellers_training_byFrame_white']
 test_dblist = ['data_panoptic_speech_haggling_sellers_testing_byFrame_white_30frm_tiny']
 #test_dblist = ['data_panoptic_speech_haggling_sellers_testing_byFrame_white_30frm']
@@ -183,7 +183,7 @@ class naive_lstm2(nn.Module):
         self.batch_size = batch_size
         
         self.hidden = self.init_hidden()
-        self.lstm = nn.LSTM(self.feature_dim, self.hidden_dim, num_layers = self.num_layers, drop_out=0.1, batch_first=True) #batch_first=True makes the order as (batch, frames, featureNum)
+        self.lstm = nn.LSTM(self.feature_dim, self.hidden_dim, num_layers = self.num_layers, dropout=0.1, batch_first=True) #batch_first=True makes the order as (batch, frames, featureNum)
         self.proj = nn.Linear(self.hidden_dim,1)
         self.out_act = nn.Sigmoid()
 
