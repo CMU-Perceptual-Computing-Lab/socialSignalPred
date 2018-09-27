@@ -37,7 +37,7 @@ sourcePath='/ssd/codes/pytorch_motionSynth/motionsynth_data/data/processed_panop
 
 pkl_files=[ os.path.join(sourcePath,f) for f in sorted(list(os.listdir(sourcePath))) ]
 
-outputFolder = './panoptic/'
+outputFolder = './panoptic_speak/'
 if not os.path.exists(outputFolder):
     os.mkdir(outputFolder)
 
