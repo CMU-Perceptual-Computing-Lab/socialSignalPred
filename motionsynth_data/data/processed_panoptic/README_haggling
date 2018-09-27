@@ -1,0 +1,14 @@
+1. gathering_panoptic.py 
+
+This file loads all haggling json files from /ssd/data/panoptic-toolbox/data_haggling, which was downloaded from domedb, 
+and save them as pkl files.
+
+Same for face, and hands
+
+2. process_hagglingDB.py 
+This code does processing for each haggling sequence
+
+1: Align the startFarmes for the people in the same group
+2: Separate the name of pkl file, to have a single group only
+
+Same for face, and hands

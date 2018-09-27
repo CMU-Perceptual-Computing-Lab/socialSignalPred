@@ -2,6 +2,7 @@ import os
 import sys
 import numpy as np
 import scipy.io as io
+import random
 
 """For logging by tensorboard"""
 bLog = False  
@@ -61,16 +62,16 @@ def save_options(checkpoints_dir, message, options_dict):
         json.dump(options_dict,opt_file)
         
 parser = argparse.ArgumentParser(description='VAE MNIST Example')
-parser.add_argument('--epochs', type=int, default=50001, metavar='N',
+parser.add_argument('--epochs', type=int, default=500001, metavar='N',
                     help='number of epochs to train (default: 50001)')
 
-parser.add_argument('--batch', type=int, default=3072, metavar='N',
-                    help='batch size (default: 3072)')
+parser.add_argument('--batch', type=int, default=512, metavar='N',
+                    help='batch size (default: 32)')
 
 parser.add_argument('--gpu', type=int, default=0, metavar='N',
                     help='Select gpu (default: 0)')
 
-parser.add_argument('--checkpoint_freq', type=int, default=50, metavar='N',
+parser.add_argument('--checkpoint_freq', type=int, default=500, metavar='N',
                     help='How frequently save the checkpoint (default: every 50 epoch)')
 
 parser.add_argument('--model', type=str, default='autoencoder_first',
@@ -94,7 +95,6 @@ parser.add_argument('--weight_kld', type=float, default='0.1',
 parser.add_argument('--autoreg', type=int, default='0',
                     help='If >0, train with autoregressive mode. (using init 150 frames input and later 150 frames as output) (default: 0')
 
-
 args = parser.parse_args()  
 
 #Debug
@@ -111,11 +111,11 @@ args = parser.parse_args()
 #args.db = 'edin_loco'
 #args.db = 'haggling_winner_loser'
 
-args.model ='autoencoder_3conv_vae'
-#args.solver = 'sgd'
-args.finetune = 'social_autoencoder_3conv_vae'
-args.check_root = '/posefs2b/Users/hanbyulj/pytorch_motionSynth/checkpoint'
-args.batch = 2
+# args.model ='autoencoder_3conv_vae'
+# #args.solver = 'sgd'
+# args.finetune = 'social_autoencoder_3conv_vae'
+# args.check_root = '/posefs2b/Users/hanbyulj/pytorch_motionSynth/checkpoint'
+# args.batch = 2
 #args.weight_kld = 0.0001
 
 torch.cuda.set_device(args.gpu)
@@ -128,32 +128,25 @@ torch.cuda.manual_seed(23456)
 #datapath ='/ssd/codes/pytorch_motionSynth/motionsynth_data' 
 datapath ='../../motionsynth_data/data/processed/' 
 
-if args.db == 'haggling_socialmodel_wl':
-	dblist = ['data_panoptic_haggling_winners', 'data_panoptic_haggling_losers']
-    #dblist = ['data_cmu', 'data_cmu']
-else:
-    assert(False)
-#Xcmu = np.load(datapath +'/data/processed/data_cmu.npz')['clips'] # (17944, 240, 73)
-# Xhdm05 = np.load(datapath +'/data/processed/data_hdm05.npz')['clips']	#(3190, 240, 73)
-# Xmhad = np.load(datapath +'/data/processed/data_mhad.npz')['clips'] # (2674, 240, 73)
-# #Xstyletransfer = np.load('/data/processed/data_styletransfer.npz')['clips']
-# Xedin_locomotion = np.load(datapath +'/data/processed/data_edin_locomotion.npz')['clips'] #(351, 240, 73)
-# Xedin_xsens = np.load(datapath +'/data/processed/data_edin_xsens.npz')['clips'] #(1399, 240, 73)
-# Xedin_misc = np.load(datapath +'/data/processed/data_edin_misc.npz')['clips'] #(122, 240, 73)
-# Xedin_punching = np.load(datapath +'/data/processed/data_edin_punching.npz')['clips'] #(408, 240, 73)
-#h36m_training = np.load(datapath +'/data/processed/data_h36m_training.npz')['clips'] #(13156, 240, 73)
+# train_dblist = ['data_panoptic_speech_haggling_sellers_training_byFrame']
+# test_dblist = ['data_panoptic_speech_haggling_sellers_testing_byFrame']
+train_dblist = ['data_panoptic_speech_haggling_sellers_training_byFrame_white_30frm_tiny']
+#train_dblist = ['data_panoptic_speech_haggling_sellers_training_byFrame_white']
+test_dblist = ['data_panoptic_speech_haggling_sellers_testing_byFrame_white_30frm_tiny']
 
-# db_loaded =list()
-# for dbname in dblist:
-#     X_temp = np.load(datapath + dbname + '.npz')['clips'] 
-#     db_loaded.append(X_temp)
-# X = np.concatenate(db_loaded, axis=0)
+train_data = np.load(datapath + train_dblist[0] + '.npz')
 
-X = np.load(datapath + dblist[0] + '.npz')['clips']  #Input (2683,240,73)
-Y = np.load(datapath + dblist[1] + '.npz')['clips']  #Output (2683,240,73)
+train_X= train_data['clips']  #Input (3700,240,73)
+train_Y = train_data['classes']  #Input (3700,240,73)
 
-data_all = np.concatenate( (X,Y), axis=0) #(5366,240,73)
+train_X = train_X[:-1:10,:,:]
+train_Y = train_Y[:-1:10,:]
 
+test_data = np.load(datapath + test_dblist[0] + '.npz')
+test_X= test_data['clips']  #Input (1044,240,73)
+test_Y = test_data['classes']  #Input (1044,240,73)
+
+#data_all = np.concatenate( (X,Y), axis=0) #(5366,240,73)
 # X = np.swapaxes(X, 1, 2).astype(np.float32) #(num, 73, 240)
 # Y = np.swapaxes(Y, 1, 2).astype(np.float32) #(num, 73, 240)
 
@@ -170,15 +163,64 @@ num_epochs = args.epochs #500
 batch_size = args.batch
 learning_rate = 1e-3
 
-if args.autoreg ==1: #and "vae" in args.model:
-    model = getattr(modelZoo,args.model)(frameLeng=160).cuda()
-else:
-    model = getattr(modelZoo,args.model)().cuda()
+# if args.autoreg ==1: #and "vae" in args.model:
+#     model = getattr(modelZoo,args.model)(frameLeng=160).cuda()
+# else:
+#     model = getattr(modelZoo,args.model)().cuda()
+
+import torch
+from torch import nn
+
+class naive_lstm2(nn.Module):
+    def __init__(self, batch_size):
+        super(naive_lstm2, self).__init__()
+
+        self.hidden_dim = 12
+        self.feature_dim= 73
+        self.num_layers = 1
+        self.batch_size = batch_size
+        
+        self.hidden = self.init_hidden()
+        self.lstm = nn.LSTM(self.feature_dim, self.hidden_dim, batch_first=True) #batch_first=True makes the order as (batch, frames, featureNum)
+        self.proj = nn.Linear(self.hidden_dim,1)
+        self.out_act = nn.Sigmoid()
+
+    def init_hidden(self):
+        return (Variable(torch.zeros(self.num_layers, self.batch_size, self.hidden_dim)).cuda(),
+                Variable(torch.zeros(self.num_layers, self.batch_size, self.hidden_dim)).cuda())
+                
+
+    #Original LSTM ordering
+    # def forward(self, input_):
+    #     #input_ dimension: (timestpes, batch, dim)
+    #     lstm_out, self.hidden = self.lstm(
+    #                 input_, self.hidden)
+    #     #lstm_out:  (timesteps, batch, hidden_dim)
+    #     #self.hidden (tuple with two elements):  ( (1, batch, hidden_dim),  (1, batch, hidden_dim))
+        
+    #     proj = self.proj(lstm_out) #input: , output:(timesteps, batch, 1)
+    #     return self.out_act(proj)
+
+    #batch_first ordering
+    def forward(self, input_):
+
+        #input_ dimension: (batch, timestpes, dim). Note I used batch_first for this ordering
+        lstm_out, self.hidden = self.lstm(
+                    input_, self.hidden)
+        #lstm_out:  (batch, timesteps, hidden_dim)
+        
+        #self.hidden (tuple with two elements):  ( (1, batch, hidden_dim),  (1, batch, hidden_dim))
+        proj = self.proj(lstm_out) #input:(batch, inputDim, outputDim ) -> output (batch, timesteps, )
+        return self.out_act(proj)
+
+model = naive_lstm2(batch_size).cuda()
+
 
 for param in model.parameters():
     print(type(param.data), param.size())
 
-criterion = nn.MSELoss()
+criterion = nn.BCELoss()
+
 if args.solver == 'adam':
     print('solver: Adam')
     optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate, weight_decay=1e-5)
@@ -197,12 +239,10 @@ pretrain_epoch = 0
 if args.finetune =='':
     pretrain_batch_size =args.batch  #Assume current batch was used in pretraining
 
-
     if 'socialmodel' in args.db:
         checkpointFolder = args.check_root + '/social_'+ model.__class__.__name__
     else:
         checkpointFolder = args.check_root + '/'+ model.__class__.__name__
-
     
     if not os.path.exists(checkpointFolder):
         os.mkdir(checkpointFolder)
@@ -259,53 +299,52 @@ else:       #FineTuning
     model.train()
     model.eval()
 
-
 if bLog:
     logger = Logger(checkpointFolder+'/logs')
-
 
 
 """ Save Option Info """
 option_str, options_dict = print_options(parser,args)
 
-option_str += '\nDBList: \n'
-for i, dbname in enumerate(dblist):
-    option_str +=  '{0}:  {1}\n'.format(dbname,X.shape)
-option_str += 'All: {0}'.format(X.shape)
-options_dict['dblist']= dblist
+# option_str += '\nDBList: \n'
+# for i, dbname in enumerate(dblist):
+#     option_str +=  '{0}:  {1}\n'.format(dbname,X.shape)
+# option_str += 'All: {0}'.format(X.shape)
+# options_dict['dblist']= dblist
 
 save_options(checkpointFolder, option_str, options_dict)
 
 
 """ Compute mean and std """
-X = np.swapaxes(X, 1, 2).astype(np.float32) #(num, 73, 240)
-Y = np.swapaxes(Y, 1, 2).astype(np.float32) #(num, 73, 240)
+train_X = np.swapaxes(train_X, 1, 2).astype(np.float32) #(num, 73, 240)
+train_Y = train_Y.astype(np.float32)
 
-data_all = np.swapaxes(data_all, 1, 2).astype(np.float32) #(num, 73, 240)
+test_X = np.swapaxes(test_X, 1, 2).astype(np.float32) #(num, 73, 240)
+test_Y = test_Y.astype(np.float32)
+
 feet = np.array([12,13,14,15,16,17,24,25,26,27,28,29])
 
-Xmean = data_all.mean(axis=2).mean(axis=0)[np.newaxis,:,np.newaxis]
+Xmean = train_X.mean(axis=2).mean(axis=0)[np.newaxis,:,np.newaxis]
 Xmean[:,-7:-4] = 0.0
 Xmean[:,-4:]   = 0.5
 
-Xstd = np.array([[[data_all.std()]]]).repeat(data_all.shape[1], axis=1)
+Xstd = np.array([[[train_X.std()]]]).repeat(train_X.shape[1], axis=1)
 Xstd[:,feet]  = 0.9 * Xstd[:,feet]
-Xstd[:,-7:-5] = 0.9 * data_all[:,-7:-5].std()
-Xstd[:,-5:-4] = 0.9 * data_all[:,-5:-4].std()
+Xstd[:,-7:-5] = 0.9 * train_X[:,-7:-5].std()
+Xstd[:,-5:-4] = 0.9 * train_X[:,-5:-4].std()
 Xstd[:,-4:]   = 0.5
 
 """ Data standardization """
-X = (X - Xmean) / Xstd
-Y = (Y - Xmean) / Xstd
-
+train_X = (train_X - Xmean) / Xstd
+test_X = (test_X - Xmean) / Xstd
 
 """Data Shuffle"""
-I = np.arange(len(X))
+I = np.arange(len(train_X))
 rng.shuffle(I); 
-X = X[I]
-Y = Y[I]
+train_X = train_X[I]
+train_Y = train_Y[I]
 
-print('Input data size: {0}'.format(X.shape))
+print('Input data size: {0}'.format(train_X.shape))
 
 np.savez_compressed(checkpointFolder+'/preprocess_core.npz', Xmean=Xmean, Xstd=Xstd)
 
@@ -314,67 +353,61 @@ np.savez_compressed(checkpointFolder+'/preprocess_core.npz', Xmean=Xmean, Xstd=X
 checkpointFolder_base = os.path.basename(checkpointFolder) 
 
 
-if X.shape[0]  < batch_size:
-    batch_size = X.shape[0]
+if train_X.shape[0]  < batch_size:
+    batch_size = train_X.shape[0]
 
+curBestAccu = 0
 #Compute stepNum start point (to be continuos in tensorboard if pretraine data is loaded)
 filelog_str = ''
-stepNum = pretrain_epoch* len(np.arange(X.shape[0] // pretrain_batch_size))
-for epoch in range(num_epochs):
+stepNum = pretrain_epoch* len(np.arange(train_X.shape[0] // pretrain_batch_size))
 
-    batchinds = np.arange(X.shape[0] // batch_size)
+
+
+#LSTM expected (stepSize, batch, features)
+train_X
+for epoch in range(num_epochs):
+    
+    #targetFrame = random.choice(range(240))
+    model.train()
+    batchinds = np.arange(train_X.shape[0] // batch_size)
     rng.shuffle(batchinds)
     
     avgLoss =0
     for bii, bi in enumerate(batchinds):
 
         idxStart  = bi*batch_size
-        inputDataAll = X[idxStart:(idxStart+batch_size),:,:]      #Huge bug!!
-        #outputDataAll = X[idxStart:(idxStart+batch_size),:,:]      #Huge bug!!
-        outputDataAll = Y[idxStart:(idxStart+batch_size),:,:]      #Huge bug!!
+        # inputDataAll = train_X[idxStart:(idxStart+batch_size),:,targetFrame]      
+        # outputDataAll = train_Y[idxStart:(idxStart+batch_size),targetFrame]      
+        #outputDataAll = outputDataAll[:,np.newaxis]
+        
+        inputDataAll = train_X[idxStart:(idxStart+batch_size),:,:]      
 
-        #inputData = X[bi:(bi+batch_size),:,:]      #Huge bug!!
+        #Reordering from (batchsize,featureNum,frames) ->(frames, batch, features)
+        inputDataAll = np.swapaxes(inputDataAll, 0, 1) #(featureNum,batchsize,frames)
+        inputDataAll = np.swapaxes(inputDataAll, 0, 2) #(frames,batchsize,featureNum)
 
-        if args.autoreg ==0:
-            inputData = Variable(torch.from_numpy(inputDataAll)).cuda()
-            outputGT = Variable(torch.from_numpy(outputDataAll)).cuda()
-        else:
-            inputData = inputDataAll[:,:,:160] # inputDataAll== (num, 73,240). So we use inital 160 frames
-            inputData = Variable(torch.from_numpy(inputData)).cuda()
-            outputGT = outputDataAll[:,:,80:] #later 160 frames
-            outputGT = Variable(torch.from_numpy(outputGT)).cuda()
+        outputDataAll = train_Y[idxStart:(idxStart+batch_size),:]      
+        outputDataAll = np.swapaxes(outputDataAll,0,1) #(batch,frames) -> (frame,batch)
+        outputDataAll = outputDataAll[:,:,np.newaxis]
+        inputData = Variable(torch.from_numpy(inputDataAll)).cuda()
+        outputGT = Variable(torch.from_numpy(outputDataAll)).cuda()
+    
+    
+        # ===================forward=====================
+        model.hidden = model.init_hidden() #clear out hidden state of the LSTM
+        
+        output = model(inputData)
+        loss = criterion(output, outputGT)
 
-        if "vae" in args.model:
-            # ===================forward=====================
-            output, mu, logvar = model(inputData)
-            #loss = criterion(output, inputData)
-            #loss = modelZoo.vae_loss_function(output, inputData, mu, logvar,criterion)
-            loss,recon_loss,kld_loss = modelZoo.vae_loss_function(output, outputGT, mu, logvar,criterion,args.weight_kld)
+        # ===================backward====================
+        optimizer.zero_grad()
+        loss.backward()
+        optimizer.step()
 
-            # ===================backward====================
-            optimizer.zero_grad()
-            loss.backward()
-            optimizer.step()
-
-            # ===================log========================
-            print('model: {}, epoch [{}/{}], loss:{:.4f} (recon: {:.4f}, kld {:.4f})'
-                        .format(checkpointFolder_base, epoch +pretrain_epoch, num_epochs, loss.item(), recon_loss.item(), kld_loss.item()))
-            avgLoss += loss.item()*batch_size
-
-        else:
-             # ===================forward=====================
-            output = model(inputData)
-            loss = criterion(output, outputGT)
-
-            # ===================backward====================
-            optimizer.zero_grad()
-            loss.backward()
-            optimizer.step()
-
-            # ===================log========================
-            print('model: {}, epoch [{}/{}], loss:{:.4f}'
-                        .format(checkpointFolder_base, epoch +pretrain_epoch, num_epochs, loss.item()))
-            avgLoss += loss.item()*batch_size
+        # ===================log========================
+        #print('model: {}, epoch [{}/{}], loss:{:.4f}'
+        #            .format(checkpointFolder_base, epoch +pretrain_epoch, num_epochs, loss.item()))
+        avgLoss += loss.item()*batch_size
         
         if bLog:
             # 1. Log scalar values (scalar summary)
@@ -394,7 +427,55 @@ for epoch in range(num_epochs):
         #     logger.histo_summary(tag, value.data.cpu().numpy(), epoch+1)
         #     logger.histo_summary(tag+'/grad', value.grad.data.cpu().numpy(), epoch+1)
     
+
     temp_str = '## model: {}, epoch [{}/{}], avg loss:{:.4f}\n'.format(checkpointFolder_base, epoch +pretrain_epoch, num_epochs, avgLoss/ (len(batchinds)*batch_size) )
+
+
+    """compute testing error"""
+    batch_size_test = 64
+    test_loss = 0.0
+    acc= 0.0
+    cnt =0.0
+
+    model.eval()
+    batchinds = np.arange(test_X.shape[0] // batch_size_test)
+    for bii, bi in enumerate(batchinds):
+
+        idxStart  = bi*batch_size_test
+        # inputDataAll = test_X[idxStart:(idxStart+batch_size_test),:,-1]      
+        inputDataAll = train_X[idxStart:(idxStart+batch_size),:,:]      
+
+        #Reordering from (batchsize,featureNum,frames) ->(frames, batch, features)
+        inputDataAll = np.swapaxes(inputDataAll, 0, 1) #(featureNum,batchsize,frames)
+        inputDataAll = np.swapaxes(inputDataAll, 0, 2) #(frames,batchsize,featureNum)
+
+        outputDataAll = train_Y[idxStart:(idxStart+batch_size),:]      
+        outputDataAll = np.swapaxes(outputDataAll,0,1) #(batch,frames) -> (frame,batch)
+        outputDataAll = outputDataAll[:,:,np.newaxis]
+        inputData = Variable(torch.from_numpy(inputDataAll)).cuda()
+        outputGT = Variable(torch.from_numpy(outputDataAll)).cuda()
+    
+        model.hidden = model.init_hidden() #clear out hidden state of the LSTM
+        output = model(inputData)
+        loss = criterion(output, outputGT)
+        test_loss += loss.data.cpu().numpy().item()* batch_size_test # sum up batch loss
+
+        #consider all 30 frames in the chuk
+        # pred = output.data.cpu().numpy() >= 0.5
+        # truth = outputGT.data.cpu().numpy() >= 0.5
+        # acc += (pred==truth).sum() /float(train_Y.shape[1]) #train_Y.shape[1] is number of frames (chunk size)
+
+        #consider the last frame
+        pred = output.data.cpu().numpy() >= 0.5
+        truth = outputGT.data.cpu().numpy() >= 0.5
+        acc += (pred[-1,:]==truth[-1,:]).sum()
+        cnt += batch_size
+
+
+    test_loss /= len(batchinds)*batch_size_test
+    curBestAccu = max(curBestAccu, acc/cnt)
+    print('Testing: modelName: {} (epoch:{}) /Average loss: {:.4f}/Accuracy: {:.4f} (best {:.4f})\n'.format(checkpointFolder_base, epoch +pretrain_epoch,test_loss, acc/cnt,curBestAccu))
+    
     print(temp_str)
     filelog_str +=temp_str
     if (epoch + pretrain_epoch) % args.checkpoint_freq == 0:
@@ -411,3 +492,4 @@ for epoch in range(num_epochs):
             opt_file.write('\n')
             opt_file.close()
         filelog_str =''
+

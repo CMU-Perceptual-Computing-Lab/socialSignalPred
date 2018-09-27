@@ -11,7 +11,7 @@ import pickle
             
 path='/ssd/data/panoptic-toolbox/data_haggling'
 #seqName='170221_haggling_b1'
-outputFolder='./panopticDB'
+outputFolder='./panopticDB_pkl'
 
 if not os.path.exists(outputFolder):
     os.mkdir(outputFolder)
@@ -24,6 +24,10 @@ for seqPath in seqPathSet:
     motionData = list()
 
     seqName = os.path.basename(seqPath)
+
+    if os.path.exists("{0}/{1}.pkl".format(outputFolder,seqName)):
+        continue
+
     seqPath = seqPath  + '/hdPose3d_stage1_coco19'
     seqPathFull=[ os.path.join(seqPath,f) for f in sorted(list(os.listdir(seqPath))) ]
 
