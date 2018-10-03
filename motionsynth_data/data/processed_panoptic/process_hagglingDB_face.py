@@ -36,7 +36,7 @@ for seqInfo in hagglingInfo:
     seqPath = os.path.join(inputFolder,seqName+'.pkl')
 
     if not os.path.exists(seqPath):
-        print('Already Exists: {0}'.format(seqPath))
+        print('Does not exists: {0}'.format(seqPath))
         continue
 
     #The motion data of all people in this sequence is saved here

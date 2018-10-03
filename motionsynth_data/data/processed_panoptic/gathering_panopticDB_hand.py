@@ -104,13 +104,13 @@ for seqPath in seqPathSet:
                     visibilityCnt = np.array([len(x) for x in visibility]) #(21,)
                     visibilityCnt = visibilityCnt[:,np.newaxis] #(21,1)
 
-                    #Append. #This assume that human skeletons exist continuously. Will be broken if drops happen. No this results are happening?
+                    #Append. 
                     localIdx = frameIdx - motionData[humanId]['startFrame'] #zero based inx
                     #assert(motionData[humanId]['joints19'].shape[1] ==localIdx)
                     if motionData[humanId]['hand21'].shape[1] != localIdx:
                         #print('{0} vs {1}'.format(motionData[humanId]['hand21'].shape[1],localIdx))
 
-                        #Add invalid
+                        #Add invalid (if there existing missing frames where no hand exists)
                         while motionData[humanId]['hand21'].shape[1] !=localIdx:
 
                             #print('adding: {0} vs {1}'.format(motionData[humanId]['hand21'].shape[1],localIdx))

@@ -187,6 +187,7 @@ datapath ='../../motionsynth_data/data/processed/'
 #test_dblist = ['data_panoptic_speech_haggling_sellers_testing_byFrame_white']
 #test_dblist = ['data_panoptic_speech_haggling_sellers_testing_byFrame_white_30frm_tiny']
 #test_dblist = ['data_panoptic_speech_haggling_sellers_training_byFrame_white_30frm_tiny']
+#test_dblist = ['data_panoptic_speech_haggling_sellers_testing_byFrame_white_30frm']
 test_dblist = ['data_panoptic_speech_haggling_sellers_testing_byFrame_white_30frm']
 
 #test_dblist = ['data_panoptic_speech_haggling_sellers_training_byFrame_white_tiny']
@@ -199,7 +200,7 @@ test_Y = test_data['classes']  #Input (1044,240,73)
 ### Data preprocessing ###
 checkpointRoot = '/ssd/codes/pytorch_motionSynth/motionsynth_code/classfication_speak/'
 loadEpoch = 237
-checkpointFolder = checkpointRoot+ 'social_naive_lstm2_try51/'
+checkpointFolder = checkpointRoot+ 'social_naive_lstm2_try60/'
 
 preprocess = np.load(checkpointFolder + 'preprocess_core.npz') #preprocess['Xmean' or 'Xstd']: (1, 73,1)
 
