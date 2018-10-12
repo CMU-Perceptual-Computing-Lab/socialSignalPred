@@ -91,12 +91,20 @@ for seqPath in seqPathSet:
         fileName = os.path.basename(frameFilePath)
         numStartIdx = fileName.find('_') + 1 #'_HD...#
         frameIdx = int(fileName[numStartIdx:numStartIdx+8]) #Always, body3DScene_%08d.json
-    
+               
+
         faceParam_all = ReadFaceParams(frameFilePath)
 
+        dupCheck=[]
         for faceParm in faceParam_all:
             #print(faceParm['humanId'])
             humanId = faceParm['humanId']
+
+            if humanId in dupCheck:
+                continue    #already added...
+            else:
+                dupCheck.append(humanId)
+
             #Add new human dic
             if humanId >= len(motionData):
                 while humanId >= len(motionData):
@@ -165,8 +173,8 @@ for seqPath in seqPathSet:
             motionData[humanId]['face_exp']  = np.append(motionData[humanId]['face_exp'],face_exp, axis=1) #(200, frames)
 
             motionData[humanId]['trans']  = np.append(motionData[humanId]['trans'],trans, axis=1) #(3, frames)
-            motionData[humanId]['rot']  = np.append(motionData[humanId]['rot'],trans, axis=1) #(3, frames)
-            motionData[humanId]['rot_pivot']  = np.append(motionData[humanId]['rot_pivot'],trans, axis=1) #(3, frames)
+            motionData[humanId]['rot']  = np.append(motionData[humanId]['rot'],rot, axis=1) #(3, frames)
+            motionData[humanId]['rot_pivot']  = np.append(motionData[humanId]['rot_pivot'],rot_pivot, axis=1) #(3, frames)
             motionData[humanId]['bValidFrame'] = np.append(motionData[humanId]['bValidFrame'], True)  #Validity signal
 
             # if motionData[humanId]['face70'].shape[1] == 1045:

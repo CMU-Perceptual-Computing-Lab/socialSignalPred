@@ -24,7 +24,7 @@ from torchvision.datasets import MNIST
 import os
 import argparse
 
-import modelZoo
+#import modelZoo
 
 def print_options(parser,opt):
     option_dict = dict()
@@ -65,8 +65,8 @@ parser = argparse.ArgumentParser(description='VAE MNIST Example')
 parser.add_argument('--epochs', type=int, default=500001, metavar='N',
                     help='number of epochs to train (default: 50001)')
 
-parser.add_argument('--batch', type=int, default=512, metavar='N',
-                    help='batch size (default: 32)')
+parser.add_argument('--batch', type=int, default=3072, metavar='N',
+                    help='batch size (default: 3072)')
 
 parser.add_argument('--gpu', type=int, default=0, metavar='N',
                     help='Select gpu (default: 0)')
@@ -81,7 +81,6 @@ parser.add_argument('--solver', type=str, default='adam_ams',
                     help='Optimization solver. adam or sgd, adam_ams. (default: adam_ams')
 
 parser.add_argument('--db', type=str, default='haggling_socialmodel_wl',
-
                     help='Database for training cmu...(default: cmu')
 
 parser.add_argument('--finetune', type=str, default='',
@@ -131,18 +130,22 @@ datapath ='../../motionsynth_data/data/processed/'
 
 # train_dblist = ['data_panoptic_speech_haggling_sellers_training_byFrame']
 # test_dblist = ['data_panoptic_speech_haggling_sellers_testing_byFrame']
-#train_dblist = ['data_panoptic_speech_haggling_sellers_training_byFrame_white_30frm_tiny']
-train_dblist = ['data_hagglingSellers_speech_body_30frm_5gap_tiny_white_training']
-#train_dblist = ['data_panoptic_speech_haggling_sellers_training_byFrame_white']
-test_dblist = ['data_hagglingSellers_speech_body_30frm_10gap_tiny_white_testing']
-#test_dblist = ['data_panoptic_speech_haggling_sellers_testing_byFrame_white_30frm']
+#train_dblist = ['data_panoptic_speech_haggling_sellers_training_byFrame_white_tiny']
+# train_dblist = ['data_hagglingSellers_speech_face_30frm_10gap_white_training']
+#train_dblist = ['data_hagglingSellers_speech_face_30frm_5gap_white_training']
+#test_dblist = ['data_hagglingSellers_speech_face_30frm_10gap_white_testing']
+
+train_dblist = ['data_hagglingSellers_speech_face_60frm_10gap_white_testing']
+##train_dblist = ['data_hagglingSellers_speech_face_60frm_5gap_white_training']
+test_dblist = ['data_hagglingSellers_speech_face_60frm_10gap_white_testing']
 
 train_data = np.load(datapath + train_dblist[0] + '.npz')
 
 train_X= train_data['clips']  #Input (3700,240,73)
 train_Y = train_data['classes']  #Input (3700,240,73)
-# train_X = train_X[:-1:5,:,:]
-# train_Y = train_Y[:-1:5,:]
+
+# train_X = train_X[:-1:10,:,:]
+# train_Y = train_Y[:-1:10,:]
 
 test_data = np.load(datapath + test_dblist[0] + '.npz')
 test_X= test_data['clips']  #Input (1044,240,73)
@@ -172,68 +175,24 @@ learning_rate = 1e-3
 
 import torch
 from torch import nn
-"""
-class naive_lstm2(nn.Module):
-    def __init__(self, batch_size):
-        super(naive_lstm2, self).__init__()
-
-        self.hidden_dim = 12
-        self.feature_dim= 73
-        self.num_layers = 1
-        self.batch_size = batch_size
-        
-        self.hidden = self.init_hidden()
-        self.lstm = nn.LSTM(self.feature_dim, self.hidden_dim, num_layers = self.num_layers, dropout=0.5, batch_first=True) #batch_first=True makes the order as (batch, frames, featureNum)
-        self.proj = nn.Linear(self.hidden_dim,1)
-        self.out_act = nn.Sigmoid()
-
-    def init_hidden(self):
-        return (Variable(torch.zeros(self.num_layers, self.batch_size, self.hidden_dim)).cuda(),
-                Variable(torch.zeros(self.num_layers, self.batch_size, self.hidden_dim)).cuda())
-                
-
-    #Original LSTM ordering
-    # def forward(self, input_):
-    #     #input_ dimension: (timestpes, batch, dim)
-    #     lstm_out, self.hidden = self.lstm(
-    #                 input_, self.hidden)
-    #     #lstm_out:  (timesteps, batch, hidden_dim)
-    #     #self.hidden (tuple with two elements):  ( (1, batch, hidden_dim),  (1, batch, hidden_dim))
-        
-    #     proj = self.proj(lstm_out) #input: , output:(timesteps, batch, 1)
-    #     return self.out_act(proj)
-
-    #batch_first ordering
-    def forward(self, input_):
-
-        #input_ dimension: (batch, timestpes, dim). Note I used batch_first for this ordering
-        #lstm_out:  (batch, timesteps, hidden_dim)
-        #self.hidden (tuple with two elements):  ( (1, batch, hidden_dim),  (1, batch, hidden_dim))
-        lstm_out, self.hidden = self.lstm(
-                    input_, self.hidden)
-        
-        proj = self.proj(lstm_out) #input:(batch, inputDim, outputDim ) -> output (batch, timesteps,1)
-        return self.out_act(proj)
-
-model = naive_lstm2(batch_size).cuda()
-"""
-
 
 class naive_lstm2(nn.Module):
     def __init__(self, batch_size):
         super(naive_lstm2, self).__init__()
 
-        self.hidden_dim = 12
-        self.feature_dim= 73
+        self.hidden_dim = 20
+        #self.feature_dim= 200
+        self.feature_dim= 1
+        self.embed_dim= 10
         self.num_layers = 1
         self.batch_size = batch_size
         
         self.hidden = self.init_hidden()
-        self.encode = nn.Linear(self.feature_dim,self.feature_dim)
-        self.dout = nn.Dropout(0.5)
-        self.lstm = nn.LSTM(self.feature_dim, self.hidden_dim, num_layers = self.num_layers, dropout=0.5, batch_first=True, bidirectional=False) #batch_first=True makes the order as (batch, frames, featureNum)
+        self.encode = nn.Linear(self.feature_dim,self.embed_dim)
+        #self.dout = nn.Dropout(0.5)
+        self.lstm = nn.LSTM(self.embed_dim, self.hidden_dim, num_layers = self.num_layers, dropout=0.0, batch_first=True, bidirectional=False) #batch_first=True makes the order as (batch, frames, featureNum)
         #self.proj = nn.Linear(self.hidden_dim*2,1)
-        self.proj = nn.Linear(self.hidden_dim,1)
+        self.proj = nn.Linear(self.hidden_dim,200)
         self.out_act = nn.Sigmoid()
 
     def init_hidden(self):
@@ -246,7 +205,8 @@ class naive_lstm2(nn.Module):
         #input_ dimension: (batch, timestpes, dim). Note I used batch_first for this ordering
         #lstm_out:  (batch, timesteps, hidden_dim)
         #self.hidden (tuple with two elements):  ( (1, batch, hidden_dim),  (1, batch, hidden_dim))
-        input_encoded = self.dout(self.encode(input_))
+        #input_encoded = self.dout(self.encode(input_))
+        input_encoded = self.encode(input_)
         lstm_out, self.hidden = self.lstm(
                     input_encoded, self.hidden)
         
@@ -357,23 +317,14 @@ save_options(checkpointFolder, option_str, options_dict)
 
 
 """ Compute mean and std """
-train_X = np.swapaxes(train_X, 1, 2).astype(np.float32) #(num, 73, 240)
+train_X = np.swapaxes(train_X, 1, 2).astype(np.float32) #(num, 200, 1)
 train_Y = train_Y.astype(np.float32)
 
-test_X = np.swapaxes(test_X, 1, 2).astype(np.float32) #(num, 73, 240)
+test_X = np.swapaxes(test_X, 1, 2).astype(np.float32) #(num, 200, 1)
 test_Y = test_Y.astype(np.float32)
 
-feet = np.array([12,13,14,15,16,17,24,25,26,27,28,29])
-
 Xmean = train_X.mean(axis=2).mean(axis=0)[np.newaxis,:,np.newaxis]
-Xmean[:,-7:-4] = 0.0
-Xmean[:,-4:]   = 0.5
-
 Xstd = np.array([[[train_X.std()]]]).repeat(train_X.shape[1], axis=1)
-Xstd[:,feet]  = 0.9 * Xstd[:,feet]
-Xstd[:,-7:-5] = 0.9 * train_X[:,-7:-5].std()
-Xstd[:,-5:-4] = 0.9 * train_X[:,-5:-4].std()
-Xstd[:,-4:]   = 0.5
 
 """ Data standardization """
 train_X = (train_X - Xmean) / Xstd
@@ -401,7 +352,6 @@ curBestAccu = 0
 #Compute stepNum start point (to be continuos in tensorboard if pretraine data is loaded)
 filelog_str = ''
 stepNum = pretrain_epoch* len(np.arange(train_X.shape[0] // pretrain_batch_size))
-
 
 
 #LSTM expected (stepSize, batch, features)
@@ -438,15 +388,15 @@ for epoch in range(num_epochs):
         inputDataAll = np.swapaxes(inputDataAll, 1, 2) #(batch, frame,features)
         outputDataAll = train_Y[idxStart:(idxStart+batch_size),:]      
         outputDataAll = outputDataAll[:,:,np.newaxis]
-        
-        #inputData = Variable(torch.from_numpy(inputDataAll)).cuda()
 
+
+
+        #inputData = Variable(torch.from_numpy(inputDataAll)).cuda()
         #Add noise
         inputData = Variable(torch.from_numpy(inputDataAll))
         noise = torch.randn_like(inputData)
-        inputData = inputData + noise 
+        inputData = inputData + noise #* 2.0
         inputData = inputData.cuda()
-
 
         outputGT = Variable(torch.from_numpy(outputDataAll)).cuda()
     
@@ -454,8 +404,9 @@ for epoch in range(num_epochs):
         # ===================forward=====================
         model.hidden = model.init_hidden() #clear out hidden state of the LSTM
         
-        output = model(inputData)
-        loss = criterion(output, outputGT)
+        #output = model(inputData)
+        inputPred = model(outputGT)
+        loss = criterion(inputPred, inputData)
 
         # ===================backward====================
         optimizer.zero_grad()
@@ -489,6 +440,7 @@ for epoch in range(num_epochs):
     temp_str = '## model: {}, epoch [{}/{}], avg loss:{:.4f}\n'.format(checkpointFolder_base, epoch +pretrain_epoch, num_epochs, avgLoss/ (len(batchinds)*batch_size) )
 
 
+
     """compute testing error"""
     #batch_size_test = 64
     batch_size_test = batch_size
@@ -502,6 +454,7 @@ for epoch in range(num_epochs):
 
         idxStart  = bi*batch_size_test
         # inputDataAll = test_X[idxStart:(idxStart+batch_size_test),:,-1]      
+        #inputDataAll = test_X[idxStart:(idxStart+batch_size),:,:]      
         inputDataAll = test_X[idxStart:(idxStart+batch_size),:,:]      
 
         #Reordering from (batchsize,featureNum,frames) ->(batch, frame,features)
@@ -512,8 +465,13 @@ for epoch in range(num_epochs):
         outputGT = Variable(torch.from_numpy(outputDataAll)).cuda()
     
         model.hidden = model.init_hidden() #clear out hidden state of the LSTM
-        output = model(inputData)
-        loss = criterion(output, outputGT)
+        #output = model(inputData)
+        #loss = criterion(output, outputGT)
+
+        inputPred = model(outputGT)
+        loss = criterion(inputPred, inputData)
+
+
         test_loss += loss.data.cpu().numpy().item()* batch_size_test # sum up batch loss
 
         #consider all 30 frames in the chuk
@@ -522,10 +480,14 @@ for epoch in range(num_epochs):
         # acc += (pred==truth).sum() /float(train_Y.shape[1]) #train_Y.shape[1] is number of frames (chunk size)
 
         #consider the last frame
+        
+        """
         pred = output.data.cpu().numpy() >= 0.5
         truth = outputGT.data.cpu().numpy() >= 0.5
         acc += (pred[:,-1]==truth[:,-1]).sum()
+        """
         cnt += batch_size
+        
 
 
     test_loss /= len(batchinds)*batch_size_test

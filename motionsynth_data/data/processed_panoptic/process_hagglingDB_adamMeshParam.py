@@ -16,13 +16,13 @@ sys.path.append('/ssd/codes/glvis_python/')
 from glViewer import showSkeleton #opengl visualization.  showSkeleton(skelNum, dim, frames)
 
 path='/ssd/data/panoptic-toolbox/data_haggling'
-inputFolder='./panopticDB_faceMesh_pkl'
-outputFolder='./panopticDB_faceMesh_pkl_hagglingProcessed'
+inputFolder='./panopticDB_adamMesh_pkl'
+outputFolder='./panopticDB_adamMesh_pkl_hagglingProcessed'
 
 if not os.path.exists(outputFolder):
     os.mkdir(outputFolder)
 
-seqFiles=[ os.path.join(inputFolder,f) for f in sorted(list(os.listdir(inputFolder))) ]
+seqFiles=[ os.path.join(inputFolder,f) for f in sorted(list(os.listdir(inputFolder))) if '160422' not in f and '160224' not in f and '160226' not in f and '161202' not in f] 
 
 
 #Load Haggling Game info
@@ -33,6 +33,9 @@ with open(hagglingInfoFilePath) as cfile:
 
 for seqInfo in hagglingInfo:
     seqName = seqInfo['seqName']
+
+    if '160422'  in seqName or '160224'  in seqName or '160226'  in seqName or '161202'in seqName:
+        continue
     seqPath = os.path.join(inputFolder,seqName+'.pkl')
 
     if not os.path.exists(seqPath):
@@ -79,12 +82,11 @@ for seqInfo in hagglingInfo:
             localStartFrame = groupStartFrame  - group[-1]['startFrame']
             localEndFrame = groupEndFrame - group[-1]['startFrame']
 
-            group[-1]['face_id'] = group[-1]['face_id'][:, localStartFrame:localEndFrame]
-            group[-1]['face_exp'] = group[-1]['face_exp'][:, localStartFrame:localEndFrame]
-            
             group[-1]['trans'] = group[-1]['trans'][:, localStartFrame:localEndFrame]
-            group[-1]['rot'] = group[-1]['rot'][:, localStartFrame:localEndFrame]
-            group[-1]['rot_pivot'] = group[-1]['rot_pivot'][:, localStartFrame:localEndFrame]
+            group[-1]['pose'] = group[-1]['pose'][:, localStartFrame:localEndFrame]
+            
+            group[-1]['betas'] = group[-1]['betas'][:, localStartFrame:localEndFrame]
+            group[-1]['faces'] = group[-1]['faces'][:, localStartFrame:localEndFrame]
             group[-1]['bValidFrame'] = group[-1]['bValidFrame'][localStartFrame:localEndFrame]
 
             group[-1]['humanId'] = humanId

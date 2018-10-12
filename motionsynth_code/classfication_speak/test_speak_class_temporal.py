@@ -7,7 +7,7 @@ import random
 
 #by jhugestar
 sys.path.append('/ssd/codes/glvis_python/')
-from Visualize_human_gl import showSkeleton,setSpeech,setSpeechGT,show_Holden_Data_73 #opengl visualization 
+from glViewer import showSkeleton,setSpeech,setSpeechGT,show_Holden_Data_73 #opengl visualization 
 
 
 """For logging by tensorboard"""
