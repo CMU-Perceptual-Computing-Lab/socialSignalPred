@@ -10,6 +10,9 @@ import Animation as Animation
 from Quaternions import Quaternions
 from Pivots import Pivots
 
+import cPickle as pickle
+
+
 
 def softmax(x, **kw):
     softness = kw.pop('softness', 1.0)
@@ -135,59 +138,6 @@ def process_file(filename, window=1, window_step=1):
         windows_classes.append(cls)
         
     return windows, windows_classes
-
-
-import pickle
-def process_file_withSpeech(filename, subjectRole,  window=240, window_step=120):
-    
-    #anim, names, frametime = BVH.load(filename)
-    faceParamData = pickle.load( open(filename, "rb" ) )
-
-    #Load speech info
-    seqName = os.path.basename(filename)
-    #speech_fileName = seqName[:-7] + '.pkl'
-    speech_fileName = seqName
-    speechPath = './panopticDB_pkl_speech_hagglingProcessed/' +speech_fileName
-    speechData = pickle.load( open( speechPath, "rb" ) )
-
-    subjectRole = int(subjectRole)
-
-
-    faceParamData = faceParamData['subjects'][subjectRole]['face_exp']  #200 x frames
-    faceParamData = np.swapaxes(faceParamData,0,1) # frames x 200
-    speechData = speechData['speechData'][subjectRole]  #(frames,)
-    
-    # """ Convert to 60 fps """
-    # anim = anim[::2]
-    # Origianl Human3.6 has 50 fps. So, no smapling is done
-    
-    """ Slide over windows """
-    windows = []
-    windows_classes = []
-    
-
-    print("skelSize {0} vs speechSize {1}".format(faceParamData.shape[0], speechData['indicator'].shape[0]))
-    for j in range(0, faceParamData.shape[0]-window//8, window_step):
-    
-        """ If slice too small pad out by repeating start and end poses """
-        slice = faceParamData[j:j+window]
-        if len(slice) < window:
-            break
-            # left  = slice[:1].repeat((window-len(slice))//2 + (window-len(slice))%2, axis=0)
-            # left[:,-7:-4] = 0.0
-            # right = slice[-1:].repeat((window-len(slice))//2, axis=0)
-            # right[:,-7:-4] = 0.0
-            # slice = np.concatenate([left, slice, right], axis=0)
-        
-        if len(slice) != window: raise Exception()
-        
-        windows.append(slice)
-        
-        cls = speechData['indicator'][j:j+window]
-        windows_classes.append(cls)
-        
-    return windows, windows_classes
-
 
 def get_files(directory):
     return [os.path.join(directory,f) for f in sorted(list(os.listdir(directory)))
@@ -539,6 +489,131 @@ white_list_face = ['170221_haggling_b1_group0',
 '170228_haggling_b3_group2']
 
 
+def process_file_withSpeech(filename, subjectRole,  window=240, window_step=120):
+    
+    #anim, names, frametime = BVH.load(filename)
+    faceParamData = pickle.load( open(filename, "rb" ) )
+
+    #Load speech info
+    seqName = os.path.basename(filename)
+    #speech_fileName = seqName[:-7] + '.pkl'
+    speech_fileName = seqName
+    speechPath = './panopticDB_pkl_speech_hagglingProcessed/' +speech_fileName
+    speechData = pickle.load( open( speechPath, "rb" ) )
+
+    subjectRole = int(subjectRole)
+
+
+    faceParamData = faceParamData['subjects'][subjectRole]['face_exp']  #200 x frames
+    faceParamData = np.swapaxes(faceParamData,0,1) # frames x 200
+    speechData = speechData['speechData'][subjectRole]  #(frames,)
+    
+    # """ Convert to 60 fps """
+    # anim = anim[::2]
+    # Origianl Human3.6 has 50 fps. So, no smapling is done
+    
+    """ Slide over windows """
+    windows = []
+    windows_classes = []
+    
+
+    print("skelSize {0} vs speechSize {1}".format(faceParamData.shape[0], speechData['indicator'].shape[0]))
+    for j in range(0, faceParamData.shape[0]-window//8, window_step):
+    
+        """ If slice too small pad out by repeating start and end poses """
+        slice = faceParamData[j:j+window]
+        if len(slice) < window:
+            break
+            # left  = slice[:1].repeat((window-len(slice))//2 + (window-len(slice))%2, axis=0)
+            # left[:,-7:-4] = 0.0
+            # right = slice[-1:].repeat((window-len(slice))//2, axis=0)
+            # right[:,-7:-4] = 0.0
+            # slice = np.concatenate([left, slice, right], axis=0)
+        
+        if len(slice) != window: raise Exception()
+        
+        windows.append(slice)
+        
+        cls = speechData['indicator'][j:j+window]
+        windows_classes.append(cls)
+        
+    return windows, windows_classes
+
+"""
+    output:
+        - return windows_pos_normal:  [elm1,elm2,elm3], where elmX is list of (window x 9) and the depth order is pos(3), faceNormal(3), bodyNormal(3)
+        - windows_speech: [elm1,elm2,elm3], where elmX is list of (window,)
+"""
+def process_file_withSpeech_byGroup(filename, window=240, window_step=120):
+    
+   
+    #Load speech info
+    seqName = os.path.basename(filename)
+    #speech_fileName = seqName[:-7] + '.pkl'
+    speech_fileName = seqName
+    speechPath = './panopticDB_pkl_speech_hagglingProcessed/' +speech_fileName
+    speechData_raw = pickle.load( open( speechPath, "rb" ) )
+
+    motionData_list=list()
+    speechData_list=list()
+
+    faceParamData = pickle.load( open(filename, "rb" ) )
+    
+    for pIdx in range(0,3):
+        
+        speechData = speechData_raw['speechData'][pIdx]
+        speechData_list.append(speechData) #Save speech info
+
+        #anim, names, frametime = BVH.load(filename)
+        faceParam = faceParamData['subjects'][pIdx]['face_exp']  #200 x frames
+        faceParam = np.swapaxes(faceParam,0,1) # frames x 200
+
+        motionData_list.append(faceParam)    #all data (frames x 3)
+
+
+    if len(motionData_list[0]) != len(motionData_list[1]): raise Exception()
+    if len(motionData_list[1]) != len(motionData_list[2]): raise Exception()
+    if len(speechData_list[0]) != len(speechData_list[1]): raise Exception()
+    if len(speechData_list[1]) != len(speechData_list[2]): raise Exception()
+        
+    """ Slide over windows """
+    windows_data = [list(),list(),list()]
+    windows_speech = [list(),list(),list()]
+    
+    frameNum = motionData_list[0].shape[0]
+    print("skelSize {0} vs speechSize {1}".format(frameNum,speechData['indicator'].shape[0]))
+    for j in range(0, frameNum - window, window_step):
+
+        bSkip =False
+        for pIdx in range(len(motionData_list)):
+        
+            slice = motionData_list[pIdx][j:j+window] #(frames, featureDim:200)
+            if len(slice) < window:
+                break
+            if len(slice) != window: raise Exception()
+
+            #Check Bad data (abs(value)>2)
+            maxValue = np.max(abs(slice))
+            if(maxValue>2.0):
+                bSkip = True
+                break
+        if bSkip:
+            continue
+
+        for pIdx in range(len(motionData_list)):
+        
+            slice = motionData_list[pIdx][j:j+window] #(frames, featureDim:200)
+
+            slice_concat = slice
+
+            windows_data[pIdx].append(slice_concat)
+
+            #Speech Data
+            speechSignal = speechData_list[pIdx]['indicator'][j:j+window]
+            windows_speech[pIdx].append(speechSignal)
+
+    return windows_data, windows_speech
+
 def get_files_haggling(directory, bReturnTesting):
     fileListInit = [os.path.join(directory,f) for f in sorted(list(os.listdir(directory)))
     if os.path.isfile(os.path.join(directory,f))
@@ -572,58 +647,66 @@ def get_files_haggling(directory, bReturnTesting):
     return fileList
 
 
-"""
-faceParamDir = '/ssd/codes/pytorch_motionSynth/motionsynth_data/data/processed_panoptic/panopticDB_faceMesh_pkl_hagglingProcessed'
-#Haggling training games sellers
-h36m_files = get_files_haggling(faceParamDir,False)
-print('Num: {}'.format(len(h36m_files)))
-hagglingRoles = [1,2] #Sellers
-#print(h36m_files)
-h36m_clips = []
-h36m_classes = []
-cnt =0
-for i, item in enumerate(h36m_files):
-    print('Processing %i of %i (%s)' % (i, len(h36m_files), item))
-    for role in hagglingRoles:
-        clips, speech = process_file_withSpeech(item,role, 60,10)
-        h36m_clips += clips
-        h36m_classes += speech
-        # if cnt>20:
-        #     break
-        cnt +=1
-    # if cnt>20:
-    #     break
-data_clips = np.array(h36m_clips)
-data_speech = np.array(h36m_classes)
-#np.savez_compressed('data_hagglingSellers_speech_face_60frm_5gap_white_training', clips=data_clips, classes=data_speech)
-np.savez('data_hagglingSellers_speech_face_60frm_10gap_white_training', clips=data_clips, classes=data_speech)
-"""
+# faceParamDir = '/ssd/codes/pytorch_motionSynth/motionsynth_data/data/processed_panoptic/panopticDB_faceMesh_pkl_hagglingProcessed'
+# """Haggling training games sellers"""
+# bTesting = False
+# h36m_files = get_files_haggling(faceParamDir,bTesting)
+# print('Num: {}'.format(len(h36m_files)))
+# group_data = [ [], [], [] ]
+# group_speech = [ [], [], [] ]
+
+# cnt =0
+# for i, item in enumerate(h36m_files):
+#     print('Processing %i of %i (%s)' % (i, len(h36m_files), item))
+#     clips, speech = process_file_withSpeech_byGroup(item, 30, 10)
+
+#     for pIdx in range(3):
+#         group_data[pIdx] += clips[pIdx]
+#         group_speech[pIdx] += speech[pIdx]
+
+#     # if cnt>20:
+#     #     break
+#     cnt +=1
+#     # if cnt>5:
+#     #     break
+# for pIdx in range(3):
+#     group_data[pIdx] = np.array(group_data[pIdx])
+#     group_speech[pIdx] = np.array(group_speech[pIdx])
+# print("Data shape: {}".format(group_data[0].shape))
+# #np.savez_compressed('data_hagglingSellers_speech_face_60frm_5gap_white_training', clips=data_clips, classes=data_speech)
+# np.savez('data_hagglingSellers_speech_group_face_30frm_10gap_white_training', clips=group_data, speech=group_speech)
+
+
 
 
 faceParamDir = '/ssd/codes/pytorch_motionSynth/motionsynth_data/data/processed_panoptic/panopticDB_faceMesh_pkl_hagglingProcessed'
 """Haggling training games sellers"""
-h36m_files = get_files_haggling(faceParamDir,True)
+bTesting = True
+h36m_files = get_files_haggling(faceParamDir,bTesting)
 print('Num: {}'.format(len(h36m_files)))
-hagglingRoles = [1,2] #Sellers
-#print(h36m_files)
-h36m_clips = []
-h36m_classes = []
+group_data = [ [], [], [] ]
+group_speech = [ [], [], [] ]
+
 cnt =0
 for i, item in enumerate(h36m_files):
     print('Processing %i of %i (%s)' % (i, len(h36m_files), item))
-    for role in hagglingRoles:
-        clips, speech = process_file_withSpeech(item,role, 60, 1)
-        h36m_clips += clips
-        h36m_classes += speech
-        # if cnt>20:
-        #     break
-        cnt +=1
+    clips, speech = process_file_withSpeech_byGroup(item, 30, 10)
+
+    for pIdx in range(3):
+        group_data[pIdx] += clips[pIdx]
+        group_speech[pIdx] += speech[pIdx]
+
     # if cnt>20:
     #     break
-data_clips = np.array(h36m_clips)
-data_speech = np.array(h36m_classes)
+    cnt +=1
+    # if cnt>5:
+    #     break
+for pIdx in range(3):
+    group_data[pIdx] = np.array(group_data[pIdx])
+    group_speech[pIdx] = np.array(group_speech[pIdx])
+print("Data shape: {}".format(group_data[0].shape))
 #np.savez_compressed('data_hagglingSellers_speech_face_60frm_5gap_white_training', clips=data_clips, classes=data_speech)
-np.savez('data_hagglingSellers_speech_face_60frm_1gap_white_testing', clips=data_clips, classes=data_speech)
+np.savez('data_hagglingSellers_speech_group_face_30frm_10gap_white_testing', clips=group_data, speech=group_speech)
 
 
 

@@ -43,13 +43,13 @@ def my_args_parser():
     parser.add_argument('--epochs', type=int, default=500001, metavar='N',
                         help='number of epochs to train (default: 50001)')
 
-    parser.add_argument('--batch', type=int, default=512, metavar='N',
-                        help='batch size (default: 512)')
+    parser.add_argument('--batch', type=int, default=2048, metavar='N',
+                        help='batch size (default: 2048)')
 
     parser.add_argument('--gpu', type=int, default=0, metavar='N',
                         help='Select gpu (default: 0)')
 
-    parser.add_argument('--checkpoint_freq', type=int, default=500, metavar='N',
+    parser.add_argument('--checkpoint_freq', type=int, default=50, metavar='N',
                         help='How frequently save the checkpoint (default: every 50 epoch)')
 
     parser.add_argument('--model', type=str, default='autoencoder_first',
@@ -67,8 +67,8 @@ def my_args_parser():
     parser.add_argument('--check_root', type=str, default='./',
                         help='The root dir to make subfolders for the check point (default: ./) ')
 
-    parser.add_argument('--weight_kld', type=float, default='0.1',
-                        help='Weight for the KLD term in VAE training (default: 0.1) ')
+    parser.add_argument('--weight_kld', type=float, default='0.0',
+                        help='Weight for the KLD term in VAE training (default: 0.0) ')
 
     parser.add_argument('--autoreg', type=int, default='0',
                         help='If >0, train with autoregressive mode. (using init 150 frames input and later 150 frames as output) (default: 0')

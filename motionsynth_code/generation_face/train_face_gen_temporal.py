@@ -39,6 +39,7 @@ from utility import my_args_parser
 # Parameter Handling
 parser = my_args_parser()
 args = parser.parse_args()
+#args.batch = 50
 
 
 # Some initializations #
@@ -54,20 +55,72 @@ torch.cuda.manual_seed(23456)
 #datapath ='/ssd/codes/pytorch_motionSynth/motionsynth_data' 
 datapath ='../../motionsynth_data/data/processed/' 
 
-train_dblist = ['data_hagglingSellers_speech_face_60frm_10gap_white_training']
-test_dblist = ['data_hagglingSellers_speech_face_60frm_10gap_white_testing']
+# train_dblist = ['data_hagglingSellers_speech_face_60frm_5gap_white_training']
+# test_dblist = ['data_hagglingSellers_speech_face_60frm_5gap_white_testing']
+
+train_dblist = ['data_hagglingSellers_speech_group_face_30frm_10gap_white_training']
+test_dblist = ['data_hagglingSellers_speech_group_face_30frm_10gap_white_testing']
+#train_dblist = ['data_hagglingSellers_speech_group_face_30frm_5gap_white_training_tiny']
+#test_dblist = ['data_hagglingSellers_speech_group_face_30frm_5gap_white_training_tiny']
 
 train_data = np.load(datapath + train_dblist[0] + '.npz')
 
-train_X= train_data['clips']  #Input (3700,240,73)
-train_Y = train_data['classes']  #Input (3700,240,73)
+train_X_raw = train_data['clips']  #Input (3, numClip, chunkLengh, featureDim:200) 
+train_speech_raw = train_data['speech']  #Input (3, numClip, chunkLengh)
+
+# #Attach speech signal
+# train_X_raw = train_X_raw[:,:,:,:1]
+# train_speech_raw = np.expand_dims(train_speech_raw,3)
+# train_X_raw = np.concatenate((train_X_raw,train_speech_raw),axis=3)
+
+
+#Check Bad Face parameters (abs(values)>2)
+bDebug_dataCheck = False
+if bDebug_dataCheck:
+    badClipIndex=[]
+    for pIdx in range(train_X_raw.shape[0]):
+        bad_test = train_X_raw[pIdx]
+        bad_test = np.max(np.max(bad_test,axis=2),axis=1)
+
+        import matplotlib.pyplot as plt
+        plt.plot(bad_test)
+        plt.show()
+
+    ##Debug: visualize
+    sys.path.append('/ssd/codes/glvis_python/')
+    import glViewer
+    testParam = train_X_raw[2,[9482, 11381, 15670, 15671, 15672, 17707],:,:100]
+    testParam = np.reshape(testParam,(-1,100))
+    testParam =np.swapaxes(testParam,0,1)
+
+    glViewer.SetFaceParmData([testParam])
+    glViewer.init_gl()
+
 
 # train_X = train_X[:-1:10,:,:]
 # train_Y = train_Y[:-1:10,:]
 
 test_data = np.load(datapath + test_dblist[0] + '.npz')
-test_X= test_data['clips']  #Input (1044,240,73)
-test_Y = test_data['classes']  #Input (1044,240,73)
+test_X_raw = test_data['clips']  #Input (3, numClip, chunkLengh, featureDim:200)
+test_speech_raw = test_data['speech']  #Input (3, numClip, chunkLengh)
+
+
+#Attach speech signal
+test_X_raw = test_X_raw[:,:,:,:1]
+test_speech_raw = np.expand_dims(test_speech_raw,3)
+test_X_raw = np.concatenate((test_X_raw,test_speech_raw),axis=3)
+
+
+######################################
+# Input/Output Option
+train_X = train_X_raw[1,:,:,:]      #(num, chunkLength, dim:200) //person 1 (first seller's value)
+train_Y = train_X_raw[2,:,:,:]    #2nd seller's data
+
+train_X_concat = np.concatenate((train_X,train_Y),axis=0)
+train_Y_concat = np.concatenate((train_Y,train_X),axis=0)
+
+test_X = test_X_raw[1,:,:,:]      #(num, chunkLength, dim:200) //person 1 (first seller's value)
+test_Y = test_X_raw[2,:,:,:]
 
 
 ######################################
@@ -81,7 +134,7 @@ learning_rate = 1e-3
 #     model = getattr(modelZoo,args.model)(frameLeng=160).cuda()
 # else:
 #     model = getattr(modelZoo,args.model)().cuda()
-model = modelZoo.naive_lstm2(batch_size).cuda()
+model = modelZoo.naive_lstm(batch_size).cuda()
 model.train()
 
 for param in model.parameters():
@@ -135,22 +188,30 @@ save_options(checkpointFolder, option_str, options_dict)
 
 ######################################
 # Data pre-processing
-train_X = np.swapaxes(train_X, 1, 2).astype(np.float32) #(num, 200, 1)
-train_Y = train_Y.astype(np.float32)
+train_X = np.swapaxes(train_X, 1, 2).astype(np.float32) #(num, frames, dim:200) => (num, 200, frames)
+train_Y = np.swapaxes(train_Y, 1, 2).astype(np.float32) #(num, frames, dim:200) => (num, 200, frames)
+#train_Y = train_Y.astype(np.float32)
 
 test_X = np.swapaxes(test_X, 1, 2).astype(np.float32) #(num, 200, 1)
-test_Y = test_Y.astype(np.float32)
+test_Y = np.swapaxes(test_Y, 1, 2).astype(np.float32) #(num, 200, 1)
+#test_Y = test_Y.astype(np.float32)
 
 # Compute mean and var
-Xmean = train_X.mean(axis=2).mean(axis=0)[np.newaxis,:,np.newaxis]
-Xstd = np.array([[[train_X.std()]]]).repeat(train_X.shape[1], axis=1)
+Xmean = train_X.mean(axis=2).mean(axis=0)[np.newaxis,:,np.newaxis] #(1, 200, 1)
+Xstd = np.array([[[train_X.std()]]]).repeat(train_X.shape[1], axis=1) #(1, 200, 1)
+
+Ymean = train_Y.mean(axis=2).mean(axis=0)[np.newaxis,:,np.newaxis] #(1, 200, 1)
+Ystd = np.array([[[train_Y.std()]]]).repeat(train_Y.shape[1], axis=1) #(1, 200, 1)
 
 # Save mean and var
-np.savez_compressed(checkpointFolder+'/preprocess_core.npz', Xmean=Xmean, Xstd=Xstd)
+np.savez_compressed(checkpointFolder+'/preprocess_core.npz', Xmean=Xmean, Xstd=Xstd , Ymean=Ymean, Ystd=Ystd)
 
 # Data standardization 
 train_X = (train_X - Xmean) / Xstd
 test_X = (test_X - Xmean) / Xstd
+
+train_Y = (train_Y - Ymean) / Ystd
+test_Y = (test_Y - Ymean) / Ystd
 
 # Data Shuffle
 I = np.arange(len(train_X))
@@ -175,6 +236,7 @@ stepNum = pretrain_epoch* len(np.arange(train_X.shape[0] // pretrain_batch_size)
 
 ######################################
 # Training
+faceFeatureDim = 2
 bAddNoise = False
 for epoch in range(num_epochs):
     
@@ -190,12 +252,13 @@ for epoch in range(num_epochs):
     for bii, bi in enumerate(batchinds):
 
         idxStart  = bi*batch_size
-        inputData = train_X[idxStart:(idxStart+batch_size),:,:]      
+        inputData_np = train_X[idxStart:(idxStart+batch_size),:faceFeatureDim,:]
 
         #Reordering from (batchsize,featureNum,frames) ->(batch, frame,features)
-        inputData_np = np.swapaxes(inputData, 1, 2) #(batch,  frame, features)
-        outputData_np = train_Y[idxStart:(idxStart+batch_size),:]      
-        outputData_np = outputData_np[:,:,np.newaxis]   #(batch, frame, 1)
+        inputData_np = np.swapaxes(inputData_np, 1, 2) #(batch,  frame, features)
+        outputData_np = train_Y[idxStart:(idxStart+batch_size),:faceFeatureDim,:]      
+        outputData_np = np.swapaxes(outputData_np, 1, 2) #(batch,  frame, features)
+        #outputData_np = outputData_np[:,:,np.newaxis]   #(batch, frame, 1)
 
         #numpy to tensor
         if bAddNoise:
@@ -211,9 +274,8 @@ for epoch in range(num_epochs):
 
         # ===================forward=====================
         model.hidden = model.init_hidden() #clear out hidden state of the LSTM
-        #output = model(inputData) #output: (batch, frames, 1)
-        inputData_pred = model(outputGT) #output: (batch, frames, 1)
-        loss = criterion(inputData_pred, inputData)
+        output = model(inputData) #output: (batch, frames, 1)
+        loss = criterion(output, outputGT)
 
         # ===================backward====================
         optimizer.zero_grad()
@@ -223,10 +285,31 @@ for epoch in range(num_epochs):
         # ===================log========================
         avgLoss += loss.item()*batch_size
 
+        """
+        if(loss.item()>10) and epoch>10:
+        #if epoch>10 and idxStart >100:
+        #if idxStart >100:
+            print("idxStart: {}, loss:{}".format(idxStart,loss.item()))
+
+            # ##Debug
+            inputData_np_debug = np.swapaxes(inputData_np,1,2)
+            inputData_np_debug = inputData_np_debug*Xstd[:,:100,:] + Xmean[:,:100,:]
+            inputData_np_debug =np.swapaxes(inputData_np_debug,1,2)
+            testParam = np.reshape(inputData_np_debug,(-1,100))
+            testParam =np.swapaxes(testParam,0,1)
+            
+
+            glViewer.SetFaceParmData([testParam])
+            glViewer.init_gl()
+        """
+
         # compute accuracy
         #correct = (outputGT[:,-1].eq( (output[:,-1]>0.5).float() )).sum() #Just check the last one
         #acc += correct.item()
         #cnt += batch_size
+
+
+       
 
         
         if tensorboard_bLog:
@@ -247,7 +330,7 @@ for epoch in range(num_epochs):
     temp_str = 'model: {}, epoch [{}/{}], avg loss:{:.4f}'.format(checkpointFolder_base, epoch +pretrain_epoch, num_epochs, avgLoss/ (len(batchinds)*batch_size))
     logger.info(temp_str)
 
-
+    #continue
     ######################################
     # Check Testing Error
     batch_size_test = batch_size
@@ -260,12 +343,13 @@ for epoch in range(num_epochs):
     for bii, bi in enumerate(batchinds):
 
         idxStart  = bi*batch_size_test
-        inputData_np = test_X[idxStart:(idxStart+batch_size),:,:]      
+        inputData_np = test_X[idxStart:(idxStart+batch_size),:faceFeatureDim,:]      
 
         #Reordering from (batchsize,featureNum,frames) ->(batch, frame,features)
         inputData_np = np.swapaxes(inputData_np, 1, 2) #(batch, frame,features)
-        outputData_np = test_Y[idxStart:(idxStart+batch_size),:]      
-        outputData_np = outputData_np[:,:,np.newaxis]
+        outputData_np = test_Y[idxStart:(idxStart+batch_size),:faceFeatureDim,:]      
+        #outputData_np = outputData_np[:,:,np.newaxis]
+        outputData_np = np.swapaxes(outputData_np, 1, 2) #(batch,  frame, features)
 
         #numpy to Tensors
         inputData = Variable(torch.from_numpy(inputData_np)).cuda()
@@ -273,8 +357,8 @@ for epoch in range(num_epochs):
     
 
         model.hidden = model.init_hidden() #clear out hidden state of the LSTM
-        inputData_pred = model(outputGT) #output: (batch, frames, 1)
-        loss = criterion(inputData_pred, inputData)
+        output = model(inputData) #output: (batch, frames, 1)
+        loss = criterion(output, outputGT)
 
         test_loss += loss.item()*batch_size_test
         #test_loss += loss.data.cpu().numpy().item()* batch_size_test # sum up batch loss
@@ -301,8 +385,8 @@ for epoch in range(num_epochs):
 
     ######################################
     # Save parameters, if current results are the best
-    if bNewBest:#(epoch + pretrain_epoch) % args.checkpoint_freq == 0:
-    #if (epoch + pretrain_epoch) % 1 == 0:
+    #if bNewBest:#(epoch + pretrain_epoch) % args.checkpoint_freq == 0:
+    if (epoch + pretrain_epoch) % 100 == 0:
         fileName = checkpointFolder+ '/checkpoint_e' + str(epoch + pretrain_epoch) + '_loss{:.4f}'.format(test_loss) + '.pth'
         torch.save(model.state_dict(), fileName)
         fileName = checkpointFolder+ '/opt_state.pth'    #overwrite

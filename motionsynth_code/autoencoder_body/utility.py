@@ -43,8 +43,8 @@ def my_args_parser():
     parser.add_argument('--epochs', type=int, default=500001, metavar='N',
                         help='number of epochs to train (default: 50001)')
 
-    parser.add_argument('--batch', type=int, default=512, metavar='N',
-                        help='batch size (default: 512)')
+    parser.add_argument('--batch', type=int, default=2048, metavar='N',
+                        help='batch size (default: 2048)')
 
     parser.add_argument('--gpu', type=int, default=0, metavar='N',
                         help='Select gpu (default: 0)')

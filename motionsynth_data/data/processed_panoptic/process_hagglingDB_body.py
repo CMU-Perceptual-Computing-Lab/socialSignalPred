@@ -13,11 +13,71 @@ import copy
 
 #by jhugestar
 sys.path.append('/ssd/codes/glvis_python/')
-from Visualize_human_gl import showSkeleton #opengl visualization.  showSkeleton(skelNum, dim, frames)
+from glViewer import showSkeleton #opengl visualization.  showSkeleton(skelNum, dim, frames)
 
 path='/ssd/data/panoptic-toolbox/data_haggling'
 inputFolder='./panopticDB_pkl'
 outputFolder='./panopticDB_pkl_hagglingProcessed'
+
+
+'''
+    Input:
+        body_list:  bodyNum x element['joints19'](21, frames)
+    Output:
+        faceNormal_list:
+        face_list:  bodyNum x (3, frames)
+'''
+def ComputeBodyNormal_panoptic(bodyData):
+     #Compute Body Normal
+    
+    leftShoulder = bodyData[(3*3):(3*3+3),:].transpose() #210xframes
+    rightShoulder = bodyData[(9*3):(9*3+3),:].transpose() #210xframes
+    bodyCenter = bodyData[(2*3):(2*3+3),:].transpose() #210xframes
+    
+    left2Right = rightShoulder - leftShoulder
+    right2center = bodyCenter - rightShoulder
+
+    from sklearn.preprocessing import normalize
+    left2Right = normalize(left2Right, axis=1)
+    #Check: np.linalg.norm(left2Right,axis=1)
+    right2center = normalize(right2center, axis=1)
+
+    bodyNormal = np.cross(left2Right,right2center)
+    bodyNormal[:,1] = 0 #Project on x-z plane, ignoring y axis
+    bodyNormal = normalize(bodyNormal, axis=1)
+
+    return bodyNormal
+
+
+'''
+    Input:
+        body_list:  bodyNum x element['joints19'](21, frames)
+    Output:
+        faceNormal_list:
+        face_list:  bodyNum x (3, frames)
+'''
+def ComputeFaceNormal_panoptic(bodyData):
+     #Compute Body Normal
+    
+    leftEar = bodyData[(15*3):(15*3+3),:].transpose() #210xframes
+    rightEar = bodyData[(17*3):(17*3+3),:].transpose() #210xframes
+    nose = bodyData[(1*3):(1*3+3),:].transpose() #210xframes
+    
+    left2Right = rightEar - leftEar
+    right2center = nose - rightEar
+
+    from sklearn.preprocessing import normalize
+    left2Right = normalize(left2Right, axis=1)
+    #Check: np.linalg.norm(left2Right,axis=1)
+    right2center = normalize(right2center, axis=1)
+
+    faceNormal = np.cross(left2Right,right2center)
+    faceNormal[:,1] = 0 #Project on x-z plane, ignoring y axis
+    faceNormal = normalize(faceNormal, axis=1)
+
+    return faceNormal
+
+          
 
 if not os.path.exists(outputFolder):
     os.mkdir(outputFolder)
@@ -75,6 +135,15 @@ for seqInfo in hagglingInfo:
             group[-1]['joints19'] = group[-1]['joints19'][:, localStartFrame:localEndFrame]
             group[-1]['scores'] = group[-1]['scores'][:, localStartFrame:localEndFrame]            
             group[-1]['humanId'] = humanId
+
+            #Compute Body Normal
+            bodyNormal = ComputeBodyNormal_panoptic(group[-1]['joints19']) #(1744,3)
+            group[-1]['bodyNormal'] = np.swapaxes(bodyNormal,0,1) #save (1744,3)
+
+            #Compute Face Normal
+            faceNormal = ComputeFaceNormal_panoptic(group[-1]['joints19']) #(1744,3)
+            group[-1]['faceNormal'] = np.swapaxes(faceNormal,0,1) #save (1744,3)
+
 
         haggling=dict()
         haggling['startFrame'] = groupStartFrame

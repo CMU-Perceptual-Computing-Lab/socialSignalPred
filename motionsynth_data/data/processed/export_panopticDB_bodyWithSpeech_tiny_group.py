@@ -311,8 +311,6 @@ def process_file_withSpeech_byGroup(filename, window=240, window_step=120):
         elif pIdx==2:#'_p2.bvh' in filename:
             speechData = speechData_raw['speechData'][2]
         
-        
-
         # """ Convert to 60 fps """
         # anim = anim[::2]
         # Origianl Human3.6 has 50 fps. So, no smapling is done
@@ -542,113 +540,113 @@ def get_files_haggling_losers_div(directory, bReturnTesting):
     return fileList
 
 """ White list with good body reconstruction quality"""
-white_list = ['170221_haggling_b1-group0',
-'170221_haggling_b1-group2',
-'170221_haggling_b1-group3',
-'170221_haggling_b1-group4',
-'170221_haggling_b2-group1',
-'170221_haggling_b2-group2',
-'170221_haggling_b2-group4',
-'170221_haggling_b2-group5',
-'170221_haggling_b3-group0',
-'170221_haggling_b3-group1',
-'170221_haggling_b3-group2',
-'170228_haggling_b1-group0',
-'170228_haggling_b1-group1',
-'170228_haggling_b1-group2',
-'170228_haggling_b1-group3',
-'170228_haggling_b1-group6',
-'170228_haggling_b1-group7',
-'170228_haggling_b1-group8',
-'170228_haggling_b1-group9',
-'170221_haggling_m1-group0',
-'170221_haggling_m1-group2',
-'170221_haggling_m1-group3',
-'170221_haggling_m1-group4',
-'170221_haggling_m1-group5',
-'170221_haggling_m2-group2',
-'170221_haggling_m2-group3',
-'170221_haggling_m2-group5',
-'170221_haggling_m3-group0',
-'170221_haggling_m3-group1',
-'170221_haggling_m3-group2',
-'170224_haggling_a1-group0',
-'170224_haggling_a1-group1',
-'170224_haggling_a1-group3',
-'170224_haggling_a1-group4',
-'170224_haggling_a1-group5',
-'170224_haggling_a1-group6',
-'170224_haggling_a2-group0',
-'170224_haggling_a2-group1',
-'170224_haggling_a2-group2',
-'170224_haggling_a2-group6',
-'170224_haggling_a3-group0',
-'170224_haggling_b1-group0',
-'170224_haggling_b1-group4',
-'170224_haggling_b1-group5',
-'170224_haggling_b1-group6',
-'170224_haggling_b2-group0',
-'170224_haggling_b2-group1',
-'170224_haggling_b2-group4',
-'170224_haggling_b2-group5',
-'170224_haggling_b2-group7',
-'170224_haggling_b3-group0',
-'170224_haggling_b3-group2',
-'170228_haggling_a1-group0',
-'170228_haggling_a1-group1',
-'170228_haggling_a1-group4',
-'170228_haggling_a1-group6',
-'170228_haggling_a2-group0',
-'170228_haggling_a2-group1',
-'170228_haggling_a2-group2',
-'170228_haggling_a2-group4',
-'170228_haggling_a2-group5',
-'170228_haggling_a2-group6',
-'170228_haggling_a2-group7',
-'170228_haggling_a3-group1',
-'170228_haggling_a3-group2',
-'170228_haggling_a3-group3',
-'170228_haggling_b2-group0',
-'170228_haggling_b2-group1',
-'170228_haggling_b2-group4',
-'170228_haggling_b2-group5',
-'170228_haggling_b2-group8',
-'170228_haggling_b3-group0',
-'170228_haggling_b3-group1',
-'170228_haggling_b3-group2',
-'170228_haggling_b3-group3',
-'170404_haggling_a1-group2',
-'170404_haggling_a2-group1',
-'170404_haggling_a2-group2',
-'170404_haggling_a2-group3',
-'170404_haggling_a3-group0',
-'170404_haggling_a3-group1',
-'170404_haggling_b1-group3',
-'170404_haggling_b1-group6',
-'170404_haggling_b1-group7',
-'170404_haggling_b2-group1',
-'170404_haggling_b2-group4',
-'170404_haggling_b2-group6',
-'170404_haggling_b3-group1',
-'170404_haggling_b3-group2',
-'170407_haggling_a1-group1',
-'170407_haggling_a1-group3',
-'170407_haggling_a1-group5',
-'170407_haggling_a2-group3',
-'170407_haggling_a2-group5',
-'170407_haggling_b1-group0',
-'170407_haggling_b1-group1',
-'170407_haggling_b1-group2',
-'170407_haggling_b1-group3',
-'170407_haggling_b1-group4',
-'170407_haggling_b1-group6',
-'170407_haggling_b1-group7',
-'170407_haggling_b2-group0',
-'170407_haggling_b2-group1',
-'170407_haggling_b2-group2',
-'170407_haggling_b2-group4',
-'170407_haggling_b2-group5',
-'170407_haggling_b2-group6']
+white_list_body = ['170221_haggling_b1_group0',
+'170221_haggling_b1_group2',
+'170221_haggling_b1_group3',
+'170221_haggling_b1_group4',
+'170221_haggling_b2_group1',
+'170221_haggling_b2_group2',
+'170221_haggling_b2_group4',
+'170221_haggling_b2_group5',
+'170221_haggling_b3_group0',
+'170221_haggling_b3_group1',
+'170221_haggling_b3_group2',
+'170228_haggling_b1_group0',
+'170228_haggling_b1_group1',
+'170228_haggling_b1_group2',
+'170228_haggling_b1_group3',
+'170228_haggling_b1_group6',
+'170228_haggling_b1_group7',
+'170228_haggling_b1_group8',
+'170228_haggling_b1_group9',
+'170221_haggling_m1_group0',
+'170221_haggling_m1_group2',
+'170221_haggling_m1_group3',
+'170221_haggling_m1_group4',
+'170221_haggling_m1_group5',
+'170221_haggling_m2_group2',
+'170221_haggling_m2_group3',
+'170221_haggling_m2_group5',
+'170221_haggling_m3_group0',
+'170221_haggling_m3_group1',
+'170221_haggling_m3_group2',
+'170224_haggling_a1_group0',
+'170224_haggling_a1_group1',
+'170224_haggling_a1_group3',
+'170224_haggling_a1_group4',
+'170224_haggling_a1_group5',
+'170224_haggling_a1_group6',
+'170224_haggling_a2_group0',
+'170224_haggling_a2_group1',
+'170224_haggling_a2_group2',
+'170224_haggling_a2_group6',
+'170224_haggling_a3_group0',
+'170224_haggling_b1_group0',
+'170224_haggling_b1_group4',
+'170224_haggling_b1_group5',
+'170224_haggling_b1_group6',
+'170224_haggling_b2_group0',
+'170224_haggling_b2_group1',
+'170224_haggling_b2_group4',
+'170224_haggling_b2_group5',
+'170224_haggling_b2_group7',
+'170224_haggling_b3_group0',
+'170224_haggling_b3_group2',
+'170228_haggling_a1_group0',
+'170228_haggling_a1_group1',
+'170228_haggling_a1_group4',
+'170228_haggling_a1_group6',
+'170228_haggling_a2_group0',
+'170228_haggling_a2_group1',
+'170228_haggling_a2_group2',
+'170228_haggling_a2_group4',
+'170228_haggling_a2_group5',
+'170228_haggling_a2_group6',
+'170228_haggling_a2_group7',
+'170228_haggling_a3_group1',
+'170228_haggling_a3_group2',
+'170228_haggling_a3_group3',
+'170228_haggling_b2_group0',
+'170228_haggling_b2_group1',
+'170228_haggling_b2_group4',
+'170228_haggling_b2_group5',
+'170228_haggling_b2_group8',
+'170228_haggling_b3_group0',
+'170228_haggling_b3_group1',
+'170228_haggling_b3_group2',
+'170228_haggling_b3_group3',
+'170404_haggling_a1_group2',
+'170404_haggling_a2_group1',
+'170404_haggling_a2_group2',
+'170404_haggling_a2_group3',
+'170404_haggling_a3_group0',
+'170404_haggling_a3_group1',
+'170404_haggling_b1_group3',
+'170404_haggling_b1_group6',
+'170404_haggling_b1_group7',
+'170404_haggling_b2_group1',
+'170404_haggling_b2_group4',
+'170404_haggling_b2_group6',
+'170404_haggling_b3_group1',
+'170404_haggling_b3_group2',
+'170407_haggling_a1_group1',
+'170407_haggling_a1_group3',
+'170407_haggling_a1_group5',
+'170407_haggling_a2_group3',
+'170407_haggling_a2_group5',
+'170407_haggling_b1_group0',
+'170407_haggling_b1_group1',
+'170407_haggling_b1_group2',
+'170407_haggling_b1_group3',
+'170407_haggling_b1_group4',
+'170407_haggling_b1_group6',
+'170407_haggling_b1_group7',
+'170407_haggling_b2_group0',
+'170407_haggling_b2_group1',
+'170407_haggling_b2_group2',
+'170407_haggling_b2_group4',
+'170407_haggling_b2_group5',
+'170407_haggling_b2_group6']
 
 
 
@@ -663,8 +661,8 @@ def get_files_haggling_buyers(directory, bReturnTesting):
         bTesting = False
 
         bInWhiteList = False
-        for keyword in white_list:
-            if not keyword in f:
+        for keyword in white_list_body:
+            if keyword in f:
                 bInWhiteList = True
                 break
 
@@ -694,8 +692,8 @@ def get_files_haggling_sellers(directory, bReturnTesting):
         bTesting = False
 
         bInWhiteList = False
-        for keyword in white_list:
-            if not keyword in f:
+        for keyword in white_list_body:
+            if keyword in f:
                 bInWhiteList = True
                 break
 
@@ -715,47 +713,70 @@ def get_files_haggling_sellers(directory, bReturnTesting):
     return fileList
 
 """Haggling testing games sellers"""
-h36m_files = get_files_haggling_buyers('panoptic',True)
-print(h36m_files)
+bTesting = True
+h36m_files = get_files_haggling_buyers('panoptic',bTesting)
+print('Num: {}'.format(len(h36m_files)))
 h36m_clips = [ [], [], [] ]
 h36m_classes = [ [], [], [] ]
 for i, item in enumerate(h36m_files):
     print('Processing %i of %i (%s)' % (i, len(h36m_files), item))
-    clips, speech = process_file_withSpeech_byGroup(item,120,5)
+    clips, speech = process_file_withSpeech_byGroup(item,30,5)
 
     for pIdx in range(3):
         h36m_clips[pIdx] += clips[pIdx]
         h36m_classes[pIdx] += speech[pIdx]
-    # if i==2:
-    #     break
+    if i==5:
+        break
     
 for pIdx in range(3):
     h36m_clips[pIdx] = np.array(h36m_clips[pIdx])
     h36m_classes[pIdx] = np.array(h36m_classes[pIdx])
 print("size: {}".format(h36m_clips[0].shape))
-np.savez_compressed('data_panoptic_speech_haggling_group_testing_white_120frm_5gap', clips=h36m_clips, classes=h36m_classes)
-
-
+np.savez('data_hagglingSellers_speech_body_30frm_5gap_white_testing_tiny', clips=h36m_clips, speech=h36m_classes)
 
 """Haggling testing games sellers"""
-h36m_files = get_files_haggling_buyers('panoptic',False)
-print(h36m_files)
+bTesting = False
+h36m_files = get_files_haggling_buyers('panoptic',bTesting)
+print('Num: {}'.format(len(h36m_files)))
 h36m_clips = [ [], [], [] ]
 h36m_classes = [ [], [], [] ]
 for i, item in enumerate(h36m_files):
     print('Processing %i of %i (%s)' % (i, len(h36m_files), item))
-    clips, speech = process_file_withSpeech_byGroup(item,120,5)
+    clips, speech = process_file_withSpeech_byGroup(item,30,5)
 
     for pIdx in range(3):
         h36m_clips[pIdx] += clips[pIdx]
         h36m_classes[pIdx] += speech[pIdx]
-    # if i==50:
-    #     break
+    if i==5:
+        break
+    
 for pIdx in range(3):
     h36m_clips[pIdx] = np.array(h36m_clips[pIdx])
     h36m_classes[pIdx] = np.array(h36m_classes[pIdx])
 print("size: {}".format(h36m_clips[0].shape))
-np.savez_compressed('data_panoptic_speech_haggling_group_training_white_120frm_5gap', clips=h36m_clips, classes=h36m_classes)
+np.savez('data_hagglingSellers_speech_body_30frm_5gap_white_training_tiny', clips=h36m_clips, speech=h36m_classes)
+
+
+
+# """Haggling testing games sellers"""
+# h36m_files = get_files_haggling_buyers('panoptic',False)
+# print(h36m_files)
+# h36m_clips = [ [], [], [] ]
+# h36m_classes = [ [], [], [] ]
+# for i, item in enumerate(h36m_files):
+#     print('Processing %i of %i (%s)' % (i, len(h36m_files), item))
+#     clips, speech = process_file_withSpeech_byGroup(item,120,5)
+
+#     for pIdx in range(3):
+#         h36m_clips[pIdx] += clips[pIdx]
+#         h36m_classes[pIdx] += speech[pIdx]
+#     # if i==50:
+#     #     break
+# for pIdx in range(3):
+#     h36m_clips[pIdx] = np.array(h36m_clips[pIdx])
+#     h36m_classes[pIdx] = np.array(h36m_classes[pIdx])
+# print("size: {}".format(h36m_clips[0].shape))
+# np.savez_compressed('data_panoptic_speech_haggling_group_training_white_120frm_5gap', clips=h36m_clips, classes=h36m_classes)
 
 # """Haggling training games sellers"""
 # h36m_files = get_files_haggling_sellers('panoptic',False)

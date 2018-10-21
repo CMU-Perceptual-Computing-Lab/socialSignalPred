@@ -11,14 +11,16 @@ from torch import nn
 from torch.autograd import Variable
 import os
 
-class naive_lstm2(nn.Module):
+class naive_lstm(nn.Module):
     def __init__(self, batch_size):
-        super(naive_lstm2, self).__init__()
+        super(naive_lstm, self).__init__()
 
-        self.hidden_dim = 20
-        #self.feature_dim= 200
-        self.feature_dim= 1
-        self.embed_dim= 10
+        self.feature_dim= 10#200
+        self.embed_dim= 100
+
+        self.hidden_dim = 100
+        self.output_dim = 10#200
+        
         self.num_layers = 1
         self.batch_size = batch_size
         
@@ -27,8 +29,8 @@ class naive_lstm2(nn.Module):
         #self.dout = nn.Dropout(0.5)
         self.lstm = nn.LSTM(self.embed_dim, self.hidden_dim, num_layers = self.num_layers, dropout=0.5, batch_first=True, bidirectional=False) #batch_first=True makes the order as (batch, frames, featureNum)
         #self.proj = nn.Linear(self.hidden_dim*2,1)
-        self.proj = nn.Linear(self.hidden_dim,200)
-        self.out_act = nn.Sigmoid()
+        self.proj = nn.Linear(self.hidden_dim,self.output_dim)
+        #self.out_act = nn.Sigmoid()
 
     def init_hidden(self):
         # return (Variable(torch.zeros(self.num_layers*2, self.batch_size, self.hidden_dim)).cuda(),
@@ -46,4 +48,5 @@ class naive_lstm2(nn.Module):
                     input_encoded, self.hidden)
         
         proj = self.proj(lstm_out) #input:(batch, inputDim, outputDim ) -> output (batch, timesteps,1)
-        return self.out_act(proj)
+        #return self.out_act(proj)
+        return proj
