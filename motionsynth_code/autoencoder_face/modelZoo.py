@@ -183,7 +183,7 @@ class autoencoder_1conv_vect_vae(nn.Module):
 
 
 class autoencoder_3conv_vect_vae(nn.Module):
-    def __init__(self,featureDim):
+    def __init__(self,featureDim, latentDim):
         super(autoencoder_3conv_vect_vae, self).__init__()
 
 
@@ -203,7 +203,7 @@ class autoencoder_3conv_vect_vae(nn.Module):
         self.encodeDim_lin1 = 100
 
 
-        self.latentDim = 100
+        self.latentDim = latentDim#100
 
         self.encoder_conv_1 = nn.Sequential(
             #nn.Dropout(0.25),
@@ -911,9 +911,9 @@ def vae_loss_function(recon_x, x, mu, logvar,criterion, weight_kld=1.0):
     # https://arxiv.org/abs/1312.6114
     # 0.5 * sum(1 + log(sigma^2) - mu^2 - sigma^2)
     #KLD = weight_kld * -0.5 * torch.sum(1 + logvar - mu.pow(2) - logvar.exp())
-    KLD = weight_kld * -0.5 * torch.mean(1 + logvar - mu.pow(2) - logvar.exp())
+    KLD = -0.5 * torch.mean(1 + logvar - mu.pow(2) - logvar.exp())
 
-    return loss +KLD, loss, KLD
+    return loss + weight_kld* KLD, loss, KLD
     #return KLD
 
 # '''

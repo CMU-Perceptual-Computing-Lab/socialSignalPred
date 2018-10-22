@@ -52,8 +52,8 @@ def my_args_parser():
     parser.add_argument('--checkpoint_freq', type=int, default=50, metavar='N',
                         help='How frequently save the checkpoint (default: every 50 epoch)')
 
-    parser.add_argument('--model', type=str, default='autoencoder_first',
-                        help='a model name in the model_zoo.py (default: autoencoder_first')
+    parser.add_argument('--model', type=str, default='autoencoder_3conv_vect_vae',
+                        help='a model name in the model_zoo.py (default: autoencoder_3conv_vect_vae')
 
     parser.add_argument('--solver', type=str, default='adam_ams',
                         help='Optimization solver. adam or sgd, adam_ams. (default: adam_ams')
@@ -72,6 +72,9 @@ def my_args_parser():
 
     parser.add_argument('--autoreg', type=int, default='0',
                         help='If >0, train with autoregressive mode. (using init 150 frames input and later 150 frames as output) (default: 0')
+
+    parser.add_argument('--latentDim_vae', type=int, default='100',
+                        help='Latent space dimension (default: 100')
     
     return parser
 

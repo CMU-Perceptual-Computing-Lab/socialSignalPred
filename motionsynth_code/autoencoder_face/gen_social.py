@@ -67,7 +67,7 @@ test_Y_raw  = test_data['speech']  #Input (1044,240,73)
 checkpointRoot = './'
 checkpointFolder = checkpointRoot+ '/social_autoencoder_3conv_vect_vae_try5/'
 #preTrainFileName= 'checkpoint_e700_loss0.2098.pth'
-preTrainFileName= 'checkpoint_e200_loss0.0233.pth'
+preTrainFileName= 'checkpoint_e2700_loss0.0172.pth'
 
 
 ######################################

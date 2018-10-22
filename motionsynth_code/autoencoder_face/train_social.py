@@ -43,7 +43,8 @@ args = parser.parse_args()
 
 ######################################3
 # Manual Parameter Setting
-args.model ='autoencoder_3conv_vae'
+
+args.model ='autoencoder_3conv_vect_vae'
 #args.solver = 'sgd'
 #args.finetune = 'social_autoencoder_3conv_vae'
 #args.check_root = '/posefs2b/Users/hanbyulj/pytorch_motionSynth/checkpoint'
@@ -104,13 +105,15 @@ num_epochs = args.epochs #500
 batch_size = args.batch
 learning_rate = 1e-3
 
+
+model = getattr(modelZoo,args.model)(featureDim, args.latentDim_vae).cuda()
 # if args.autoreg ==1: #and "vae" in args.model:
 #     model = getattr(modelZoo,args.model)(frameLeng=160).cuda()
 # else:
 #     model = getattr(modelZoo,args.model)().cuda()
 #model = modelZoo.autoencoder_1conv_vect(featureDim).cuda()
 #model = modelZoo.autoencoder_1conv_vect_vae(featureDim).cuda()
-model = modelZoo.autoencoder_3conv_vect_vae(featureDim).cuda()
+#model = modelZoo.autoencoder_3conv_vect_vae(featureDim).cuda()
 
 model.train()
 
@@ -226,6 +229,8 @@ for epoch in range(num_epochs):
     
     # Each Batch
     avgLoss =0
+    avgReconLoss = 0
+    avgKLDLoss = 0
     cnt = 0
     for bii, bi in enumerate(batchinds):
 
@@ -242,7 +247,7 @@ for epoch in range(num_epochs):
             output, mu, logvar = model(inputData)
             #loss = criterion(output, inputData)
             #loss = modelZoo.vae_loss_function(output, inputData, mu, logvar,criterion)
-            loss,recon_loss,kld_loss = modelZoo.vae_loss_function(output, inputData, mu, logvar,criterion,args.weight_kld)
+            loss, recon_loss, kld_loss = modelZoo.vae_loss_function(output, inputData, mu, logvar,criterion,args.weight_kld)
 
             # ===================backward====================
             optimizer.zero_grad()
@@ -253,6 +258,18 @@ for epoch in range(num_epochs):
             # print('model: {}, epoch [{}/{}], loss:{:.4f} (recon: {:.4f}, kld {:.4f})'
             #             .format(checkpointFolder_base, epoch +pretrain_epoch, num_epochs, loss.item(), recon_loss.item(), kld_loss.item()))
             avgLoss += loss.item()*batch_size
+            avgReconLoss += recon_loss.item()*batch_size
+            avgKLDLoss += kld_loss.item()*batch_size
+
+            if tensorboard_bLog:
+                # 1. Log scalar values (scalar summary)
+                if int(torch.__version__[2])==2:
+                    info = { 'loss': loss.data[0] }
+                else:
+                    info = { 'loss': loss.item(), 'reconLoss': recon_loss.item(), 'kldLoss': kld_loss.item() }
+
+                for tag, value in info.items():
+                    tb_logger.scalar_summary(tag, value, stepNum)
             
         else:
             # ===================forward=====================
@@ -271,21 +288,25 @@ for epoch in range(num_epochs):
             #             .format(checkpointFolder_base, epoch +pretrain_epoch, num_epochs, loss.item()))
             avgLoss += loss.item()*batch_size
         
-        if tensorboard_bLog:
-            # 1. Log scalar values (scalar summary)
-            if int(torch.__version__[2])==2:
-                info = { 'loss': loss.data[0] }
-            else:
-                info = { 'loss': loss.item() }
+            if tensorboard_bLog:
+                # 1. Log scalar values (scalar summary)
+                if int(torch.__version__[2])==2:
+                    info = { 'loss': loss.data[0] }
+                else:
+                    info = { 'loss': loss.item() }
 
-            for tag, value in info.items():
-                tb_logger.scalar_summary(tag, value, stepNum)
+                for tag, value in info.items():
+                    tb_logger.scalar_summary(tag, value, stepNum)
         
         stepNum = stepNum+1
 
     ######################################
     # Logging
-    temp_str = 'model: {}, epoch [{}/{}], avg loss:{:.4f}'.format(checkpointFolder_base, epoch +pretrain_epoch, num_epochs, avgLoss/ (len(batchinds)*batch_size) )
+    temp_str = 'model: {}, epoch [{}/{}], avg loss:{:.4f} (recon: {:.4f}, kld: {:.4f})'.format(checkpointFolder_base, epoch +pretrain_epoch, num_epochs,
+                                                                 avgLoss/ (len(batchinds)*batch_size),
+                                                                 avgReconLoss/ (len(batchinds)*batch_size),
+                                                                 avgKLDLoss/ (len(batchinds)*batch_size)
+                                                                  )
     logger.info(temp_str)
     
 
@@ -295,6 +316,8 @@ for epoch in range(num_epochs):
     # Check Testing Error
     batch_size_test = batch_size
     test_loss = 0
+    test_avgReconLoss = 0
+    test_avgKLDLoss = 0
     cnt =0.0
 
     model.eval()
@@ -310,20 +333,31 @@ for epoch in range(num_epochs):
         #outputGT = Variable(torch.from_numpy(inputData_np)).cuda()  #(batch, 73, frameNum)
 
         # ===================forward=====================
-        output = model(inputData)
+        output, mu, logvar = model(inputData)
 
         if isinstance(output, tuple):
             output = output[0]
         #loss = criterion(output, outputGT)
-        loss = criterion(output, inputData)
 
-        test_loss += loss.item()*batch_size_test
+        if "vae" in  model.__class__.__name__:
+            loss, recon_loss, kld_loss = modelZoo.vae_loss_function(output, inputData, mu, logvar, criterion, args.weight_kld)
+            
+            test_loss += loss.item()*batch_size_test
+            test_avgReconLoss += recon_loss.item()*batch_size_test
+            test_avgKLDLoss += kld_loss.item()*batch_size_test
+
+        else:
+            loss = criterion(output, inputData)  #Just recon loss only
+
+            test_loss += loss.item()*batch_size_test
         #test_loss += loss.data.cpu().numpy().item()* batch_size_test # sum up batch loss
 
 
     test_loss /= len(batchinds)*batch_size_test
+    test_avgReconLoss /= len(batchinds)*batch_size_test
+    test_avgKLDLoss /= len(batchinds)*batch_size_test
     
-    logger.info('    On testing data: average loss: {:.4f}, (best {:.4f})\n'.format(test_loss, curBestloss))
+    logger.info('    On testing data: average loss: {:.4f} (recon: {:.4f}, kld: {:.4f})||  (best {:.4f})\n'.format(test_loss, test_avgReconLoss, test_avgKLDLoss, curBestloss))
     if tensorboard_bLog:
         info = { 'test_loss': test_loss }
         for tag, value in info.items():
