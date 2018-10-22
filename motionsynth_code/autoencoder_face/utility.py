@@ -68,7 +68,7 @@ def my_args_parser():
                         help='The root dir to make subfolders for the check point (default: ./) ')
 
     parser.add_argument('--weight_kld', type=float, default='0.001',
-                        help='Weight for the KLD term in VAE training (default: 0.0) ')
+                        help='Weight for the KLD term in VAE training (default: 0.001) ')
 
     parser.add_argument('--autoreg', type=int, default='0',
                         help='If >0, train with autoregressive mode. (using init 150 frames input and later 150 frames as output) (default: 0')

@@ -374,7 +374,7 @@ for epoch in range(num_epochs):
     logger.info('    On testing data: average loss: {:.4f} (recon: {:.4f}, kld: {:.4f})||  (best {:.4f})\n'.format(test_loss, test_avgReconLoss, test_avgKLDLoss, curBestloss))
     if tensorboard_bLog:
         #info = { 'test_loss': test_loss }
-        info = { 'test_loss': test_loss.item(), 'test_reconLoss': test_avgReconLoss.item(), 'test_KLDLoss': test_avgKLDLoss.item() }
+        info = { 'test_loss': test_loss, 'test_reconLoss': test_avgReconLoss, 'test_KLDLoss': test_avgKLDLoss }
         for tag, value in info.items():
             tb_logger.scalar_summary(tag, value, stepNum)
         
