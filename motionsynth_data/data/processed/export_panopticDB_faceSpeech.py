@@ -606,31 +606,31 @@ np.savez('data_hagglingSellers_speech_face_60frm_10gap_white_training', clips=da
 """
 
 
-faceParamDir = '/ssd/codes/pytorch_motionSynth/motionsynth_data/data/processed_panoptic/panopticDB_faceMesh_pkl_hagglingProcessed'
-"""Haggling training games sellers"""
-h36m_files = get_files_haggling(faceParamDir,True)
-print('Num: {}'.format(len(h36m_files)))
-hagglingRoles = [1,2] #Sellers
-#print(h36m_files)
-h36m_clips = []
-h36m_classes = []
-cnt =0
-for i, item in enumerate(h36m_files):
-    print('Processing %i of %i (%s)' % (i, len(h36m_files), item))
-    for role in hagglingRoles:
-        clips, speech = process_file_withSpeech(item,role, 120, 10)
-        h36m_clips += clips
-        h36m_classes += speech
-        # if cnt>20:
-        #     break
-        cnt +=1
-    # if cnt>20:
-    #     break
-data_clips = np.array(h36m_clips)
-data_speech = np.array(h36m_classes)
-#np.savez_compressed('data_hagglingSellers_speech_face_60frm_5gap_white_training', clips=data_clips, classes=data_speech)
-print(data_clips.shape)
-np.savez('data_hagglingSellers_speech_face_120frm_10gap_white_testing', clips=data_clips, speech=data_speech)
+# faceParamDir = '/ssd/codes/pytorch_motionSynth/motionsynth_data/data/processed_panoptic/panopticDB_faceMesh_pkl_hagglingProcessed'
+# """Haggling training games sellers"""
+# h36m_files = get_files_haggling(faceParamDir,True)
+# print('Num: {}'.format(len(h36m_files)))
+# hagglingRoles = [1,2] #Sellers
+# #print(h36m_files)
+# h36m_clips = []
+# h36m_classes = []
+# cnt =0
+# for i, item in enumerate(h36m_files):
+#     print('Processing %i of %i (%s)' % (i, len(h36m_files), item))
+#     for role in hagglingRoles:
+#         clips, speech = process_file_withSpeech(item,role, 120, 10)
+#         h36m_clips += clips
+#         h36m_classes += speech
+#         # if cnt>20:
+#         #     break
+#         cnt +=1
+#     # if cnt>20:
+#     #     break
+# data_clips = np.array(h36m_clips)
+# data_speech = np.array(h36m_classes)
+# #np.savez_compressed('data_hagglingSellers_speech_face_60frm_5gap_white_training', clips=data_clips, classes=data_speech)
+# print(data_clips.shape)
+# np.savez('data_hagglingSellers_speech_face_120frm_10gap_white_testing', clips=data_clips, speech=data_speech)
 
 
 
@@ -653,13 +653,13 @@ for i, item in enumerate(h36m_files):
         # if cnt>20:
         #     break
         cnt +=1
-    # if cnt>20:
-    #     break
+    if cnt>5:
+        break
 data_clips = np.array(h36m_clips)
 data_speech = np.array(h36m_classes)
 #np.savez_compressed('data_hagglingSellers_speech_face_60frm_5gap_white_training', clips=data_clips, classes=data_speech)
 print(data_clips.shape)
-np.savez('data_hagglingSellers_speech_face_120frm_10gap_white_training', clips=data_clips, speech=data_speech)
+np.savez('data_hagglingSellers_speech_face_120frm_10gap_white_training_tiny', clips=data_clips, speech=data_speech)
 
 # """Haggling training games sellers"""
 # h36m_files = get_files_haggling_sellers('panoptic',True)

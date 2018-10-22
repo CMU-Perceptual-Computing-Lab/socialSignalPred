@@ -16,6 +16,7 @@ import modelZoo
 from utility import print_options,save_options
 from utility import setCheckPointFolder
 from utility import my_args_parser
+from utility import loadOptions
 
 
 #by jhugestar
@@ -53,21 +54,60 @@ torch.cuda.manual_seed(23456)
 datapath ='../../motionsynth_data/data/processed/' 
 
 #test_dblist = ['data_hagglingSellers_speech_face_60frm_10gap_white_testing']
-test_dblist = ['data_hagglingSellers_speech_face_60frm_5gap_white_testing']
+#test_dblist = ['data_hagglingSellers_speech_face_60frm_5gap_white_testing']
+#test_dblist = ['data_hagglingSellers_speech_face_120frm_10gap_white_testing']
+test_dblist = ['data_hagglingSellers_speech_face_120frm_10gap_white_training']
+
 
 test_data = np.load(datapath + test_dblist[0] + '.npz')
 test_X_raw = test_data['clips']  #Input (1044,240,73)
-test_Y_raw  = test_data['speech']  #Input (1044,240,73)
+test_speech_raw  = test_data['speech']  #Input (1044,240,73)
+
+
+
+
+speak_time =[]
+#Choose only speaking signal
+for i in range(test_X_raw.shape[0]):
+    speechSignal = test_speech_raw[i,:]
+    if np.min(speechSignal)==1:
+        speak_time.append(i)
+
+test_X_raw = test_X_raw[speak_time,:,:]
+
 
 # test_X = test_X[:100,:,:]
 # test_Y = test_Y[:100]
 
 ######################################
 # Checkout Folder and pretrain file setting
+# Checkout Folder and pretrain file setting
 checkpointRoot = './'
-checkpointFolder = checkpointRoot+ '/social_autoencoder_first/'
-preTrainFileName= 'checkpoint_e103_loss0.0291.pth'
+#checkpointRoot = '/posefs2b/Users/hanbyulj/pytorch_motionSynth/checkpoint/'
+# checkpointFolder = checkpointRoot+ '/social_autoencoder_3conv_vect_vae_try2/'
+# preTrainFileName= 'checkpoint_e4650_loss0.1379.pth'
 
+checkpointFolder = checkpointRoot+ '/social_autoencoder_3conv_vect_vae_try2/'
+preTrainFileName= 'checkpoint_e185_loss0.0332.pth'
+
+# checkpointFolder = checkpointRoot+ '/save/social_autoencoder_3conv_vect_vae_noKld_latent100/'
+# preTrainFileName= 'checkpoint_e2800_loss0.0211.pth'
+
+# checkpointFolder = checkpointRoot+ '/social_autoencoder_3conv_vect_vae_try3/'
+# preTrainFileName= 'checkpoint_e4450_loss0.2092.pth'
+
+# checkpointFolder = 'social_autoencoder_3conv_vect_vae_try3/'
+# preTrainFileName= 'checkpoint_e9150_loss0.0340.pth'
+
+# checkpointFolder = './save/social_autoencoder_3conv_vect_vae_noKld_latent100/'
+# preTrainFileName= 'checkpoint_e2800_loss0.0211.pth'
+
+
+
+options = loadOptions(checkpointFolder)
+#latentDim_vae = options['latentDim_vae']
+latentDim_vae = 100
+weight_kld = options['weight_kld']
 
 
 ######################################
@@ -114,7 +154,8 @@ batch_size = 1#512
 criterion = nn.MSELoss()
 
 #Creat Model
-model = modelZoo.autoencoder_first(featureDim).cuda()
+#model = modelZoo.autoencoder_first(featureDim).cuda()
+model = modelZoo.autoencoder_3conv_vect_vae(featureDim, latentDim_vae).cuda()
 model.eval()
 
 #Creat Model
@@ -151,11 +192,16 @@ for _, bi in enumerate(batchinds):
     #outputGT = Variable(torch.from_numpy(inputData_np)).cuda()  #(batch, 73, frameNum)
 
     # ===================forward=====================
-    output = model(inputData)
-    #loss = criterion(output, outputGT)
-    loss = criterion(output, inputData)
+    if "vae" in  model.__class__.__name__:
+        output, mu, logvar = model(inputData)
+        loss, recon_loss, kld_loss = modelZoo.vae_loss_function(output, inputData, mu, logvar,criterion,args.weight_kld)
+    else:
+        output = model(inputData)
+        #loss = criterion(output, outputGT)
+        loss = criterion(output, inputData)
 
 
+    print('loss: {}'.format(loss))
     #De-standardaize
     output_np = output.data.cpu().numpy()  #(batch, featureDim, frames)
     output_np = output_np*Xstd + Xmean

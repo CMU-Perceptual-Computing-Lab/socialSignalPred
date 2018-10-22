@@ -67,7 +67,7 @@ def my_args_parser():
     parser.add_argument('--check_root', type=str, default='./',
                         help='The root dir to make subfolders for the check point (default: ./) ')
 
-    parser.add_argument('--weight_kld', type=float, default='0.0',
+    parser.add_argument('--weight_kld', type=float, default='0.001',
                         help='Weight for the KLD term in VAE training (default: 0.0) ')
 
     parser.add_argument('--autoreg', type=int, default='0',
@@ -166,3 +166,12 @@ def loadPreTrained(args, checkpointFolder, model, optimizer):
 
     return model, optimizer, pretrain_epoch, pretrain_batch_size
 
+
+
+
+def loadOptions(checkpointFolder):
+    log_file_name = os.path.join(checkpointFolder, 'opt.json')
+    with open(log_file_name, 'r') as opt_file:
+        options_dict = json.load(opt_file)
+
+    return options_dict

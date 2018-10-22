@@ -74,13 +74,26 @@ datapath ='../../motionsynth_data/data/processed/'
 train_dblist = ['data_hagglingSellers_speech_face_120frm_10gap_white_training']
 test_dblist = ['data_hagglingSellers_speech_face_120frm_10gap_white_testing']
 
+# train_dblist = ['data_hagglingSellers_speech_face_120frm_10gap_white_training_tiny']
+# test_dblist = ['data_hagglingSellers_speech_face_120frm_10gap_white_training_tiny']
+
 train_data = np.load(datapath + train_dblist[0] + '.npz')
 train_X_raw= train_data['clips']  #Input (numClip, chunkLengh, dim:200)  
-train_Y_raw = train_data['speech']  #Input (numClip, chunkLengh)
+train_speech_raw = train_data['speech']  #Input (numClip, chunkLengh)
 
 test_data = np.load(datapath + test_dblist[0] + '.npz')
 test_X_raw= test_data['clips']  #Input (numClip, chunkLengh, dim:200)  
-test_Y_raw = test_data['speech']  #Input (numClip, chunkLengh)
+test_speech_raw = test_data['speech']  #Input (numClip, chunkLengh)
+
+
+speak_time =[]
+#Choose only speaking signal
+for i in range(train_X_raw.shape[0]):
+    speechSignal = train_speech_raw[i,:]
+    if np.min(speechSignal)==1:
+        speak_time.append(i)
+
+train_X_raw = train_X_raw[speak_time,:,:]
 
 """Visualize X and Y
 #by jhugestar
@@ -236,6 +249,7 @@ for epoch in range(num_epochs):
 
         idxStart  = bi*batch_size
         inputData_np = train_X[idxStart:(idxStart+batch_size),:,:]
+        inputdata_speech= train_speech_raw[idxStart:(idxStart+batch_size)]
         #outputData_np = train_Y[idxStart:(idxStart+batch_size),:,:]
 
         inputData = Variable(torch.from_numpy(inputData_np)).cuda()  #(batch, 73, frameNum)

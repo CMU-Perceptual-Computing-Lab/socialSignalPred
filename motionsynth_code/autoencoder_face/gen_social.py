@@ -64,11 +64,18 @@ test_Y_raw  = test_data['speech']  #Input (1044,240,73)
 
 ######################################
 # Checkout Folder and pretrain file setting
-checkpointRoot = './'
-checkpointFolder = checkpointRoot+ '/social_autoencoder_3conv_vect_vae_try5/'
-#preTrainFileName= 'checkpoint_e700_loss0.2098.pth'
-preTrainFileName= 'checkpoint_e2700_loss0.0172.pth'
+#checkpointRoot = './'
+# checkpointFolder = 'social_autoencoder_3conv_vect_vae_try3/'
+# preTrainFileName= 'checkpoint_e9150_loss0.0340.pth'
 
+# checkpointRoot = '/posefs2b/Users/hanbyulj/pytorch_motionSynth/checkpoint/'
+# checkpointFolder = checkpointRoot+ '/social_autoencoder_3conv_vect_vae_try1/'
+# preTrainFileName= 'checkpoint_e4700_loss0.0760.pth'
+
+
+checkpointRoot = './'
+checkpointFolder = checkpointRoot+ '/social_autoencoder_3conv_vect_vae_try2/'
+preTrainFileName= 'checkpoint_e185_loss0.0332.pth'
 
 ######################################
 # Feature
@@ -116,7 +123,7 @@ criterion = nn.MSELoss()
 #Creat Model
 #model = modelZoo.autoencoder_first(featureDim).cuda()
 #model = modelZoo.autoencoder_1conv_vect_vae(featureDim).cuda()
-model = modelZoo.autoencoder_3conv_vect_vae(featureDim).cuda()
+model = modelZoo.autoencoder_3conv_vect_vae(featureDim, 100).cuda()
 model.eval()
 
 #Creat Model
