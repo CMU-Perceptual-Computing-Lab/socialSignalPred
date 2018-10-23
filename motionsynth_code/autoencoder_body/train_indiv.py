@@ -64,7 +64,8 @@ torch.cuda.manual_seed(23456)
 datapath ='../../motionsynth_data/data/processed/' 
 
 #train_dblist = ['data_hagglingSellers_speech_formation_30frm_5gap_white_training']
-train_dblist = ['data_hagglingSellers_speech_body_120frm_10gap_white_training']
+#train_dblist = ['data_hagglingSellers_speech_body_120frm_10gap_white_training']
+train_dblist = ['data_hagglingSellers_speech_body_120frm_5gap_white_training']
 test_dblist = ['data_hagglingSellers_speech_body_120frm_10gap_white_testing']
 
 train_data = np.load(datapath + train_dblist[0] + '.npz')
@@ -74,6 +75,18 @@ train_speech_raw = train_data['speech']  #Input (numClip, frames)
 test_data = np.load(datapath + test_dblist[0] + '.npz')
 test_X_raw= test_data['clips']      #Input (numClip, frames, featureDim:73)
 test_speech_raw = test_data['speech']    #Input (numClip, frames)
+
+logger.info("Raw: Training Dataset: {}".format(train_X_raw.shape))
+#Select speaking time only only
+speak_time =[]
+#Choose only speaking signal
+for i in range(train_X_raw.shape[0]):
+    speechSignal = train_speech_raw[i,:]
+    if np.min(speechSignal)==1:
+        speak_time.append(i)
+train_X_raw = train_X_raw[speak_time,:,:]
+logger.info("Training Dataset: {}".format(train_X_raw.shape))
+
 
 """Visualize X and Y
 #by jhugestar
