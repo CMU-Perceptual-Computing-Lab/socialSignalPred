@@ -521,22 +521,41 @@ def get_files_haggling_sellers(directory, bReturnTesting):
     return fileList
 
 
+# """Haggling training games sellers"""
+# h36m_files = get_files_haggling_sellers('panoptic',True)
+# #print(h36m_files)
+# print('Num: {}'.format(len(h36m_files)))
+# h36m_clips = []
+# h36m_classes = []
+# for i, item in enumerate(h36m_files):
+#     print('Processing %i of %i (%s)' % (i, len(h36m_files), item))
+#     clips, speech = process_file_withSpeech(item,120,10)
+#     h36m_clips += clips
+#     h36m_classes += speech
+#     # if i==50:
+#     #     break
+# data_clips = np.array(h36m_clips)
+# data_speech = np.array(h36m_classes)
+# np.savez('data_hagglingSellers_speech_body_120frm_10gap_white_testing', clips=data_clips, speech=data_speech)
+
+
+
 """Haggling training games sellers"""
-h36m_files = get_files_haggling_sellers('panoptic',True)
+h36m_files = get_files_haggling_sellers('panoptic',False)
 #print(h36m_files)
 print('Num: {}'.format(len(h36m_files)))
 h36m_clips = []
 h36m_classes = []
 for i, item in enumerate(h36m_files):
     print('Processing %i of %i (%s)' % (i, len(h36m_files), item))
-    clips, speech = process_file_withSpeech(item,30,10)
+    clips, speech = process_file_withSpeech(item,120,10)
     h36m_clips += clips
     h36m_classes += speech
-    # if i==50:
-    #     break
+    if i==5:
+        break
 data_clips = np.array(h36m_clips)
 data_speech = np.array(h36m_classes)
-np.savez('data_hagglingSellers_speech_body_60frm_10gap_tiny_white_testing', clips=data_clips, classes=data_speech)
+np.savez('data_hagglingSellers_speech_body_120frm_10gap_white_training_tiny', clips=data_clips, speech=data_speech)
 
 
 # """Haggling training games sellers"""

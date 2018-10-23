@@ -55,8 +55,8 @@ datapath ='../../motionsynth_data/data/processed/'
 
 #test_dblist = ['data_hagglingSellers_speech_face_60frm_10gap_white_testing']
 #test_dblist = ['data_hagglingSellers_speech_face_60frm_5gap_white_testing']
-#test_dblist = ['data_hagglingSellers_speech_face_120frm_10gap_white_testing']
-test_dblist = ['data_hagglingSellers_speech_face_120frm_10gap_white_training']
+test_dblist = ['data_hagglingSellers_speech_face_120frm_10gap_white_testing']
+#test_dblist = ['data_hagglingSellers_speech_face_120frm_10gap_white_training']
 
 
 test_data = np.load(datapath + test_dblist[0] + '.npz')
@@ -83,12 +83,12 @@ test_X_raw = test_X_raw[speak_time,:,:]
 # Checkout Folder and pretrain file setting
 # Checkout Folder and pretrain file setting
 checkpointRoot = './'
-#checkpointRoot = '/posefs2b/Users/hanbyulj/pytorch_motionSynth/checkpoint/'
+checkpointRoot = '/posefs2b/Users/hanbyulj/pytorch_motionSynth/checkpoint/'
 # checkpointFolder = checkpointRoot+ '/social_autoencoder_3conv_vect_vae_try2/'
 # preTrainFileName= 'checkpoint_e4650_loss0.1379.pth'
 
 checkpointFolder = checkpointRoot+ '/social_autoencoder_3conv_vect_vae_try2/'
-preTrainFileName= 'checkpoint_e185_loss0.0332.pth'
+preTrainFileName= 'checkpoint_e8500_loss0.0204.pth'
 
 # checkpointFolder = checkpointRoot+ '/save/social_autoencoder_3conv_vect_vae_noKld_latent100/'
 # preTrainFileName= 'checkpoint_e2800_loss0.0211.pth'

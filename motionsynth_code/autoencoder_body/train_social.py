@@ -36,12 +36,12 @@ from utility import setCheckPointFolder
 from utility import my_args_parser
 
 
-######################################3
+######################################
 # Parameter Handling
 parser = my_args_parser()
 args = parser.parse_args()
 
-######################################3
+######################################
 # Manual Parameter Setting
 args.model ='autoencoder_3conv_vae'
 #args.solver = 'sgd'
@@ -64,8 +64,8 @@ torch.cuda.manual_seed(23456)
 datapath ='../../motionsynth_data/data/processed/' 
 
 #train_dblist = ['data_hagglingSellers_speech_formation_30frm_5gap_white_training']
-train_dblist = ['data_hagglingSellers_speech_body_30frm_5gap_white_training']
-test_dblist = ['data_hagglingSellers_speech_body_30frm_5gap_white_testing']
+train_dblist = ['data_hagglingSellers_speech_body_120frm_10gap_white_training_tiny']
+test_dblist = ['data_hagglingSellers_speech_body_120frm_10gap_white_training_tiny']
 
 train_data = np.load(datapath + train_dblist[0] + '.npz')
 train_X_raw= train_data['clips']  #Input (3, numClip, chunkLengh, 9)  where 9 dim represents [ pos;faceNormal;bodyNormal ]
@@ -157,7 +157,6 @@ train_Y = np.concatenate( (train_Y, train_X_raw[1,:,:,:]), axis= 0)
 
 test_X = test_X_raw[1,:,:,:]      #1st seller, (num, frameNum, featureDim:73)
 test_Y = test_X_raw[2,:,:,:]    #1st seller, (num, frameNum, featureDim:73)
-
 
 
 # Compute mean and std 

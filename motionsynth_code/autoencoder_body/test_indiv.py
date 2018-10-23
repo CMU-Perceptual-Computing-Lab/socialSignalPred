@@ -53,46 +53,30 @@ torch.cuda.manual_seed(23456)
 datapath ='../../motionsynth_data/data/processed/' 
 
 #test_dblist = ['data_hagglingSellers_speech_face_60frm_10gap_white_testing']
-# test_dblist = ['data_hagglingSellers_speech_face_120frm_10gap_white_testing']
+test_dblist = ['data_hagglingSellers_speech_body_120frm_10gap_white_testing']
 
-# test_data = np.load(datapath + test_dblist[0] + '.npz')
-# test_X_raw = test_data['clips']  #Input (1044,240,73)
-# test_Y_raw  = test_data['speech']  #Input (1044,240,73)
+test_data = np.load(datapath + test_dblist[0] + '.npz')
+test_X_raw = test_data['clips']  #Input (1044,240,73)
+test_speech_raw  = test_data['speech']  #Input (1044,240,73)
 
 # test_X = test_X[:100,:,:]
 # test_Y = test_Y[:100]
 
 ######################################
 # Checkout Folder and pretrain file setting
-#checkpointRoot = './'
-# checkpointFolder = 'social_autoencoder_3conv_vect_vae_try3/'
-# preTrainFileName= 'checkpoint_e9150_loss0.0340.pth'
+checkpointRoot = './'
+checkpointFolder = checkpointRoot+ '/social_autoencoder_3conv_vect_vae_try7/'
+preTrainFileName= 'checkpoint_e22_loss0.0627.pth'
 
-checkpointRoot = '/posefs2b/Users/hanbyulj/pytorch_motionSynth/checkpoint/'
-checkpointFolder = checkpointRoot+ '/social_autoencoder_3conv_vect_vae_try2/'
-preTrainFileName= 'checkpoint_e3450_loss0.0191.pth'
-
-
-# checkpointRoot = './'
-# checkpointFolder = checkpointRoot+ '/social_autoencoder_3conv_vect_vae_try2/'
-# preTrainFileName= 'checkpoint_e185_loss0.0332.pth'
 
 ######################################
-# Feature
-featureDim = 5
-# test_X_raw = test_X_raw[:,:,:featureDim]
-
-
-# ######################################
-# # Input/Output Option
-# test_X = test_X_raw[1,:,:,:]      #(num, chunkLength, dim:200) //person 1 (first seller's value)
-# test_Y = test_X_raw[2,:,:,:]
-# test_X = test_X_raw
-
+# Input/Output Option
+test_X = test_X_raw#[1,:,:,:]      #(num, chunkLength, dim:200) //person 1 (first seller's value)
+#test_Y = test_X_raw[2,:,:,:]
 
 ######################################
 # Data pre-processing
-# test_X = np.swapaxes(test_X, 1, 2).astype(np.float32) #(num, frames, dim:200) => (num, 200, frames)
+test_X = np.swapaxes(test_X, 1, 2).astype(np.float32) #(num, frames, dim:200) => (num, 200, frames)
 #test_Y = np.swapaxes(test_Y, 1, 2).astype(np.float32) #(num, frames, dim:200) => (num, 200, frames)
 #train_Y = train_Y.astype(np.float32)
 
@@ -108,9 +92,8 @@ Xstd = preprocess['Xstd']
 #Ymean = preprocess['Ymean']
 #Ystd = preprocess['Ystd']
 
-# test_X_std = (test_X - Xmean) / Xstd
+test_X_std = (test_X - Xmean) / Xstd
 #test_Y_std = (test_Y - Xmean) / Xstd
-
 
 
 ######################################
@@ -121,9 +104,10 @@ batch_size = 1#512
 criterion = nn.MSELoss()
 
 #Creat Model
-#model = modelZoo.autoencoder_first(featureDim).cuda()
-#model = modelZoo.autoencoder_1conv_vect_vae(featureDim).cuda()
-model = modelZoo.autoencoder_3conv_vect_vae(featureDim, 100).cuda()
+#model = modelZoo.autoencoder_first().cuda()
+featureDim = test_X_raw.shape[2]
+latentDim = 200
+model = modelZoo.autoencoder_3conv_vect_vae(featureDim,latentDim).cuda()
 model.eval()
 
 #Creat Model
@@ -140,36 +124,11 @@ model = model.eval()  #Do I need this again?
 
 ######################################
 # Training
-# batchinds = np.arange(test_X.shape[0] // batch_size)
+batchinds = np.arange(test_X.shape[0] // batch_size)
 pred_all = np.empty([0,1],dtype=float)
 test_X_vis =np.empty([0,200],dtype=float)
 
-
-sampleNum = 1
-for _ in range(100):
-    sample_2 = torch.randn(sampleNum, 100)#.to(device)
-
-    print(sample_2[:10])
-    
-    sample_2 = Variable(sample_2).cuda()
-    output = model.decode(sample_2)
-
-
-    #De-standardaize
-    output_np = output.data.cpu().numpy()  #(batch, featureDim, frames)
-    output_np = output_np*Xstd + Xmean
-
-    output_np = np.swapaxes(output_np,1,2)  #(batch, frames, featureDim)
-    output_np = np.reshape(output_np,(-1,featureDim))
-    output_np = np.swapaxes(output_np,0,1)  #(featureDim, frames)
-
-    faceData = [output_np]
-    glViewer.SetFaceParmData(faceData)
-    glViewer.init_gl()
-
-
-
-
+featureDim = 10
 for _, bi in enumerate(batchinds):
 
     if bi %10 !=0:
@@ -186,29 +145,31 @@ for _, bi in enumerate(batchinds):
     #outputGT = Variable(torch.from_numpy(inputData_np)).cuda()  #(batch, 73, frameNum)
 
     # ===================forward=====================
-    output = model(inputData)
+    output, mu, logvar = model(inputData)
     #loss = criterion(output, outputGT)
     loss = criterion(output, inputData)
 
 
     #De-standardaize
-    output_np = output.data.cpu().numpy()  #(batch, featureDim, frames)
+    output_np = output.data.cpu().numpy()  #(batch, 73, frames)
     output_np = output_np*Xstd + Xmean
 
-    output_np = np.swapaxes(output_np,1,2)  #(batch, frames, featureDim)
-    output_np = np.reshape(output_np,(-1,featureDim))
-    output_np = np.swapaxes(output_np,0,1)  #(featureDim, frames)
+    output_np = np.swapaxes(output_np,1,2)  #(batch, frames, 73)
+    output_np = np.reshape(output_np,(-1,73))
+    output_np = np.swapaxes(output_np,0,1)
 
-    inputData_np_ori = np.swapaxes(inputData_np_ori,1,2)  #(batch, frames, featureDim)
-    inputData_np_ori = np.reshape(inputData_np_ori,(-1,featureDim))
+
+
+    inputData_np_ori = np.swapaxes(inputData_np_ori,1,2)  #(batch, frames, 73)
+    inputData_np_ori = np.reshape(inputData_np_ori,(-1,73))
     inputData_np_ori = np.swapaxes(inputData_np_ori,0,1)
 
     # outputData_np_ori = np.swapaxes(outputData_np_ori,1,2)  #(batch, frames, 73)
-    # outputData_np_ori = np.reshape(outputData_np_ori,(-1,featureDim73))
+    # outputData_np_ori = np.reshape(outputData_np_ori,(-1,73))
     # outputData_np_ori = np.swapaxes(outputData_np_ori,0,1)
 
-    faceData = [output_np, inputData_np_ori]
-    glViewer.SetFaceParmData(faceData)
+    #glViewer.show_Holden_Data_73([ outputData_np_ori, inputData_np_ori, output_np] )
+    glViewer.set_Holden_Data_73([inputData_np_ori, output_np] )
     glViewer.init_gl()
 
 

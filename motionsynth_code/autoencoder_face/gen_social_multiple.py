@@ -75,23 +75,33 @@ checkpointRoot = '/posefs2b/Users/hanbyulj/pytorch_motionSynth/checkpoint/'
 # preTrainFileName= 'checkpoint_e2800_loss0.0211.pth'
 # train_data.append({'dir':checkpointFolder, 'file':preTrainFileName})
 
-
 #kld 0.01
-checkpointFolder = 'social_autoencoder_3conv_vect_vae_try3/'
-preTrainFileName= 'checkpoint_e9150_loss0.0340.pth'
-train_data.append({'dir':checkpointFolder, 'file':preTrainFileName})
-
-
-#kld 0.1
-checkpointFolder = checkpointRoot+ '/social_autoencoder_3conv_vect_vae_try1/'
-preTrainFileName= 'checkpoint_e4700_loss0.0760.pth'
-train_data.append({'dir':checkpointFolder, 'file':preTrainFileName})
-
-
-# #kld 0.5
-# checkpointFolder = checkpointRoot+ '/social_autoencoder_3conv_vect_vae_try2/'
-# preTrainFileName= 'checkpoint_e4800_loss0.1377.pth'
+# checkpointFolder = checkpointRoot+'0_kldweight_test/social_autoencoder_3conv_vect_vae_try3_kld0.01/'
+# preTrainFileName= 'checkpoint_e9550_loss0.0339.pth'
 # train_data.append({'dir':checkpointFolder, 'file':preTrainFileName})
+
+# #kld 0.005
+# checkpointFolder = checkpointRoot+'social_autoencoder_3conv_vect_vae_try4/'     
+# preTrainFileName= 'checkpoint_e3850_loss0.0442.pth'
+# train_data.append({'dir':checkpointFolder, 'file':preTrainFileName})
+
+# #kld 0.001
+# checkpointFolder = checkpointRoot+'social_autoencoder_3conv_vect_vae_try5/'     
+# preTrainFileName= 'checkpoint_e3550_loss0.0211.pth'
+# train_data.append({'dir':checkpointFolder, 'file':preTrainFileName})
+
+
+# # # #kld 0.01 non- speechonly
+# checkpointFolder = checkpointRoot+'social_autoencoder_3conv_vect_vae_try3/'     #KLD 0.001
+# preTrainFileName= 'checkpoint_e4250_loss0.0585.pth'
+# train_data.append({'dir':checkpointFolder, 'file':preTrainFileName})
+
+
+# #kld 0.01 non-speechonly
+checkpointFolder = checkpointRoot+'social_autoencoder_3conv_vect_vae_try2/'     #KLD 0.001
+preTrainFileName= 'checkpoint_e8050_loss0.0206.pth'
+train_data.append({'dir':checkpointFolder, 'file':preTrainFileName})
+
 
 
 
@@ -171,32 +181,69 @@ pred_all = np.empty([0,1],dtype=float)
 test_X_vis =np.empty([0,200],dtype=float)
 
 
+# sampleNum = 1
+# for _ in range(100):
+#     sample_2 = torch.randn(sampleNum, 100) *2#0.5
+
+#     print(sample_2[:10])
+    
+#     sample_2 = Variable(sample_2).cuda()
+
+#     faceData =[]
+#     for model in model_list:
+#         output = model.decode(sample_2)
+
+
+#         #De-standardaize
+#         output_np = output.data.cpu().numpy()  #(batch, featureDim, frames)
+#         output_np = output_np*Xstd + Xmean
+
+#         output_np = np.swapaxes(output_np,1,2)  #(batch, frames, featureDim)
+#         output_np = np.reshape(output_np,(-1,featureDim))
+#         output_np = np.swapaxes(output_np,0,1)  #(featureDim, frames)
+
+#         #faceData = [output_np]
+#         faceData.append(output_np)
+        
+#     glViewer.SetFaceParmData(faceData)
+#     glViewer.init_gl()
+
+
+
+
+
+## Comparison
+
+
+
 sampleNum = 1
 for _ in range(100):
-    sample_2 = torch.randn(sampleNum, 100)#.to(device)
+    sample_2 = torch.randn(sampleNum, 100)#0.5
 
-    print(sample_2[:10])
-    
-    sample_2 = Variable(sample_2).cuda()
+#    print(sample_2[:10])
 
     faceData =[]
     for model in model_list:
-        output = model.decode(sample_2)
+
+        for iter in [1.0, 3.0]:
+
+            sample_2_iter = Variable(sample_2*iter).cuda()
+        
+            output = model.decode(sample_2_iter)
 
 
-        #De-standardaize
-        output_np = output.data.cpu().numpy()  #(batch, featureDim, frames)
-        output_np = output_np*Xstd + Xmean
+            #De-standardaize
+            output_np = output.data.cpu().numpy()  #(batch, featureDim, frames)
+            output_np = output_np*Xstd + Xmean
 
-        output_np = np.swapaxes(output_np,1,2)  #(batch, frames, featureDim)
-        output_np = np.reshape(output_np,(-1,featureDim))
-        output_np = np.swapaxes(output_np,0,1)  #(featureDim, frames)
+            output_np = np.swapaxes(output_np,1,2)  #(batch, frames, featureDim)
+            output_np = np.reshape(output_np,(-1,featureDim))
+            output_np = np.swapaxes(output_np,0,1)  #(featureDim, frames)
 
-        #faceData = [output_np]
-        faceData.append(output_np)
+            #faceData = [output_np]
+            faceData.append(output_np)
         
     glViewer.SetFaceParmData(faceData)
     glViewer.init_gl()
-
 
 

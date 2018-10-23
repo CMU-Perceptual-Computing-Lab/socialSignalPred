@@ -49,7 +49,7 @@ def my_args_parser():
     parser.add_argument('--gpu', type=int, default=0, metavar='N',
                         help='Select gpu (default: 0)')
 
-    parser.add_argument('--checkpoint_freq', type=int, default=500, metavar='N',
+    parser.add_argument('--checkpoint_freq', type=int, default=50, metavar='N',
                         help='How frequently save the checkpoint (default: every 50 epoch)')
 
     parser.add_argument('--model', type=str, default='autoencoder_first',
@@ -67,7 +67,7 @@ def my_args_parser():
     parser.add_argument('--check_root', type=str, default='./',
                         help='The root dir to make subfolders for the check point (default: ./) ')
 
-    parser.add_argument('--weight_kld', type=float, default='0.1',
+    parser.add_argument('--weight_kld', type=float, default='0.001',
                         help='Weight for the KLD term in VAE training (default: 0.1) ')
 
     parser.add_argument('--autoreg', type=int, default='0',
