@@ -37,7 +37,8 @@ for seqPath in seqPathSet:
     if os.path.exists("{0}/{1}.pkl".format(outputFolder,seqName)):
          continue
 
-    seqPath = seqPath  + '/hdPose3d_Adam_stage0'
+    # seqPath = seqPath  + '/hdPose3d_Adam_stage0'
+    seqPath = seqPath  + '/hdPose3d_Adam_stage1'
 
     if not os.path.exists(seqPath):
         continue

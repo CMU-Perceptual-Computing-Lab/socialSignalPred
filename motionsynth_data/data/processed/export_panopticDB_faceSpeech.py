@@ -646,7 +646,7 @@ h36m_classes = []
 cnt =0
 for i, item in enumerate(h36m_files):
     print('Processing %i of %i (%s)' % (i, len(h36m_files), item))
-    for role in hagglingRoles:
+    for role in hagglingRoles:process_file_withSpeech
         clips, speech = process_file_withSpeech(item,role, 120, 10)
         h36m_clips += clips
         h36m_classes += speech

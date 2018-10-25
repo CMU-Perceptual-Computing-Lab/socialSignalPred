@@ -73,6 +73,10 @@ def my_args_parser():
     parser.add_argument('--autoreg', type=int, default='0',
                         help='If >0, train with autoregressive mode. (using init 150 frames input and later 150 frames as output) (default: 0')
     
+    parser.add_argument('--weight_latentSmooth', type=float, default='0.1',
+                        help='Weight for the KLD term in VAE training (default: 0.1) ')
+
+    
     return parser
 
 

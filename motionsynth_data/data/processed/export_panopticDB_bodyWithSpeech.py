@@ -1,10 +1,3 @@
-"""
-Needs speech file: panopticDB_pkl_speech_hagglingProcessed
-This file is from: /ssd/codes/haggling_audio
-
-"""
-
-
 import os
 import sys
 import numpy as np
@@ -386,6 +379,116 @@ def get_files_haggling_buyers(directory):
     if os.path.isfile(os.path.join(directory,f))
     and f.endswith('.bvh') and f != 'rest.bvh' and '_p0' in f] 
 
+white_list_body = ['170221_haggling_b1_group0',
+'170221_haggling_b1_group2',
+'170221_haggling_b1_group3',
+'170221_haggling_b1_group4',
+'170221_haggling_b2_group1',
+'170221_haggling_b2_group2',
+'170221_haggling_b2_group4',
+'170221_haggling_b2_group5',
+'170221_haggling_b3_group0',
+'170221_haggling_b3_group1',
+'170221_haggling_b3_group2',
+'170228_haggling_b1_group0',
+'170228_haggling_b1_group1',
+'170228_haggling_b1_group2',
+'170228_haggling_b1_group3',
+'170228_haggling_b1_group6',
+'170228_haggling_b1_group7',
+'170228_haggling_b1_group8',
+'170228_haggling_b1_group9',
+'170221_haggling_m1_group0',
+'170221_haggling_m1_group2',
+'170221_haggling_m1_group3',
+'170221_haggling_m1_group4',
+'170221_haggling_m1_group5',
+'170221_haggling_m2_group2',
+'170221_haggling_m2_group3',
+'170221_haggling_m2_group5',
+'170221_haggling_m3_group0',
+'170221_haggling_m3_group1',
+'170221_haggling_m3_group2',
+'170224_haggling_a1_group0',
+'170224_haggling_a1_group1',
+'170224_haggling_a1_group3',
+'170224_haggling_a1_group4',
+'170224_haggling_a1_group5',
+'170224_haggling_a1_group6',
+'170224_haggling_a2_group0',
+'170224_haggling_a2_group1',
+'170224_haggling_a2_group2',
+'170224_haggling_a2_group6',
+'170224_haggling_a3_group0',
+'170224_haggling_b1_group0',
+'170224_haggling_b1_group4',
+'170224_haggling_b1_group5',
+'170224_haggling_b1_group6',
+'170224_haggling_b2_group0',
+'170224_haggling_b2_group1',
+'170224_haggling_b2_group4',
+'170224_haggling_b2_group5',
+'170224_haggling_b2_group7',
+'170224_haggling_b3_group0',
+'170224_haggling_b3_group2',
+'170228_haggling_a1_group0',
+'170228_haggling_a1_group1',
+'170228_haggling_a1_group4',
+'170228_haggling_a1_group6',
+'170228_haggling_a2_group0',
+'170228_haggling_a2_group1',
+'170228_haggling_a2_group2',
+'170228_haggling_a2_group4',
+'170228_haggling_a2_group5',
+'170228_haggling_a2_group6',
+'170228_haggling_a2_group7',
+'170228_haggling_a3_group1',
+'170228_haggling_a3_group2',
+'170228_haggling_a3_group3',
+'170228_haggling_b2_group0',
+'170228_haggling_b2_group1',
+'170228_haggling_b2_group4',
+'170228_haggling_b2_group5',
+'170228_haggling_b2_group8',
+'170228_haggling_b3_group0',
+'170228_haggling_b3_group1',
+'170228_haggling_b3_group2',
+'170228_haggling_b3_group3',
+'170404_haggling_a1_group2',
+'170404_haggling_a2_group1',
+'170404_haggling_a2_group2',
+'170404_haggling_a2_group3',
+'170404_haggling_a3_group0',
+'170404_haggling_a3_group1',
+'170404_haggling_b1_group3',
+'170404_haggling_b1_group6',
+'170404_haggling_b1_group7',
+'170404_haggling_b2_group1',
+'170404_haggling_b2_group4',
+'170404_haggling_b2_group6',
+'170404_haggling_b3_group1',
+'170404_haggling_b3_group2',
+'170407_haggling_a1_group1',
+'170407_haggling_a1_group3',
+'170407_haggling_a1_group5',
+'170407_haggling_a2_group3',
+'170407_haggling_a2_group5',
+'170407_haggling_b1_group0',
+'170407_haggling_b1_group1',
+'170407_haggling_b1_group2',
+'170407_haggling_b1_group3',
+'170407_haggling_b1_group4',
+'170407_haggling_b1_group6',
+'170407_haggling_b1_group7',
+'170407_haggling_b2_group0',
+'170407_haggling_b2_group1',
+'170407_haggling_b2_group2',
+'170407_haggling_b2_group4',
+'170407_haggling_b2_group5',
+'170407_haggling_b2_group6']
+
+
+
 def get_files_haggling_sellers(directory, bReturnTesting):
     fileListInit = [os.path.join(directory,f) for f in sorted(list(os.listdir(directory)))
     if os.path.isfile(os.path.join(directory,f))
@@ -395,47 +498,81 @@ def get_files_haggling_sellers(directory, bReturnTesting):
 
     for f in fileListInit:
         bTesting = False
+
+        bInWhiteList = False
+        for keyword in white_list_body:
+            if keyword in f:
+                bInWhiteList = True
+                break
+
+        if not bInWhiteList:
+            continue
+
         for keyword in testingSet :
             if keyword in f:
                 bTesting = True
                 break
 
-        if bReturnTesting and bTesting:
-                fileList.append(f)
-        if not bReturnTesting and not bTesting:
-                fileList.append(f)
+        if bReturnTesting and bTesting:     #Testing
+            fileList.append(f)
+        if not bReturnTesting and not bTesting:  #Training
+            fileList.append(f)
 
     return fileList
 
 
-"""Haggling training games sellers"""
-h36m_files = get_files_haggling_sellers('panoptic',False)
-print(h36m_files)
-h36m_clips = []
-h36m_classes = []
-for i, item in enumerate(h36m_files):
-    print('Processing %i of %i (%s)' % (i, len(h36m_files), item))
-    clips, speech = process_file_withSpeech(item,1,1)
-    h36m_clips += clips
-    h36m_classes += speech   
-data_clips = np.array(h36m_clips)
-data_speech = np.array(h36m_classes)
-np.savez_compressed('data_panoptic_speech_haggling_sellers_training_byFrame', clips=data_clips, classes=data_speech)
+# """Haggling training games sellers"""
+# h36m_files = get_files_haggling_sellers('panoptic',True)
+# #print(h36m_files)
+# print('Num: {}'.format(len(h36m_files)))
+# h36m_clips = []
+# h36m_classes = []
+# for i, item in enumerate(h36m_files):
+#     print('Processing %i of %i (%s)' % (i, len(h36m_files), item))
+#     clips, speech = process_file_withSpeech(item,120,10)
+#     h36m_clips += clips
+#     h36m_classes += speech
+#     # if i==50:
+#     #     break
+# data_clips = np.array(h36m_clips)
+# data_speech = np.array(h36m_classes)
+# np.savez('data_hagglingSellers_speech_body_120frm_10gap_white_testing', clips=data_clips, speech=data_speech)
+
 
 
 """Haggling training games sellers"""
 h36m_files = get_files_haggling_sellers('panoptic',True)
-print(h36m_files)
+#print(h36m_files)
+print('Num: {}'.format(len(h36m_files)))
 h36m_clips = []
 h36m_classes = []
 for i, item in enumerate(h36m_files):
     print('Processing %i of %i (%s)' % (i, len(h36m_files), item))
-    clips, speech = process_file_withSpeech(item,1,1)
+    clips, speech = process_file_withSpeech(item,240,10)
     h36m_clips += clips
-    h36m_classes += speech   
+    h36m_classes += speech
+    # if i==5:
+    #     break
 data_clips = np.array(h36m_clips)
 data_speech = np.array(h36m_classes)
-np.savez_compressed('data_panoptic_speech_haggling_sellers_testing_byFrame', clips=data_clips, classes=data_speech)
+np.savez('data_hagglingSellers_speech_body_240frm_10gap_white_testing', clips=data_clips, speech=data_speech)
+
+
+# """Haggling training games sellers"""
+# h36m_files = get_files_haggling_sellers('panoptic',True)
+# print(h36m_files)
+# h36m_clips = []
+# h36m_classes = []
+# for i, item in enumerate(h36m_files):
+#     print('Processing %i of %i (%s)' % (i, len(h36m_files), item))
+#     clips, speech = process_file_withSpeech(item,30,1)
+#     h36m_clips += clips
+#     h36m_classes += speech
+#     if i==2:
+#         break
+# data_clips = np.array(h36m_clips)
+# data_speech = np.array(h36m_classes)
+# np.savez_compressed('data_panoptic_speech_haggling_sellers_testing_byFrame_white_30frm_tiny', clips=data_clips, classes=data_speech)
 
 
 # """Haggling training games sellers"""

@@ -64,10 +64,39 @@ datapath ='../../motionsynth_data/data/processed/'
 # checkpointRoot = './'
 # checkpointFolder = checkpointRoot+ '/social_autoencoder_3conv_vect_vae/'
 # preTrainFileName= 'checkpoint_e50_loss0.0527.pth'
+train_data=[]
+
 
 checkpointRoot = '/posefs2b/Users/hanbyulj/pytorch_motionSynth/checkpoint/'
-checkpointFolder = checkpointRoot+ '/3_body_kldWeight/social_autoencoder_3conv_vect_vae_speakOnly_kld0.001/'
-preTrainFileName= 'checkpoint_e3850_loss0.6438.pth'
+checkpointFolder = checkpointRoot+ '/3_body_kldWeight/social_autoencoder_3conv_vect_vae_try1_speakOnly_kld0.01/'
+preTrainFileName= 'checkpoint_e5600_loss0.6302.pth'
+train_data.append({'dir':checkpointFolder, 'file':preTrainFileName})
+
+
+# checkpointRoot = '/posefs2b/Users/hanbyulj/pytorch_motionSynth/checkpoint/'
+# checkpointFolder = checkpointRoot+ '/social_autoencoder_3conv_vect_vae/'
+# preTrainFileName= 'checkpoint_e5600_loss0.6528.pth'
+# train_data.append({'dir':checkpointFolder, 'file':preTrainFileName})
+
+
+# checkpointRoot = '/posefs2b/Users/hanbyulj/pytorch_motionSynth/checkpoint/'
+# checkpointFolder = checkpointRoot+ '/social_autoencoder_3conv_vect_vae_try1/'
+# preTrainFileName= 'checkpoint_e5600_loss0.6302.pth'
+# train_data.append({'dir':checkpointFolder, 'file':preTrainFileName})
+
+
+
+# checkpointRoot = '/posefs2b/Users/hanbyulj/pytorch_motionSynth/checkpoint/'
+# checkpointFolder = checkpointRoot+ '/social_autoencoder_3conv_vect_vae_try2/'
+# preTrainFileName= 'checkpoint_e6250_loss0.0301.pth'
+# train_data.append({'dir':checkpointFolder, 'file':preTrainFileName})
+
+
+# checkpointRoot = '/posefs2b/Users/hanbyulj/pytorch_motionSynth/checkpoint/'
+# checkpointFolder = checkpointRoot+ '/social_autoencoder_3conv_vect_vae_try3/'
+# preTrainFileName= 'checkpoint_e2200_loss0.1118.pth'
+# train_data.append({'dir':checkpointFolder, 'file':preTrainFileName})
+
 
 
 ######################################
@@ -109,68 +138,55 @@ criterion = nn.MSELoss()
 # featureDim = test_X_raw.shape[2]
 featureDim = 73
 latentDim = 200
-model = modelZoo.autoencoder_3conv_vect_vae(featureDim,latentDim).cuda()
-model.eval()
+model_list=[]
+for train_d  in train_data:
+    model = modelZoo.autoencoder_3conv_vect_vae(featureDim, latentDim).cuda()
+    model.eval()
 
-#Creat Model
-trainResultName = checkpointFolder + preTrainFileName
-loaded_state = torch.load(trainResultName, map_location=lambda storage, loc: storage)
+    #Creat Model
+    trainResultName = train_d['dir'] + train_d['file']
+    loaded_state = torch.load(trainResultName, map_location=lambda storage, loc: storage)
 
-model.load_state_dict(loaded_state,strict=False) #strict False is needed some version issue for batchnorm
-model = model.eval()  #Do I need this again?
-
+    model.load_state_dict(loaded_state,strict=False) #strict False is needed some version issue for batchnorm
+    model = model.eval()  #Do I need this again?
+    model_list.append(model)
 
 
 ######################################
-# Generation
-sampleNum = 2
+# Training
+sampleNum = 60
 for _ in range(100):
-    sample_2 = torch.randn(sampleNum, 200)#.to(device)
+    sample_all = torch.randn(sampleNum, 200)#.to(device)
 
-    print(sample_2[:10])
+    sample_1 = sample_all[0:30,:]
+    sample_2 = sample_all[30:,:]
+
+    #print(sample_1[:10])
     
+    sample_1 = Variable(sample_1).cuda()
     sample_2 = Variable(sample_2).cuda()
-    output = model.decode(sample_2)
+
+    sampleList = [sample_1, sample_2]
+
+    bodyData =[]
+    model = model_list[0]
 
 
-    #De-standardaize
-    output_np = output.data.cpu().numpy()  #(batch, featureDim, frames)
-    output_np = output_np*Xstd + Xmean
 
-    output_np = np.swapaxes(output_np,1,2)  #(batch, frames, featureDim)
-    output_np = np.reshape(output_np,(-1,featureDim))
-    output_np = np.swapaxes(output_np,0,1)  #(featureDim, frames)
+    #for sample in sampleList:
+    for w in range(0, 12, 2):
 
-    bodyData = [output_np]
-    glViewer.set_Holden_Data_73(bodyData)
-    glViewer.init_gl()
+        sample = sample_1 * (w/10.0)  + sample_2 * (1- w/10.0)
+        output = model.decode(sample)
 
+        #De-standardaize
+        output_np = output.data.cpu().numpy()  #(batch, featureDim, frames)
+        output_np = output_np*Xstd + Xmean
 
-######################################
-# Continuout Motion Generation
-sampleNum = 2
-prev_encode = None
-for _ in range(100):
+        output_np = np.swapaxes(output_np,1,2)  #(batch, frames, featureDim)
+        output_np = np.reshape(output_np,(-1,featureDim))
+        output_np = np.swapaxes(output_np,0,1)  #(featureDim, frames)
 
-    if prev_encode is None:
-        new_encode = torch.randn(sampleNum, 200)#.to(device)
-    else:
-        new_encode = prev_encode + torch.randn(sampleNum, 200)*0.01#.to(device)
-    
-    new_encode_cuda = Variable(new_encode).cuda()
-    output = model.decode(new_encode_cuda)
-
-    prev_encode = new_encode
-
-
-    #De-standardaize
-    output_np = output.data.cpu().numpy()  #(batch, featureDim, frames)
-    output_np = output_np*Xstd + Xmean
-
-    output_np = np.swapaxes(output_np,1,2)  #(batch, frames, featureDim)
-    output_np = np.reshape(output_np,(-1,featureDim))
-    output_np = np.swapaxes(output_np,0,1)  #(featureDim, frames)
-
-    bodyData = [output_np]
+        bodyData.append(output_np)
     glViewer.set_Holden_Data_73(bodyData)
     glViewer.init_gl()

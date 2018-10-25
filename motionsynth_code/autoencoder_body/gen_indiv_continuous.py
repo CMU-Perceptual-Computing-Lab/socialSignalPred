@@ -65,9 +65,13 @@ datapath ='../../motionsynth_data/data/processed/'
 # checkpointFolder = checkpointRoot+ '/social_autoencoder_3conv_vect_vae/'
 # preTrainFileName= 'checkpoint_e50_loss0.0527.pth'
 
-checkpointRoot = '/posefs2b/Users/hanbyulj/pytorch_motionSynth/checkpoint/'
-checkpointFolder = checkpointRoot+ '/3_body_kldWeight/social_autoencoder_3conv_vect_vae_speakOnly_kld0.001/'
-preTrainFileName= 'checkpoint_e3850_loss0.6438.pth'
+# checkpointRoot = '/posefs2b/Users/hanbyulj/pytorch_motionSynth/checkpoint/'
+# checkpointFolder = checkpointRoot+ '/3_body_kldWeight/social_autoencoder_3conv_vect_vae_speakOnly_kld0.001/'
+# preTrainFileName= 'checkpoint_e3850_loss0.6438.pth'
+
+checkpointRoot = './'
+checkpointFolder = checkpointRoot+ 'social_autoencoder_3conv_vect_vae_try13/'
+preTrainFileName= 'checkpoint_e41_loss0.3137.pth'
 
 
 ######################################
@@ -121,56 +125,61 @@ model = model.eval()  #Do I need this again?
 
 
 
-######################################
-# Generation
-sampleNum = 2
-for _ in range(100):
-    sample_2 = torch.randn(sampleNum, 200)#.to(device)
+# ######################################
+# # Generation
+# sampleNum = 2
+# for _ in range(100):
+#     sample_2 = torch.randn(sampleNum, 200)#.to(device)
 
-    print(sample_2[:10])
+#     print(sample_2[:10])
     
-    sample_2 = Variable(sample_2).cuda()
-    output = model.decode(sample_2)
+#     sample_2 = Variable(sample_2).cuda()
+#     output = model.decode(sample_2)
 
 
-    #De-standardaize
-    output_np = output.data.cpu().numpy()  #(batch, featureDim, frames)
-    output_np = output_np*Xstd + Xmean
+#     #De-standardaize
+#     output_np = output.data.cpu().numpy()  #(batch, featureDim, frames)
+#     output_np = output_np*Xstd + Xmean
 
-    output_np = np.swapaxes(output_np,1,2)  #(batch, frames, featureDim)
-    output_np = np.reshape(output_np,(-1,featureDim))
-    output_np = np.swapaxes(output_np,0,1)  #(featureDim, frames)
+#     output_np = np.swapaxes(output_np,1,2)  #(batch, frames, featureDim)
+#     output_np = np.reshape(output_np,(-1,featureDim))
+#     output_np = np.swapaxes(output_np,0,1)  #(featureDim, frames)
 
-    bodyData = [output_np]
-    glViewer.set_Holden_Data_73(bodyData)
-    glViewer.init_gl()
+#     bodyData = [output_np]
+#     glViewer.set_Holden_Data_73(bodyData)
+#     glViewer.init_gl()
 
 
 ######################################
 # Continuout Motion Generation
 sampleNum = 2
-prev_encode = None
 for _ in range(100):
 
-    if prev_encode is None:
-        new_encode = torch.randn(sampleNum, 200)#.to(device)
-    else:
-        new_encode = prev_encode + torch.randn(sampleNum, 200)*0.01#.to(device)
+    output_list =[]
+    prev_encode = None
+    for iter in range(sampleNum):
     
-    new_encode_cuda = Variable(new_encode).cuda()
-    output = model.decode(new_encode_cuda)
+        if prev_encode is None:
+            new_encode = torch.randn(1, 200)#.to(device)
+        else:
+            new_encode = prev_encode + torch.randn(1, 200)*0.2#.to(device)
+    
+        new_encode_cuda = Variable(new_encode).cuda()
+        output = model.decode(new_encode_cuda)
 
-    prev_encode = new_encode
+        #De-standardaize
+        output_np = output.data.cpu().numpy()  #(batch, featureDim, frames)
+        output_np = output_np*Xstd + Xmean
+
+        output_np = np.swapaxes(output_np,1,2)  #(batch, frames, featureDim)
+        output_np = np.reshape(output_np,(-1,featureDim))
+        output_np = np.swapaxes(output_np,0,1)  #(featureDim, frames)
+        
+        prev_encode = new_encode
+        output_list.append(output_np)
 
 
-    #De-standardaize
-    output_np = output.data.cpu().numpy()  #(batch, featureDim, frames)
-    output_np = output_np*Xstd + Xmean
-
-    output_np = np.swapaxes(output_np,1,2)  #(batch, frames, featureDim)
-    output_np = np.reshape(output_np,(-1,featureDim))
-    output_np = np.swapaxes(output_np,0,1)  #(featureDim, frames)
-
+    output_np =  np.concatenate(output_list,axis=1)
     bodyData = [output_np]
     glViewer.set_Holden_Data_73(bodyData)
     glViewer.init_gl()

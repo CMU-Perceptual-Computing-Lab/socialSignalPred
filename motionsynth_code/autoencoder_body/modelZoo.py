@@ -179,7 +179,7 @@ class autoencoder_3conv_vect_vae(nn.Module):
 
         x = self.decoder_conv_3(x)          #(batch, 73, 120)
         
-        return x, mu, logvar
+        return x, mu, logvar, z
 
 
 # # Reconstruction + KL divergence losses summed over all elements and batch
