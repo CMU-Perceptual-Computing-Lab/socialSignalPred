@@ -399,14 +399,12 @@ class Quaternions:
         w = np.sqrt((v0s**2).sum(axis=-1) * (v1s**2).sum(axis=-1)) + (v0s * v1s).sum(axis=-1)
         output =  Quaternions(np.concatenate([w[...,np.newaxis], a], axis=-1))
 
-        #By Han to avoid vectors with opposite direction
-        length = np.sqrt((a**2).sum(axis=-1))
-        for i in np.where(length<0.001)[0]:
+        # #By Han to avoid vectors with opposite direction
+        # length = np.sqrt((a**2).sum(axis=-1))
+        # for i in np.where(length<0.001)[0]:
 
-            output[i] = Quaternions(np.array([0, 0, 1, 0]))    #Should not normalize
-            
-            
-        
+        #     output[i] = Quaternions(np.array([0, 0, 1, 0]))    #Should not normalize
+
         return output.normalized()
     
     # @classmethod

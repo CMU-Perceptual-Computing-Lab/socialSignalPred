@@ -70,8 +70,8 @@ datapath ='../../motionsynth_data/data/processed/'
 # preTrainFileName= 'checkpoint_e3850_loss0.6438.pth'
 
 checkpointRoot = './'
-checkpointFolder = checkpointRoot+ 'social_autoencoder_3conv_vect_vae_try13/'
-preTrainFileName= 'checkpoint_e41_loss0.3137.pth'
+checkpointFolder = checkpointRoot+ 'social_autoencoder_3conv_vect_vae_try16/'
+preTrainFileName= 'checkpoint_e1950_loss0.3731.pth'
 
 
 ######################################

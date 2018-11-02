@@ -136,26 +136,42 @@ def process_file(filename, window=1, window_step=1):
         
     return windows, windows_classes
 
-
-
-
 import pickle
-def process_file_withSpeech(filename, window=240, window_step=120):
+def process_file_body_speech_face(faceParamDir, filename, window=240, window_step=120):
     
-    anim, names, frametime = BVH.load(filename)
-
-    #Load speech info
+    #########################
+    ## Load Speech Data
     seqName = os.path.basename(filename)
-    speech_fileName = seqName[:-7] + '.pkl'
-    speechPath = './panopticDB_pkl_speech_hagglingProcessed/' +speech_fileName
+    fileName_pkl = seqName[:-7] + '.pkl'
+    speechPath = './panopticDB_pkl_speech_hagglingProcessed/' + fileName_pkl
     speechData = pickle.load( open( speechPath, "rb" ) )
-
     if '_p0.bvh' in filename:
         speechData = speechData['speechData'][0]
     elif '_p1.bvh' in filename:
         speechData = speechData['speechData'][1]
     elif '_p2.bvh' in filename:
         speechData = speechData['speechData'][2]
+
+
+    #########################
+    ## Load Face Data
+    facePath = faceParamDir + fileName_pkl
+    faceParamData = pickle.load( open(facePath, "rb" ) )
+    if '_p0.bvh' in filename:
+        subjectRole = 0
+    elif '_p1.bvh' in filename:
+        subjectRole = 1
+    elif '_p2.bvh' in filename:
+        subjectRole = 2
+    faceParamData = faceParamData['subjects'][subjectRole]['face_exp']  #200 x frames
+    faceParamData = np.swapaxes(faceParamData,0,1) # frames x 200
+
+
+    #########################
+    ## Load Bdoy Data
+    anim, names, frametime = BVH.load(filename)
+
+    
     
     # """ Convert to 60 fps """
     # anim = anim[::2]
@@ -183,7 +199,7 @@ def process_file_withSpeech(filename, window=240, window_step=120):
     """ Add Reference Joint """
     trajectory_filterwidth = 3
     reference = positions[:,0] * np.array([1,0,1])
-    #reference = filters.gaussian_filter1d(reference, trajectory_filterwidth, axis=0, mode='nearest')    
+    reference = filters.gaussian_filter1d(reference, trajectory_filterwidth, axis=0, mode='nearest')    
     positions = np.concatenate([reference[:,np.newaxis], positions], axis=1)
     
     """ Get Foot Contacts """
@@ -202,11 +218,11 @@ def process_file_withSpeech(filename, window=240, window_step=120):
     feet_r = (((feet_r_x + feet_r_y + feet_r_z) < velfactor) & (feet_r_h < heightfactor)).astype(np.float)
     
     """ Get Root Velocity """
-    velocity = (positions[1:,0:1] - positions[:-1,0:1]).copy()  #(frame-1, 1, 3)
+    velocity = (positions[1:,0:1] - positions[:-1,0:1]).copy()
     
     """ Remove Translation """
-    positions[:,:,0] = positions[:,:,0] - positions[:,0:1,0]        #Root'x is zero
-    positions[:,:,2] = positions[:,:,2] - positions[:,0:1,2]        #Root'y is zero
+    positions[:,:,0] = positions[:,:,0] - positions[:,0:1,0]
+    positions[:,:,2] = positions[:,:,2] - positions[:,0:1,2]
     
     """ Get Forward Direction """
     sdr_l, sdr_r, hip_l, hip_r = 14, 18, 2, 6
@@ -216,13 +232,13 @@ def process_file_withSpeech(filename, window=240, window_step=120):
     across = across / np.sqrt((across**2).sum(axis=-1))[...,np.newaxis]
     
     direction_filterwidth = 20
-    forward = np.cross(across, np.array([[0,1,0]]))     #Forward is orthogonal to the Y-axis
-    #forward = filters.gaussian_filter1d(forward, direction_filterwidth, axis=0, mode='nearest')    
-    forward = forward / np.sqrt((forward**2).sum(axis=-1))[...,np.newaxis]      #(frame, 3)
+    forward = np.cross(across, np.array([[0,1,0]]))
+    forward = filters.gaussian_filter1d(forward, direction_filterwidth, axis=0, mode='nearest')    
+    forward = forward / np.sqrt((forward**2).sum(axis=-1))[...,np.newaxis]
 
     """ Remove Y Rotation """
     target = np.array([[0,0,1]]).repeat(len(forward), axis=0)
-    rotation = Quaternions.between(forward, target)[:,np.newaxis]       #(frames, 1)
+    rotation = Quaternions.between(forward, target)[:,np.newaxis]    
     positions = rotation * positions
     
     """ Get Root Rotation """
@@ -237,42 +253,51 @@ def process_file_withSpeech(filename, window=240, window_step=120):
     positions = np.concatenate([positions, rvelocity], axis=-1)
     positions = np.concatenate([positions, feet_l, feet_r], axis=-1)
         
+
+    ##################################################
+    ## Chunk Generation
+
     """ Slide over windows """
-    windows = []
-    windows_classes = []
-    
+    windows_body = []
+    windows_face = []
+    windows_speech = []
 
     print("skelSize {0} vs speechSize {1}".format(positions.shape[0],speechData['indicator'].shape[0]))
     for j in range(0, len(positions)-window//8, window_step):
-    
-        """ If slice too small pad out by repeating start and end poses """
-        slice = positions[j:j+window]
-        if len(slice) < window:
+
+        ## Face Part ############################v
+        face_slice = faceParamData[j:j+window]  # faceParamData: (frames,200)
+        if len(face_slice) < window:
             break
-            # left  = slice[:1].repeat((window-len(slice))//2 + (window-len(slice))%2, axis=0)
-            # left[:,-7:-4] = 0.0
-            # right = slice[-1:].repeat((window-len(slice))//2, axis=0)
-            # right[:,-7:-4] = 0.0
-            # slice = np.concatenate([left, slice, right], axis=0)
         
-        if len(slice) != window: raise Exception()
+        if len(face_slice) != window: raise Exception()
+
+        #Check Bad data (abs(value)>2)
+        maxValue = np.max(abs(face_slice))
+        if(maxValue>2.0):
+            continue
+
+        #Face Param Cropping (just use initial 5 dim)
+        face_slice = face_slice[:,:5]
+
+        ## Body Part ############################v
+        body_slice = positions[j:j+window]      # position: (frames,73)
+        if len(body_slice) < window:
+            break
+            
+        if len(body_slice) != window: raise Exception()
         
-        windows.append(slice)
         
-        # """ Find Class """
-        # cls = -1
-        # if filename.startswith('hdm05'):
-        #     cls_name = os.path.splitext(os.path.split(filename)[1])[0][7:-8]
-        #     cls = class_names.index(class_map[cls_name]) if cls_name in class_map else -1
-        # if filename.startswith('styletransfer'):
-        #     cls_name = os.path.splitext(os.path.split(filename)[1])[0]
-        #     cls = np.array([
-        #         styletransfer_motions.index('_'.join(cls_name.split('_')[1:-1])),
-        #         styletransfer_styles.index(cls_name.split('_')[0])])
-        cls = speechData['indicator'][j:j+window]
-        windows_classes.append(cls)
+        ## Speech Part ############################v
+        speech_slice = speechData['indicator'][j:j+window]      # speechData['indicator']: (frames,)
+
+
+        ## Append ############################v
+        windows_body.append(body_slice)
+        windows_face.append(face_slice)
+        windows_speech.append(speech_slice)
         
-    return windows, windows_classes
+    return windows_body, windows_face, windows_speech
 
 
 def get_files(directory):
@@ -378,6 +403,143 @@ def get_files_haggling_buyers(directory):
     return [os.path.join(directory,f) for f in sorted(list(os.listdir(directory)))
     if os.path.isfile(os.path.join(directory,f))
     and f.endswith('.bvh') and f != 'rest.bvh' and '_p0' in f] 
+
+
+white_list_face = ['170221_haggling_b1_group0',
+'170221_haggling_b1_group1',
+'170221_haggling_b1_group2',
+'170221_haggling_b1_group3',
+'170221_haggling_b1_group4',
+'170221_haggling_b2_group0',
+'170221_haggling_b2_group1',
+'170221_haggling_b2_group4',
+'170221_haggling_b3_group2',
+'170221_haggling_m1_group2',
+'170221_haggling_m1_group4',
+'170221_haggling_m2_group0',
+'170221_haggling_m2_group4',
+'170224_haggling_a1_group1',
+'170224_haggling_a1_group2',
+'170224_haggling_a1_group3',
+'170224_haggling_a1_group4',
+'170224_haggling_a1_group5',
+'170224_haggling_a2_group1',
+'170224_haggling_a2_group3',
+'170224_haggling_a2_group5',
+'170224_haggling_a3_group0',
+'170224_haggling_a3_group2',
+'170224_haggling_a3_group3',
+'170224_haggling_b1_group0',
+'170224_haggling_b1_group3',
+'170224_haggling_b1_group4',
+'170224_haggling_b1_group5',
+'170224_haggling_b1_group6',
+'170224_haggling_b1_group7',
+'170224_haggling_b2_group0',
+'170224_haggling_b2_group1',
+'170224_haggling_b2_group2',
+'170224_haggling_b2_group3',
+'170224_haggling_b2_group4',
+'170224_haggling_b2_group5',
+'170224_haggling_b2_group6',
+'170224_haggling_b2_group7',
+'170224_haggling_b3_group0',
+'170224_haggling_b3_group1',
+'170224_haggling_b3_group2',
+'170228_haggling_a1_group0',
+'170228_haggling_a1_group1',
+'170228_haggling_a1_group3',
+'170228_haggling_a1_group4',
+'170228_haggling_a1_group5',
+'170228_haggling_a1_group6',
+'170228_haggling_a1_group7',
+'170228_haggling_a2_group0',
+'170228_haggling_a2_group1',
+'170228_haggling_a2_group5',
+'170228_haggling_a2_group6',
+'170228_haggling_a2_group7',
+'170228_haggling_a3_group0',
+'170228_haggling_a3_group1',
+'170228_haggling_a3_group3',
+'170228_haggling_b1_group0',
+'170228_haggling_b1_group2',
+'170228_haggling_b1_group3',
+'170228_haggling_b1_group4',
+'170228_haggling_b1_group6',
+'170228_haggling_b1_group7',
+'170228_haggling_b1_group8',
+'170228_haggling_b1_group9',
+'170228_haggling_b2_group1',
+'170228_haggling_b2_group2',
+'170228_haggling_b2_group5',
+'170228_haggling_b2_group7',
+'170228_haggling_b2_group8',
+'170228_haggling_b2_group9',
+'170228_haggling_b3_group0',
+'170228_haggling_b3_group1',
+'170228_haggling_b3_group3',
+'170404_haggling_a1_group2',
+'170404_haggling_a1_group3',
+'170404_haggling_a2_group0',
+'170404_haggling_a2_group2',
+'170404_haggling_a2_group3',
+'170404_haggling_a3_group0',
+'170404_haggling_a3_group1',
+'170404_haggling_b1_group2',
+'170404_haggling_b1_group3',
+'170404_haggling_b1_group4',
+'170404_haggling_b1_group5',
+'170404_haggling_b1_group6',
+'170404_haggling_b1_group7',
+'170404_haggling_b2_group1',
+'170404_haggling_b2_group3',
+'170404_haggling_b2_group4',
+'170404_haggling_b2_group6',
+'170404_haggling_b2_group7',
+'170404_haggling_b3_group0',
+'170404_haggling_b3_group1',
+'170404_haggling_b3_group2',
+'170407_haggling_a1_group0',
+'170407_haggling_a1_group1',
+'170407_haggling_a1_group2',
+'170407_haggling_a1_group3',
+'170407_haggling_a1_group4',
+'170407_haggling_a1_group5',
+'170407_haggling_a2_group0',
+'170407_haggling_a2_group1',
+'170407_haggling_a2_group2',
+'170407_haggling_a2_group4',
+'170407_haggling_a2_group5',
+'170407_haggling_a3_group0',
+'170407_haggling_a3_group1',
+'170407_haggling_a3_group2',
+'170407_haggling_b1_group0',
+'170407_haggling_b1_group1',
+'170407_haggling_b1_group2',
+'170407_haggling_b1_group3',
+'170407_haggling_b1_group4',
+'170407_haggling_b1_group5',
+'170407_haggling_b1_group6',
+'170407_haggling_b1_group7',
+'170407_haggling_b2_group0',
+'170407_haggling_b2_group1',
+'170407_haggling_b2_group4',
+'170407_haggling_b2_group5',
+'170407_haggling_b2_group6',
+'170407_haggling_b2_group7',
+'170407_haggling_b3_group1',
+'170407_haggling_b3_group2',
+#0 fails
+'170221_haggling_b2_group2',
+'170221_haggling_b3_group1',
+'170221_haggling_m3_group0',
+'170224_haggling_a1_group6',
+'170224_haggling_a2_group0',
+'170224_haggling_a2_group2',
+'170224_haggling_b1_group2',
+'170228_haggling_a2_group2',
+'170228_haggling_b1_group5',
+'170228_haggling_b3_group2']
 
 white_list_body = ['170221_haggling_b1_group0',
 '170221_haggling_b1_group2',
@@ -500,8 +662,10 @@ def get_files_haggling_sellers(directory, bReturnTesting):
         bTesting = False
 
         bInWhiteList = False
-        for keyword in white_list_body:
-            if keyword in f:
+        for keyword in white_list_body:  #checking both body and face
+
+            if keyword in f and keyword in white_list_face:     ##Checking both body and face
+            #if keyword in f
                 bInWhiteList = True
                 break
 
@@ -539,58 +703,49 @@ def get_files_haggling_sellers(directory, bReturnTesting):
 # np.savez('data_hagglingSellers_speech_body_120frm_10gap_white_testing', clips=data_clips, speech=data_speech)
 
 
-
 """Haggling training games sellers"""
-h36m_files = get_files_haggling_sellers('panoptic',True)
+faceParamDir = '/ssd/codes/pytorch_motionSynth/motionsynth_data/data/processed_panoptic/panopticDB_faceMesh_pkl_hagglingProcessed/'
+panoptic_files = get_files_haggling_sellers('panoptic',False)
 #print(h36m_files)
-print('Num: {}'.format(len(h36m_files)))
-h36m_clips = []
-h36m_classes = []
-for i, item in enumerate(h36m_files):
-    print('Processing %i of %i (%s)' % (i, len(h36m_files), item))
-    clips, speech = process_file_withSpeech(item,240,10)
-    h36m_clips += clips
-    h36m_classes += speech
-    if i==5:
+print('Num: {}'.format(len(panoptic_files)))
+all_faces = []
+all_bodies = []
+all_speech = []
+for i, item in enumerate(panoptic_files):
+    print('Processing %i of %i (%s)' % (i, len(panoptic_files), item))
+    slice_body, slice_face, slice_speech = process_file_body_speech_face(faceParamDir, item,120,5)
+    all_faces += slice_face
+    all_bodies += slice_body
+    all_speech += slice_speech
+    
+    if i==10:
         break
-data_clips = np.array(h36m_clips)
-data_speech = np.array(h36m_classes)
-np.savez('data_hagglingSellers_speech_body_240frm_10gap_white_noGa_testing_tiny', clips=data_clips, speech=data_speech)
-
-
-"""Haggling training games sellers"""
-h36m_files = get_files_haggling_sellers('panoptic',True)
-#print(h36m_files)
-print('Num: {}'.format(len(h36m_files)))
-h36m_clips = []
-h36m_classes = []
-for i, item in enumerate(h36m_files):
-    print('Processing %i of %i (%s)' % (i, len(h36m_files), item))
-    clips, speech = process_file_withSpeech(item,240,10)
-    h36m_clips += clips
-    h36m_classes += speech
-    # if i==5:
-    #     break
-data_clips = np.array(h36m_clips)
-data_speech = np.array(h36m_classes)
-np.savez('data_hagglingSellers_speech_body_240frm_10gap_white_noGa_testing', clips=data_clips, speech=data_speech)
+slice_face = np.array(slice_face)
+slice_body = np.array(slice_body)
+slice_speech = np.array(slice_speech)
+np.savez('data_hagglingSellers_speech_body_face_120frm_5gap_whiteBF_train_tiny', face=all_faces, speech=all_speech, body=all_bodies)
 
 
 
+# """Haggling training games sellers"""
+# faceParamDir = '/ssd/codes/pytorch_motionSynth/motionsynth_data/data/processed_panoptic/panopticDB_faceMesh_pkl_hagglingProcessed/'
+# panoptic_files = get_files_haggling_sellers('panoptic',False)
+# #print(h36m_files)
+# print('Num: {}'.format(len(panoptic_files)))
+# all_faces = []
+# all_bodies = []
+# all_speech = []
+# for i, item in enumerate(panoptic_files):
+#     print('Processing %i of %i (%s)' % (i, len(panoptic_files), item))
+#     slice_body, slice_face, slice_speech = process_file_body_speech_face(faceParamDir, item,120,5)
+#     all_faces += slice_face
+#     all_bodies += slice_body
+#     all_speech += slice_speech
+    
+#     # if i==5:
+#     #     break
+# slice_face = np.array(slice_face)
+# slice_body = np.array(slice_body)
+# slice_speech = np.array(slice_speech)
+# np.savez('data_hagglingSellers_speech_body_face_120frm_5gap_whiteBF_training', face=all_faces, speech=all_speech, body=all_bodies)
 
-"""Haggling training games sellers"""
-h36m_files = get_files_haggling_sellers('panoptic',False)
-#print(h36m_files)
-print('Num: {}'.format(len(h36m_files)))
-h36m_clips = []
-h36m_classes = []
-for i, item in enumerate(h36m_files):
-    print('Processing %i of %i (%s)' % (i, len(h36m_files), item))
-    clips, speech = process_file_withSpeech(item,240,10)
-    h36m_clips += clips
-    h36m_classes += speech
-    # if i==5:
-    #     break
-data_clips = np.array(h36m_clips)
-data_speech = np.array(h36m_classes)
-np.savez('data_hagglingSellers_speech_body_240frm_10gap_white_noGa_training', clips=data_clips, speech=data_speech)

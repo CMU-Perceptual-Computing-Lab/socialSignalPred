@@ -53,7 +53,8 @@ class Pivots:
         return Quaternions.from_angle_axis(self.ps, axises)
     
     def directions(self, plane='xz'):
-        dirs = np.zeros((len(self.ps), 3))
+        # dirs = np.zeros((len(self.ps), 3))
+        dirs = np.zeros((3, len(self.ps)))
         dirs["xyz".index(plane[0])] = np.sin(self.ps)
         dirs["xyz".index(plane[1])] = np.cos(self.ps)
         return dirs
