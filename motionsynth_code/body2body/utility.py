@@ -45,8 +45,8 @@ def my_args_parser():
     parser.add_argument('--epochs', type=int, default=500001, metavar='N',
                         help='number of epochs to train (default: 50001)')
 
-    parser.add_argument('--batch', type=int, default=3072, metavar='N',
-                        help='batch size (default: 3072)')
+    parser.add_argument('--batch', type=int, default=512, metavar='N',
+                        help='batch size (default: 512)')
 
     parser.add_argument('--gpu', type=int, default=0, metavar='N',
                         help='Select gpu (default: 0)')
@@ -197,7 +197,8 @@ def data_2dTo3D(data_2d, newRowIdx =1):
         - initRot_list: 3 x 1     # to go back to original absolute coordination
 """
 import sys
-sys.path.append('/ssd/codes/pytorch_motionSynth/motionsynth_data/motion')
+#sys.path.append('/ssd/codes/pytorch_motionSynth/motionsynth_data/motion')
+datapath ='../../motionsynth_data/motion' 
 from Pivots import Pivots
 from Quaternions import Quaternions
 def ConvertTrajectory_velocityForm(posData, bodyNormalData):

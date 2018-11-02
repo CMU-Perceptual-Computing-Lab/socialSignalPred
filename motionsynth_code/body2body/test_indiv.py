@@ -62,11 +62,14 @@ test_data = pickle.load(pkl_file)
 pkl_file.close()
 test_X_raw= test_data['data']      #Input (numClip, frames, featureDim:73)
 
+test_X_raw_initTrans =  test_data['initPos']    #(3, chunkNum, 1, 3)
+test_X_raw_initRot =  test_data['initRot']  #3 x chunkNum x 1
+
 ######################################
 # Checkout Folder and pretrain file setting
 checkpointRoot = './'
-checkpointFolder = checkpointRoot+ '/social_regressor_fcn_try5/'
-preTrainFileName= 'checkpoint_e1074_loss0.1115.pth'
+checkpointFolder = checkpointRoot+ '/social_regressor_fcn_bn_try2/'
+preTrainFileName= 'checkpoint_e177_loss0.6120.pth'
 
 
 ######################################
@@ -77,12 +80,37 @@ test_X = test_X_raw[0,:,:,:]      #(num, chunkLength, 9) //person0,1's all value
 test_X = np.concatenate( (test_X, test_X_raw[1,:,:,:]), axis= 2)      #(num, chunkLength, 18)
 test_Y = test_X_raw[2,:,:,:]    #2nd seller's position only
 
+test_X_initTrans  = test_X_raw_initTrans[0,:,0,:]   #(chunkNum,3)
+test_X_initTrans = np.concatenate( (test_X_initTrans, test_X_raw_initTrans[1,:,0,:]), axis= 1)      #(chunkNum, featureDim:6)
+test_Y_initTrans  = test_X_raw_initTrans[2,:,0,:]   #(chunkNum,3)
+
+
+test_X_initRot  = test_X_raw_initRot[0]   #(chunkNum)
+test_X_initRot2 = test_X_raw_initRot[1]     #for the second person of the input
+test_Y_initRot  = test_X_raw_initRot[2]
+
+
 test_X_swap = test_X_raw[0,:,:,:]      #(num, chunkLength, 9) //person0,1's all values (position, head orientation, body orientation)
 test_X_swap = np.concatenate( (test_X_swap, test_X_raw[2,:,:,:]), axis= 2)      #(num, chunkLength, 18)
 test_Y_swap = test_X_raw[1,:,:,:]    #2nd seller's position only
 
+test_X_initTrans_swap  = test_X_raw_initTrans[0,:,0,:]   #(chunkNum,3)
+test_X_initTrans_swap = np.concatenate( (test_X_initTrans_swap, test_X_raw_initTrans[2,:,0,:]), axis= 1)      #(chunkNum, featureDim:6)
+test_Y_initTrans_swap  = test_X_raw_initTrans[1,:,0,:]   #(chunkNum,3)
+
+test_X_initRot_swap  = test_X_raw_initRot[0]   #(chunkNum)
+test_X_initRot_swap2 = test_X_raw_initRot[2] 
+test_Y_initRot_swap  = test_X_raw_initRot[1]
+
 test_X = np.concatenate( (test_X, test_X_swap), axis=0)
 test_Y = np.concatenate( (test_Y, test_Y_swap), axis=0)
+
+test_X_initTrans = np.concatenate( (test_X_initTrans, test_X_initTrans_swap), axis=0)   #(chunkNum, featureDim:6)
+test_Y_initTrans = np.concatenate( (test_Y_initTrans, test_Y_initTrans_swap), axis=0)   #(chunkNum, featureDim:6)
+
+test_X_initRot += test_X_initRot_swap
+test_X_initRot2 += test_X_initRot_swap2
+test_Y_initRot += test_Y_initRot_swap
 
 ######################################
 # Data pre-processing
@@ -141,8 +169,21 @@ model = model.eval()  #Do I need this again?
 # Ystd = np.swapaxes(Ystd,1,2)
 # Ymean = np.swapaxes(Ymean,1,2)
 
+I = np.arange(len(test_X))
+rng.shuffle(I)
+test_X = test_X[I]
+test_Y = test_Y[I]
+
+test_X_initTrans = test_X_initTrans[I]
+test_Y_initTrans = test_Y_initTrans[I]
+
+test_X_initRot = [ test_X_initRot[i] for i in I ]
+test_X_initRot2 = [ test_X_initRot2[i] for i in I ]
+test_Y_initRot = [ test_Y_initRot[i] for i in I ]
+
+
 ######################################
-# Training
+# Testing
 batchinds = np.arange(test_X.shape[0] // batch_size)
 pred_all = np.empty([0,1],dtype=float)
 test_X_vis =np.empty([0,200],dtype=float)
@@ -159,6 +200,13 @@ for _, bi in enumerate(batchinds):
     
     inputData_np_ori = test_X[idxStart:(idxStart+batch_size),:,:]  #(batch, 3, frameNum)
     outputData_np_ori = test_Y[idxStart:(idxStart+batch_size),:,:] #(batch, 73, frameNum)
+
+    inputData_initTrans = test_X_initTrans[idxStart:(idxStart+batch_size),:]  #(batch, 6)
+    outputData_initTrans = test_Y_initTrans[idxStart:(idxStart+batch_size),:] #(batch, 3)
+
+    inputData_initRot  = test_X_initRot[idxStart:(idxStart+batch_size)]
+    inputData_initRot2  = test_X_initRot2[idxStart:(idxStart+batch_size)]
+    outputData_initRot  = test_Y_initRot[idxStart:(idxStart+batch_size)]
 
     inputData = Variable(torch.from_numpy(inputData_np)).cuda()  #(batch, 3, frameNum)
     outputGT = Variable(torch.from_numpy(outputData_np)).cuda()  #(batch, 73, frameNum)
@@ -196,10 +244,12 @@ for _, bi in enumerate(batchinds):
     inputData_np_ori_2 = np.swapaxes(inputData_np_ori_2,0,1)
 
 
-    
+    #Set init trans
+    initTrans = [outputData_initTrans,outputData_initTrans, inputData_initTrans[:,:3], inputData_initTrans[:,3:]]
+    initRot = [outputData_initRot[0],outputData_initRot[0], inputData_initRot[0], inputData_initRot2[0]]
     #glViewer.show_Holden_Data_73([ outputData_np_ori, inputData_np_ori, output_np] )
 
-    glViewer.set_Holden_Data_73([output_np, outputData_np_ori, inputData_np_ori_1, inputData_np_ori_2] )
+    glViewer.set_Holden_Data_73([output_np, outputData_np_ori, inputData_np_ori_1, inputData_np_ori_2], initTrans=initTrans, initRot=initRot)
     #glViewer.set_Holden_Trajectory_3([inputData_np_ori, inputData_np_ori] )
     glViewer.init_gl()
 
