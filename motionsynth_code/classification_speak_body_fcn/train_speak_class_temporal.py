@@ -84,7 +84,8 @@ learning_rate = 1e-3
 lstm_hidden_dim = 20
 feature_dim = 73
 #model = modelZoo.naive_lstm(batch_size, lstm_hidden_dim, feature_dim).cuda()
-model=modelZoo.regressor_fcn_bn().cuda()
+#model=modelZoo.regressor_fcn_bn().cuda()
+model = getattr(modelZoo,args.model)().cuda()
 model.train()
 
 # for param in model.parameters():
