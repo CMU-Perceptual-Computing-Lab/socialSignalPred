@@ -69,7 +69,7 @@ test_X_raw_initRot =  test_data['initRot']  #3 x chunkNum x 1
 # Checkout Folder and pretrain file setting
 checkpointRoot = './'
 checkpointFolder = checkpointRoot+ '/social_regressor_fcn_bn_try2/'
-preTrainFileName= 'checkpoint_e177_loss0.6120.pth'
+preTrainFileName= 'checkpoint_e3900_loss0.4378.pth'
 
 
 ######################################

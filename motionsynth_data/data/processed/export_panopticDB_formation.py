@@ -12,6 +12,8 @@ from Pivots import Pivots
 
 import cPickle as pickle
 
+from sklearn.preprocessing import normalize
+
 def softmax(x, **kw):
     softness = kw.pop('softness', 1.0)
     maxi, mini = np.max(x, **kw), np.min(x, **kw)
@@ -755,7 +757,7 @@ def get_files_haggling(directory, bReturnTesting):
         - windows_speech: [elm1,elm2,elm3], where elmX is list of (window,)
 """
 import cPickle as pickle
-def process_file_withSpeech_byGroup_normalized(filename, window=240, window_step=120):
+def process_file_withSpeech_byGroup_normalized(filename, window=240, window_step=120, apply_brl=False):
     
     #anim, names, frametime = BVH.load(filename)
     motionData = pickle.load( open(filename, "rb" ) )
@@ -853,11 +855,22 @@ def process_file_withSpeech_byGroup_normalized(filename, window=240, window_step
     windows_speech = [list(),list(),list()]
     
     frameNum = motionData_list[0]['pos'].shape[0]
+
+    
+    #Original ordering: 0:buyer 1:winner 2:loser
+    pIdx_brl = [0, 1,2]     
+
+    if apply_brl:       #New ordering: 0:buyer 1:right 2:left  (w.r.t buyer)
+        if motionData['rightSellerId'] != motionData['winnerId']:
+            pIdx_brl = [0, 2, 1]     
+
     print("skelSize {0} vs speechSize {1}".format(frameNum,speechData['indicator'].shape[0]))
     for j in range(0, frameNum - window, window_step):
 
-        for pIdx in range(len(motionData_list)):
+        #for pIdx in range(len(motionData_list)):
+        for outputIdx, pIdx in enumerate(pIdx_brl):
         
+
             slice = motionData_list[pIdx]['pos'][j:j+window] #frames x 3
             if len(slice) < window:
                 break
@@ -876,11 +889,135 @@ def process_file_withSpeech_byGroup_normalized(filename, window=240, window_step
             if len(slice) != window: raise Exception()
             slice_concat = np.concatenate((slice_concat,slice), axis =1) #frame x6
 
-            windows_pos_normal[pIdx].append(slice_concat)
+            windows_pos_normal[outputIdx].append(slice_concat)
 
             #Speech Data
             speechSignal = speechData_list[pIdx]['indicator'][j:j+window]
-            windows_speech[pIdx].append(speechSignal)
+            windows_speech[outputIdx].append(speechSignal)
+
+    return windows_pos_normal, windows_speech
+
+
+def process_file_withSpeech_byGroup_normalized_byFirstFrame(filename, window=240, window_step=120, apply_brl=False):
+    
+    #anim, names, frametime = BVH.load(filename)
+    motionData = pickle.load( open(filename, "rb" ) )
+
+    #Load speech info
+    seqName = os.path.basename(filename)
+    #speech_fileName = seqName[:-7] + '.pkl'
+    speech_fileName = seqName
+    speechPath = './panopticDB_pkl_speech_hagglingProcessed/' +speech_fileName
+    speechData_raw = pickle.load( open( speechPath, "rb" ) )
+
+    motionData_list=list()
+    speechData_list=list()
+    
+    for pIdx in range(0,3):
+        
+        speechData = speechData_raw['speechData'][pIdx]
+        speechData_list.append(speechData) #Save speech info
+
+        b_normal = motionData['subjects'][pIdx]['bodyNormal']       #(3,frames)
+        f_normal = motionData['subjects'][pIdx]['faceNormal']       #(3,frames)
+        pos = motionData['subjects'][pIdx]['joints19'][:3,:]        #(3,frames)
+
+        b_normal = np.swapaxes(b_normal,0,1)       #(frames, 3)
+        f_normal = np.swapaxes(f_normal,0,1)       #(frames, 3)
+        pos = np.swapaxes(pos,0,1)            #(frames, 3)
+
+        motionData_list.append({'faceNormal': f_normal, 'bodyNormal': b_normal, 'pos':pos})    #all data (frames x 3)
+
+    #Normalize
+    refPos = motionData_list[0]['pos']  #(frames, 3)
+    refFaceNormal = motionData_list[0]['faceNormal'] #(frames, 3)
+    refBodyNormal = motionData_list[0]['bodyNormal'] #(frames, 3)
+
+    target = np.array([[0,0,1]]).repeat(len(refBodyNormal), axis=0)
+    #target = np.array([[0,0,-1]]).repeat(len(refBodyNormal), axis=0)
+    refRotation = Quaternions.between(refBodyNormal, target)[:,np.newaxis]       #(frames, 1)
+
+    # """Debug"""
+    # bodyNormal_scalar  = Pivots.from_directions(refBodyNormal).ps
+    # import matplotlib.pyplot as plt
+    # ax2=plt.subplot(111)
+    # plt.plot(bodyNormal_scalar)
+    # plt.title('bodyNormal_scalar')
+    # plt.show()
+
+    # for pIdx in range(0,3):
+
+    #     """ refPos on the Origin """
+    #     pos =  (motionData_list[pIdx]['pos'] - refPos[0])
+    #     motionData_list[pIdx]['pos'] = pos
+    #     #pos = np.expand_dims(pos,1)
+    #     #motionData_list[pIdx]['pos'] = refRotation[0:1] * pos
+    #     #motionData_list[pIdx]['pos'] = motionData_list[pIdx]['pos'][:,0,:]
+        
+
+    #     """ Orientation as a vector """
+    #     bodyNormal_scalar = refRotation[0:1]*  np.expand_dims(motionData_list[pIdx]['bodyNormal'],1)
+    #     motionData_list[pIdx]['bodyNormal'] = bodyNormal_scalar[:,0,:]
+
+    #     faceNormal_scalar = refRotation[0:1] * np.expand_dims(motionData_list[pIdx]['faceNormal'],1)
+    #     motionData_list[pIdx]['faceNormal'] = faceNormal_scalar[:,0,:]
+
+
+
+
+    if len(motionData_list[0]['pos']) != len(motionData_list[1]['pos']): raise Exception()
+    if len(motionData_list[1]['pos']) != len(motionData_list[2]['pos']): raise Exception()
+    if len(speechData_list[0]) != len(speechData_list[1]): raise Exception()
+    if len(speechData_list[1]) != len(speechData_list[2]): raise Exception()
+        
+    """ Slide over windows """
+    windows_pos_normal = [list(),list(),list()]
+    windows_speech = [list(),list(),list()]
+    
+    frameNum = motionData_list[0]['pos'].shape[0]
+
+    
+    #Original ordering: 0:buyer 1:winner 2:loser
+    pIdx_brl = [0, 1,2]     
+
+    if apply_brl:       #New ordering: 0:buyer 1:right 2:left  (w.r.t buyer)
+        if motionData['rightSellerId'] != motionData['winnerId']:
+            pIdx_brl = [0, 2, 1]     
+
+    print("skelSize {0} vs speechSize {1}".format(frameNum,speechData['indicator'].shape[0]))
+    for j in range(0, frameNum - window, window_step):
+
+        #for pIdx in range(len(motionData_list)):
+        for outputIdx, pIdx in enumerate(pIdx_brl):
+
+
+            refPosSlice =  refPos[j]
+            refRotSlice = refRotation[j:j+1]
+
+            #slice = motionData_list[pIdx]['pos'][j:j+window] #frames x 3
+            slice = motionData_list[pIdx]['pos'][j:j+window] - refPosSlice#frames x 3
+            if len(slice) < window:
+                break
+            if len(slice) != window: raise Exception()
+            slice_concat = slice
+
+            slice = motionData_list[pIdx]['faceNormal'][j:j+window] #frames x 3
+            if len(slice) < window:
+                break
+            if len(slice) != window: raise Exception()
+            slice_concat = np.concatenate((slice_concat,slice), axis =1) #frame x6
+
+            slice = motionData_list[pIdx]['bodyNormal'][j:j+window] #frames x 3
+            if len(slice) < window:
+                break
+            if len(slice) != window: raise Exception()
+            slice_concat = np.concatenate((slice_concat,slice), axis =1) #frame x6
+
+            windows_pos_normal[outputIdx].append(slice_concat)
+
+            #Speech Data
+            speechSignal = speechData_list[pIdx]['indicator'][j:j+window]
+            windows_speech[outputIdx].append(speechSignal)
 
     return windows_pos_normal, windows_speech
 
@@ -892,7 +1029,7 @@ def process_file_withSpeech_byGroup_normalized(filename, window=240, window_step
         - windows_speech: [elm1,elm2,elm3], where elmX is list of (window,)
 """
 import cPickle as pickle
-def process_file_withSpeech_byGroup(filename, window=240, window_step=120):
+def process_file_withSpeech_byGroup(filename, window=240, window_step=120, apply_brl=False):
     
     #anim, names, frametime = BVH.load(filename)
     motionData = pickle.load( open(filename, "rb" ) )
@@ -918,6 +1055,41 @@ def process_file_withSpeech_byGroup(filename, window=240, window_step=120):
 
         motionData_list.append({'faceNormal': np.swapaxes(f_normal,0,1), 'bodyNormal': np.swapaxes(b_normal,0,1), 'pos':np.swapaxes(pos,0,1)})    #all data (frames x 3)
 
+    """compute face normal as an angle"""
+    for pIdx in range(0,3):
+
+        #Assuming, 0,1,2 are in BuyerRightLeft order. me->rightPerson direction is labelled as 0. 
+        if pIdx==0: #buyer
+            pos2Other_0 = motionData_list[1]['pos'] - motionData_list[pIdx]['pos']  #(frames,3)
+            pos2Other_1 = motionData_list[2]['pos'] - motionData_list[pIdx]['pos']  #(frames,3)
+        elif pIdx ==1:  #right person w.r.t buyer
+            pos2Other_0 = motionData_list[2]['pos'] - motionData_list[pIdx]['pos']
+            pos2Other_1 = motionData_list[0]['pos'] - motionData_list[pIdx]['pos']
+        elif pIdx ==2:  #left person
+            pos2Other_0 = motionData_list[0]['pos'] - motionData_list[pIdx]['pos']
+            pos2Other_1 = motionData_list[1]['pos'] - motionData_list[pIdx]['pos']
+        
+        #
+        pos2Other_0 = normalize(pos2Other_0,axis=1) #(frames,3)
+        pos2Other_1 = normalize(pos2Other_1,axis=1) #(frames,3)
+        faceNormal = motionData_list[pIdx]['faceNormal']
+        bodyNormal = motionData_list[pIdx]['bodyNormal']
+
+        rotation = Quaternions.between(pos2Other_0, pos2Other_1)[:,np.newaxis]     #rot from 0->1
+        angleValue_full = Pivots.from_quaternions(rotation).ps
+
+        rotation = Quaternions.between(pos2Other_0, faceNormal)[:,np.newaxis]     #rot from 0->1
+        angleValue_faceDir = Pivots.from_quaternions(rotation).ps
+        attentionLabel_face = angleValue_faceDir/ angleValue_full    #0 for attention on the right person, 1 for on left person
+
+        rotation = Quaternions.between(pos2Other_0, bodyNormal)[:,np.newaxis]     #rot from 0->1
+        angleValue_bodyDir = Pivots.from_quaternions(rotation).ps
+        attentionLabel_body = angleValue_bodyDir / angleValue_full    #0 for attention on the right person, 1 for on left person
+
+        motionData_list[pIdx]['binaryFaceAtt'] = attentionLabel_face
+        motionData_list[pIdx]['binaryBodyAtt'] = attentionLabel_body
+
+
 
     if len(motionData_list[0]['pos']) != len(motionData_list[1]['pos']): raise Exception()
     if len(motionData_list[1]['pos']) != len(motionData_list[2]['pos']): raise Exception()
@@ -927,12 +1099,39 @@ def process_file_withSpeech_byGroup(filename, window=240, window_step=120):
     """ Slide over windows """
     windows_pos_normal = [list(),list(),list()]
     windows_speech = [list(),list(),list()]
-    
+    windows_attention =[list(),list(),list()]
+
+    #Original ordering: 0:buyer 1:winner 2:loser
+    pIdx_brl = [0, 1,2]     
+    bSwtchedBRL = False
+    if apply_brl:       #New ordering: 0:buyer 1:right 2:left  (w.r.t buyer)
+        if motionData['rightSellerId'] != motionData['winnerId']:
+            pIdx_brl = [0, 2, 1]     
+            bSwtchedBRL = True
+
     frameNum = motionData_list[0]['pos'].shape[0]
     print("skelSize {0} vs speechSize {1}".format(frameNum,speechData['indicator'].shape[0]))
     for j in range(0, frameNum - window, window_step):
 
-        for pIdx in range(len(motionData_list)):
+        bGood = True
+        for outputIdx, pIdx in enumerate(pIdx_brl):
+            #Binary attention data
+            atten = motionData_list[pIdx]['binaryFaceAtt'][j:j+window]  #(frame,1)
+            slice = motionData_list[pIdx]['binaryBodyAtt'][j:j+window]  #(frame,1)
+            atten_concat = np.concatenate((atten,slice), axis =1) #frame x6
+
+            nanCheck = np.max(atten_concat)
+            if nanCheck!=nanCheck:
+                print('nan is detected')
+                bGood = False
+                break
+
+
+        if bGood ==False:
+            continue
+        
+        for outputIdx, pIdx in enumerate(pIdx_brl):
+        #for pIdx in range(len(motionData_list)):
         
             slice = motionData_list[pIdx]['pos'][j:j+window] #frames x 3
             if len(slice) < window:
@@ -952,36 +1151,59 @@ def process_file_withSpeech_byGroup(filename, window=240, window_step=120):
             if len(slice) != window: raise Exception()
             slice_concat = np.concatenate((slice_concat,slice), axis =1) #frame x6
 
-            windows_pos_normal[pIdx].append(slice_concat)
+            #Binary attention data
+            atten = motionData_list[pIdx]['binaryFaceAtt'][j:j+window]  #(frame,1)
+            slice = motionData_list[pIdx]['binaryBodyAtt'][j:j+window]  #(frame,1)
+            atten_concat = np.concatenate((atten,slice), axis =1) #frame x6
+
+            if bSwtchedBRL:
+                #ptIdx 1 and 2 are swithced, #Flip 0,1 label for all ptIdx
+                atten_concat = 1 - atten_concat
+        
+            windows_pos_normal[outputIdx].append(slice_concat)
 
             #Speech Data
             speechSignal = speechData_list[pIdx]['indicator'][j:j+window]
-            windows_speech[pIdx].append(speechSignal)
+            windows_speech[outputIdx].append(speechSignal)
 
-    return windows_pos_normal, windows_speech
+
+            windows_attention[outputIdx].append(atten_concat)
+    
+        
+
+    return windows_pos_normal, windows_speech, windows_attention
 
 
 """Haggling testing games sellers"""
 faceParamDir = '/ssd/codes/pytorch_motionSynth/motionsynth_data/data/processed_panoptic/panopticDB_pkl_hagglingProcessed'
-h36m_files = get_files_haggling(faceParamDir,False)
+h36m_files = get_files_haggling(faceParamDir,True)
 print('Num: {}'.format(len(h36m_files)))
 group_data = [ [], [], [] ]
 group_speech = [ [], [], [] ]
+group_attention = [ [], [], [] ]
 for i, item in enumerate(h36m_files):
 
-    # if not ('170228_haggling_b1_group9' in item):
+    # if not ('170407_haggling_b2_group6' in item):
     #     continue
     print('Processing %i of %i (%s)' % (i, len(h36m_files), item))
-    clips, speech = process_file_withSpeech_byGroup_normalized(item,240,5)
-    #clips, speech = process_file_withSpeech_byGroup(item,1,1)
+    #clips, speech = process_file_withSpeech_byGroup_normalized(item,240,5, apply_brl=True)
+    clips, speech, attention = process_file_withSpeech_byGroup(item,240,5, apply_brl=True)
+    #clips, speech = process_file_withSpeech_byGroup_normalized_byFirstFrame(item,240,5, apply_brl=True)
 
     for pIdx in range(3):
         group_data[pIdx] += clips[pIdx]
         group_speech[pIdx] += speech[pIdx]
-    # if i==5:
-    #     break
+        group_attention[pIdx] +=  attention[pIdx]
+        #np.concatenate( (group_attention[pIdx],attention[pIdx]),axis=0)
+
+    if i==5:
+        break
 for pIdx in range(3):
     group_data[pIdx] = np.array(group_data[pIdx])       #(num, frames, featureNum:9)
     group_speech[pIdx] = np.array(group_speech[pIdx])   #(num, frames, featureNum:9)
+    group_attention[pIdx] = np.array(group_attention[pIdx])   #(num, frames, featureNum:2)
+
 print("Data shape: {}".format(group_data[0].shape))
-np.savez('data_hagglingSellers_speech_formation_pN_rN_rV_240frm_5gap_white_training', clips=group_data, speech=group_speech)
+np.savez('data_hagglingSellers_speech_formation_240frm_5gap_white_brl_atten_testing_tiny', clips=group_data, speech=group_speech, attention=group_attention)
+#np.savez('data_hagglingSellers_speech_formation_240frm_5gap_white_brl_firstFrmPosNorm_testing', clips=group_data, speech=group_speech)
+#np.savez('data_hagglingSellers_speech_formation_pN_rN_rV_240frm_5gap_white_brl_testing', clips=group_data, speech=group_speech)

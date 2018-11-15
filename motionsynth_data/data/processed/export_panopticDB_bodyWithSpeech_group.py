@@ -728,7 +728,7 @@ seq_initPos = [[],[],[]]
 seq_initRot = [[],[],[]]
 for i, item in enumerate(h36m_files):
     print('Processing %i of %i (%s)' % (i, len(h36m_files), item))
-    clips, speech, initPos, initRot = process_file_withSpeech_byGroup(item,240,15)
+    clips, speech, initPos, initRot = process_file_withSpeech_byGroup(item,120,30)
 
     for pIdx in range(3):
         seq_data[pIdx] += clips[pIdx]
@@ -736,8 +736,8 @@ for i, item in enumerate(h36m_files):
         seq_initPos[pIdx] += initPos[pIdx]
         seq_initRot[pIdx] += initRot[pIdx]
 
-    if i==2:
-        break
+    # if i==2:
+    #     break
     
 for pIdx in range(3):
     seq_data[pIdx] = np.array(seq_data[pIdx])       #(chunkNum, frames, featureDim:73)
@@ -751,6 +751,6 @@ seq_initPos  = np.array(seq_initPos)  #(3, chunkNum, 1, featureDim:3)
 #seq_initRot: 3 x chunkNum x 1  # seq_initRot[ptIdx][chunkIdx]
 
 print("size: {}".format(seq_data[0].shape))
-output = open('data_hagglingSellers_speech_body_group_240frm_15gap_white_noGa_testing_tiny.pkl', 'wb')
+output = open('data_hagglingSellers_speech_body_group_120frm_30gap_white_noGa_teseting.pkl', 'wb')
 pickle.dump({'data':seq_data, 'speech':seq_speech, 'initPos':seq_initPos, 'initRot':seq_initRot, 'seqNames': h36m_files}, output)
 output.close()

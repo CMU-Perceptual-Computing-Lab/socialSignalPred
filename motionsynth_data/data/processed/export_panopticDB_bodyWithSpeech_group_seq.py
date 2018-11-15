@@ -453,17 +453,17 @@ def process_file_withSpeech_byGroup(filename, window=240, window_step=120):
 
     windows and windows_speech should have the same size
 """
-def process_file_withSpeech_byGroup_bySeq(filename):
+def process_file_withSpeech_byGroup_bySeq(filename, apply_brl=False):
     
     if not '_p0.bvh' in filename:
         return
     seqName = os.path.basename(filename)
 
 
-    # #Load Panoptic Original Body Data
-    # panopticDir = '/ssd/codes/pytorch_motionSynth/motionsynth_data/data/processed_panoptic/panopticDB_pkl_hagglingProcessed/'
-    # panopticFileName = panopticDir+  seqName[:-7] + '.pkl'
-    # motionData = pickle.load( open(panopticFileName, "rb" ) )
+    #Load Panoptic Original Body Data
+    panopticDir = '/ssd/codes/pytorch_motionSynth/motionsynth_data/data/processed_panoptic/panopticDB_pkl_hagglingProcessed/'
+    panopticFileName = panopticDir+  seqName[:-7] + '.pkl'
+    motionData = pickle.load( open(panopticFileName, "rb" ) )
 
     #Load speech info
     speech_fileName = seqName[:-7] + '.pkl'
@@ -590,6 +590,13 @@ def process_file_withSpeech_byGroup_bySeq(filename):
         #initPos = motionData['subjects'][pIdx]['joints19'][:3,:1]*0.2      #(3,1)     *0.2 for scaling to Holden' format
 
         initInfo_list.append({'pos':initPos, 'rot':initRot.qs })        #Save initial trans and rot information for the first frame
+
+    if apply_brl:       #New ordering: 0:buyer 1:right 2:left  (w.r.t buyer)
+        if motionData['rightSellerId'] != motionData['winnerId']:
+
+            positions_list[2],positions_list[1]  = positions_list[1],positions_list[2] 
+            speechData_list[2],speechData_list[1]  = speechData_list[1],speechData_list[2] 
+            initInfo_list[2], initInfo_list[1] = initInfo_list[1], initInfo_list[2]
 
     if len(positions_list[0]) != len(positions_list[1]): raise Exception()
     if len(positions_list[1]) != len(positions_list[2]): raise Exception()
@@ -886,7 +893,7 @@ seq_speech = []
 seq_initPos = []
 for i, item in enumerate(h36m_files):
     print('Processing %i of %i (%s)' % (i, len(h36m_files), item))
-    clips, speech, initPos = process_file_withSpeech_byGroup_bySeq(item)
+    clips, speech, initPos = process_file_withSpeech_byGroup_bySeq(item, apply_brl=True)
 
     clips = np.array(clips)     #(3, frames, featureDim:9)
     speech= np.array(speech)    #(3, frames)
@@ -903,6 +910,6 @@ for i, item in enumerate(h36m_files):
 
 #print("size: {}".format(seq_data.shape))
 #np.savez('data_hagglingSellers_speech_body_bySequence_white_testing', clips=h36m_clips, speech=h36m_classes)
-output = open('data_hagglingSellers_speech_body_bySequence_white_noGa_training.pkl', 'wb')
+output = open('data_hagglingSellers_speech_body_bySequence_white_noGa_brl_training.pkl', 'wb')
 pickle.dump({'data':seq_data, 'speech':seq_speech, 'initInfo':seq_initPos, 'seqNames': h36m_files}, output)
 output.close()
