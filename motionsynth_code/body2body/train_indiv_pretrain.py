@@ -79,8 +79,8 @@ datapath ='../../motionsynth_data/data/processed/'
 # test_dblist = ['data_hagglingSellers_speech_body_120frm_10gap_white_testing']
 
 train_dblist = ['data_hagglingSellers_speech_body_group_240frm_30gap_white_noGa_training']
-train_dblist = ['data_hagglingSellers_speech_body_group_240frm_15gap_white_noGa_testing_tiny']
-test_dblist = ['data_hagglingSellers_speech_body_group_240frm_15gap_white_noGa_testing_tiny']
+#train_dblist = ['data_hagglingSellers_speech_body_group_240frm_15gap_white_noGa_testing_tiny']
+test_dblist = ['data_hagglingSellers_speech_body_group_240frm_15gap_white_noGa_testing']
 
 pkl_file = open(datapath + train_dblist[0] + '.pkl', 'rb')
 train_data = pickle.load(pkl_file)
