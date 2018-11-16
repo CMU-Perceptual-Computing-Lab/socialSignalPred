@@ -56,11 +56,11 @@ torch.cuda.manual_seed(23456)
 #datapath ='/ssd/codes/pytorch_motionSynth/motionsynth_data' 
 datapath ='../../motionsynth_data/data/processed/' 
 
-# train_dblist = ['data_hagglingSellers_speech_body_group_120frm_30gap_white_noGa_training']
-# test_dblist = ['data_hagglingSellers_speech_body_group_120frm_30gap_white_noGa_testing']
+train_dblist = ['data_hagglingSellers_speech_body_group_120frm_30gap_white_noGa_training']
+test_dblist = ['data_hagglingSellers_speech_body_group_120frm_30gap_white_noGa_testing']
 
-train_dblist = ['data_hagglingSellers_speech_body_group_120frm_30gap_white_noGa_testing_tiny']
-test_dblist = ['data_hagglingSellers_speech_body_group_120frm_30gap_white_noGa_testing_tiny']
+#train_dblist = ['data_hagglingSellers_speech_body_group_120frm_30gap_white_noGa_testing_tiny']
+#test_dblist = ['data_hagglingSellers_speech_body_group_120frm_30gap_white_noGa_testing_tiny']
 
 #train_data = np.load(datapath + train_dblist[0] + '.npz')
 
