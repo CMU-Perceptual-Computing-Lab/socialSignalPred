@@ -196,17 +196,17 @@ class regressor_fcn_bn_encoder_5(nn.Module):
 
         self.encoder = nn.Sequential(
             nn.Dropout(0.25),
-            nn.Conv1d(146,256,5,padding=3),        #256, 73, 200
+            nn.Conv1d(146,256,5,padding=2),        #256, 73, 200
             nn.ReLU(),
             nn.BatchNorm1d(256),
 
             nn.Dropout(0.25),
-            nn.Conv1d(256,256,5,padding=3),        #256, 73, 200
+            nn.Conv1d(256,256,5,padding=2),        #256, 73, 200
             nn.ReLU(),
             nn.BatchNorm1d(256),
 
             nn.Dropout(0.25),
-            nn.Conv1d(256,256,5,padding=3),        #256, 73, 200
+            nn.Conv1d(256,256,5,padding=2),        #256, 73, 200
             nn.ReLU(),
             nn.BatchNorm1d(256),
             nn.MaxPool1d(kernel_size=2, stride=2),   #256, 73, 120
@@ -232,17 +232,17 @@ class regressor_fcn_bn_encoder_7(nn.Module):
 
         self.encoder = nn.Sequential(
             nn.Dropout(0.25),
-            nn.Conv1d(146,256,7,padding=5),        #256, 73, 200
+            nn.Conv1d(146,256,7,padding=3),        #256, 73, 200
             nn.ReLU(),
             nn.BatchNorm1d(256),
 
             nn.Dropout(0.25),
-            nn.Conv1d(256,256,7,padding=5),        #256, 73, 200
+            nn.Conv1d(256,256,7,padding=3),        #256, 73, 200
             nn.ReLU(),
             nn.BatchNorm1d(256),
 
             nn.Dropout(0.25),
-            nn.Conv1d(256,256,7,padding=5),        #256, 73, 200
+            nn.Conv1d(256,256,7,padding=3),        #256, 73, 200
             nn.ReLU(),
             nn.BatchNorm1d(256),
             nn.MaxPool1d(kernel_size=2, stride=2),   #256, 73, 120
