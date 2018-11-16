@@ -28,6 +28,8 @@ from torch import nn
 from torch.autograd import Variable
 import os
 
+import cPickle as pickle
+
 import modelZoo
 
 # Utility Functions
@@ -54,20 +56,52 @@ torch.cuda.manual_seed(23456)
 #datapath ='/ssd/codes/pytorch_motionSynth/motionsynth_data' 
 datapath ='../../motionsynth_data/data/processed/' 
 
-train_dblist = ['data_hagglingSellers_speech_body_120frm_5gap_white_noGa_training']
-test_dblist = ['data_hagglingSellers_speech_body_120frm_10gap_white_noGa_testing']
+# train_dblist = ['data_hagglingSellers_speech_body_group_120frm_30gap_white_noGa_training']
+# test_dblist = ['data_hagglingSellers_speech_body_group_120frm_30gap_white_noGa_testing']
 
-train_data = np.load(datapath + train_dblist[0] + '.npz')
+train_dblist = ['data_hagglingSellers_speech_body_group_120frm_30gap_white_noGa_testing_tiny']
+test_dblist = ['data_hagglingSellers_speech_body_group_120frm_30gap_white_noGa_testing_tiny']
 
-train_X= train_data['clips']  #Input (3700,240,73)
-train_Y = train_data['speech']  #Input (3700,240,73)
+#train_data = np.load(datapath + train_dblist[0] + '.npz')
+
+pkl_file = open(datapath + train_dblist[0] + '.pkl', 'rb')
+train_data = pickle.load(pkl_file)
+pkl_file.close()
+
+train_X= train_data['data']  #Input (3, num,240,73)
+train_Y = train_data['speech']  #Input (3, num,240,73)
 
 # train_X = train_X[:-1:10,:,:]
 # train_Y = train_Y[:-1:10,:]
 
-test_data = np.load(datapath + test_dblist[0] + '.npz')
-test_X= test_data['clips']  #Input (1044,240,73)
+#test_data = np.load(datapath + test_dblist[0] + '.npz')
+pkl_file = open(datapath + test_dblist[0] + '.pkl', 'rb')
+test_data = pickle.load(pkl_file)
+pkl_file.close()
+
+test_X= test_data['data']  #Input (1044,240,73)
 test_Y = test_data['speech']  #Input (1044,240,73)
+
+######################################
+# Input data selection
+
+if args.inputSubject == 2:
+
+    train_X = train_X[2,:,:,:]
+    test_X = test_X[2,:,:,:]
+
+    train_Y = train_Y[2]  #Input (3, num,240,73)
+    test_Y = test_Y[2]  #Input (3, num,240,73)
+
+else:
+    print( "args.inputSubject: {}".format(args.inputSubject) )
+    train_X = train_X[args.inputSubject,:,:,:]
+    test_X = test_X[args.inputSubject,:,:,:]
+
+    train_Y = train_Y[2]  #Input (3, num,240,73)
+    test_Y = test_Y[2]  #Input (3, num,240,73)
+
+
 
 ######################################
 # Network Setting

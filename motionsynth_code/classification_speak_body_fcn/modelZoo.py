@@ -141,3 +141,49 @@ class regressor_fcn_bn_dropout(nn.Module):
         output = self.out_act(latent)  #each values 0~1
         #output = self.decoder(latent)
         return output
+
+
+
+class regressor_fcn_bn_test(nn.Module):
+    def __init__(self):
+        super(regressor_fcn_bn_test, self).__init__()
+
+
+        self.encoder = nn.Sequential(
+            #nn.Dropout(0.25),
+            nn.Conv1d(73,128,45,padding=22),        #256, 73, 200
+            nn.ReLU(),
+            nn.BatchNorm1d(128),
+
+            #nn.Dropout(0.25),
+            nn.Conv1d(128,256,25,padding=12),        #256, 73, 200
+            nn.ReLU(),
+            nn.BatchNorm1d(256),
+
+            #nn.Dropout(0.25),
+            nn.Conv1d(256,512,15,padding=7),        #256, 73, 200
+            nn.ReLU(),
+            nn.BatchNorm1d(512),
+
+            nn.Conv1d(512,1,1),        #1d-convolution
+            #nn.ReLU(),
+            #nn.BatchNorm1d(1)
+
+            #nn.MaxPool1d(kerne_size=2, stride=2),   #256, 73, 120
+        )
+
+        self.decoder = nn.Sequential(
+            #nn.MaxUnpool1d(kernel_size=2, stride=2),
+            #nn.Dropout(0.25),
+            nn.ConvTranspose1d(512, 73, 25, stride=2, padding=12, output_padding=1),
+            #nn.ReLU(True)
+          )  
+        self.out_act = nn.Sigmoid()
+
+    def forward(self, input_):
+        latent = self.encoder(input_)       #(batch, feature:510, frames)
+
+        output = self.out_act(latent)  #each values 0~1
+        #output = self.decoder(latent)
+        return output
+

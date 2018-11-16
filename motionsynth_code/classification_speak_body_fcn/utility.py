@@ -48,8 +48,8 @@ def my_args_parser():
     parser.add_argument('--epochs', type=int, default=500001, metavar='N',
                         help='number of epochs to train (default: 50001)')
 
-    parser.add_argument('--batch', type=int, default=2018, metavar='N',
-                        help='batch size (default: 2018)')
+    parser.add_argument('--batch', type=int, default=32, metavar='N',
+                        help='batch size (default: 32)')
 
     parser.add_argument('--gpu', type=int, default=0, metavar='N',
                         help='Select gpu (default: 0)')
@@ -83,6 +83,9 @@ def my_args_parser():
     
     parser.add_argument('--faceParam_feature_dim', type=int, default='200',
                         help='Face Mesh Parameter Feature Dimension used for training (default: 200')
+    
+    parser.add_argument('--inputSubject', type=int, default='2',
+                        help='Input person Idx (default: 2)')
     
     return parser
 
