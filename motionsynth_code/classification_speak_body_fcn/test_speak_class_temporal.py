@@ -18,6 +18,7 @@ from utility import setCheckPointFolder
 from utility import my_args_parser
 
 
+import cPickle as pickle
 ######################################3
 # Logging
 import logging
@@ -46,13 +47,18 @@ torch.cuda.manual_seed(23456)
 #datapath ='/ssd/codes/pytorch_motionSynth/motionsynth_data' 
 datapath ='../../motionsynth_data/data/processed/' 
 
-test_dblist = ['data_hagglingSellers_speech_body_face_120frm_5gap_whiteBF_training']
+#test_dblist = ['data_hagglingSellers_speech_body_face_120frm_5gap_whiteBF_training']
 #test_dblist = ['data_hagglingSellers_speech_face_60frm_1gap_white_testing']
+test_dblist = ['data_hagglingSellers_speech_body_bySequence_white_noGa_brl_testing']
 
+#test_data = np.load(datapath + test_dblist[0] + '.npz')
 
-test_data = np.load(datapath + test_dblist[0] + '.npz')
-test_X= test_data['body']  #Input (1044,240,73)
-test_Y = test_data['speech']  #Input (1044,240,73)
+pkl_file = open(datapath + test_dblist[0] + '.pkl', 'rb')
+test_data = pickle.load(pkl_file)
+pkl_file.close()
+
+test_X= test_data['data']  #Input list of (3,frames,73)
+test_Y = test_data['speech']  #Input list of (3,frames,73)
 
 # test_X = test_X[:100,:,:]
 # test_Y = test_Y[:100]
