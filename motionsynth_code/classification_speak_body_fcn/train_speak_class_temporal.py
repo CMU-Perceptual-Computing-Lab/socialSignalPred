@@ -99,8 +99,8 @@ if args.inputSubject == 2:
 
 else:
     print( "args.inputSubject: {}".format(args.inputSubject) )
-    train_X = train_X[args.inputSubject,:,:,:]
-    test_X = test_X[args.inputSubject,:,:,:]
+    #train_X = train_X[args.inputSubject,:,:,:]
+    #test_X = test_X[args.inputSubject,:,:,:]
 
     if args.inputSubject==1:
         train_X = np.concatenate( (train_X_raw[2,:,:,:], train_X_raw[1,:,:,:]),axis=0)
