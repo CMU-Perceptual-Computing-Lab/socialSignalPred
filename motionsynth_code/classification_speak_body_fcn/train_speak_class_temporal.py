@@ -62,6 +62,9 @@ test_dblist = ['data_hagglingSellers_speech_body_group_120frm_30gap_white_noGa_t
 train_dblist = ['data_hagglingSellers_speech_body_group_120frm_30gap_white_noGa_testing_tiny']
 test_dblist = ['data_hagglingSellers_speech_body_group_120frm_30gap_white_noGa_testing_tiny']
 
+train_dblist = ['data_hagglingSellers_speech_body_group_120frm_10gap_white_noGa_training']
+test_dblist = ['data_hagglingSellers_speech_body_group_120frm_30gap_white_noGa_testing_']
+
 #train_data = np.load(datapath + train_dblist[0] + '.npz')
 
 pkl_file = open(datapath + train_dblist[0] + '.pkl', 'rb')
