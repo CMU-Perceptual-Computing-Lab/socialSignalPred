@@ -79,7 +79,7 @@ datapath ='../../motionsynth_data/data/processed/'
 # test_dblist = ['data_hagglingSellers_speech_body_120frm_10gap_white_testing']
 
 #train_dblist = ['data_hagglingSellers_speech_body_group_240frm_30gap_white_noGa_training']
-train_dblist = ['data_hagglingSellers_speech_body_group_240frm_15gap_white_noGa_testing']
+train_dblist = ['data_hagglingSellers_speech_body_group_240frm_15gap_white_noGa_training']
 test_dblist = ['data_hagglingSellers_speech_body_group_240frm_15gap_white_noGa_testing']
 
 pkl_file = open(datapath + train_dblist[0] + '.pkl', 'rb')
@@ -345,15 +345,15 @@ for epoch in range(num_epochs):
         #loss = criterion(output, inputData)
         #loss, recon_loss, kld_loss = modelZoo.vae_loss_function(output, inputData, mu, logvar,criterion,args.weight_kld)
 
-        l1_reg = None
-        for W in model.parameters():
-            if l1_reg is None:
-                l1_reg = W.norm(1)
-            else:
-                l1_reg = l1_reg + W.norm(1)        
-        l1_regularization = 0.1 * l1_reg
+        # l1_reg = None
+        # for W in model.parameters():
+        #     if l1_reg is None:
+        #         l1_reg = W.norm(1)
+        #     else:
+        #         l1_reg = l1_reg + W.norm(1)        
+        # l1_regularization = 0.1 * l1_reg
 
-        loss = loss + l1_regularization
+        loss = loss #+ l1_regularization
 
         # ===================backward====================
         optimizer.zero_grad()
