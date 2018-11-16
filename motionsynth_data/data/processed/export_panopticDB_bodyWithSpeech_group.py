@@ -728,7 +728,7 @@ seq_initPos = [[],[],[]]
 seq_initRot = [[],[],[]]
 for i, item in enumerate(h36m_files):
     print('Processing %i of %i (%s)' % (i, len(h36m_files), item))
-    clips, speech, initPos, initRot = process_file_withSpeech_byGroup(item,120,30)
+    clips, speech, initPos, initRot = process_file_withSpeech_byGroup(item,120,10)
 
     for pIdx in range(3):
         seq_data[pIdx] += clips[pIdx]
@@ -751,6 +751,6 @@ seq_initPos  = np.array(seq_initPos)  #(3, chunkNum, 1, featureDim:3)
 #seq_initRot: 3 x chunkNum x 1  # seq_initRot[ptIdx][chunkIdx]
 
 print("size: {}".format(seq_data[0].shape))
-output = open('data_hagglingSellers_speech_body_group_120frm_30gap_white_noGa_teseting.pkl', 'wb')
+output = open('data_hagglingSellers_speech_body_group_120frm_10gap_white_noGa_testing.pkl', 'wb')
 pickle.dump({'data':seq_data, 'speech':seq_speech, 'initPos':seq_initPos, 'initRot':seq_initRot, 'seqNames': h36m_files}, output)
 output.close()

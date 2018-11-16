@@ -59,8 +59,11 @@ datapath ='../../motionsynth_data/data/processed/'
 train_dblist = ['data_hagglingSellers_speech_body_group_120frm_30gap_white_noGa_training']
 test_dblist = ['data_hagglingSellers_speech_body_group_120frm_30gap_white_noGa_testing']
 
-#train_dblist = ['data_hagglingSellers_speech_body_group_120frm_30gap_white_noGa_testing_tiny']
-#test_dblist = ['data_hagglingSellers_speech_body_group_120frm_30gap_white_noGa_testing_tiny']
+train_dblist = ['data_hagglingSellers_speech_body_group_120frm_30gap_white_noGa_testing_tiny']
+test_dblist = ['data_hagglingSellers_speech_body_group_120frm_30gap_white_noGa_testing_tiny']
+
+train_dblist = ['data_hagglingSellers_speech_body_group_120frm_10gap_white_noGa_training']
+test_dblist = ['data_hagglingSellers_speech_body_group_120frm_30gap_white_noGa_testing_']
 
 #train_data = np.load(datapath + train_dblist[0] + '.npz')
 
@@ -68,8 +71,8 @@ pkl_file = open(datapath + train_dblist[0] + '.pkl', 'rb')
 train_data = pickle.load(pkl_file)
 pkl_file.close()
 
-train_X= train_data['data']  #Input (3, num,240,73)
-train_Y = train_data['speech']  #Input (3, num,240,73)
+train_X_raw= train_data['data']  #Input (3, num,240,73)
+train_Y_raw = train_data['speech']  #Input (3, num,240,73)
 
 # train_X = train_X[:-1:10,:,:]
 # train_Y = train_Y[:-1:10,:]
@@ -79,28 +82,43 @@ pkl_file = open(datapath + test_dblist[0] + '.pkl', 'rb')
 test_data = pickle.load(pkl_file)
 pkl_file.close()
 
-test_X= test_data['data']  #Input (1044,240,73)
-test_Y = test_data['speech']  #Input (1044,240,73)
+test_X_raw = test_data['data']  #Input (1044,240,73)
+test_Y_raw = test_data['speech']  #Input (1044,240,73)
 
 ######################################
 # Input data selection
 
 if args.inputSubject == 2:
 
-    train_X = train_X[2,:,:,:]
-    test_X = test_X[2,:,:,:]
+    train_X = np.concatenate( (train_X_raw[2,:,:,:], train_X_raw[1,:,:,:]),axis=0)
+    test_X = np.concatenate( (test_X_raw[2,:,:,:], test_X_raw[1,:,:,:]),axis=0)
 
-    train_Y = train_Y[2]  #Input (3, num,240,73)
-    test_Y = test_Y[2]  #Input (3, num,240,73)
+    #Own Body - Speak
+    train_Y = np.concatenate( (train_Y_raw[2], train_Y_raw[1]), axis=0)  #Input (3, num,240,73)
+    test_Y = np.concatenate( (test_Y_raw[2],test_Y_raw[1]),axis=0)   #Input (3, num,240,73)
 
 else:
     print( "args.inputSubject: {}".format(args.inputSubject) )
     train_X = train_X[args.inputSubject,:,:,:]
     test_X = test_X[args.inputSubject,:,:,:]
 
-    train_Y = train_Y[2]  #Input (3, num,240,73)
-    test_Y = test_Y[2]  #Input (3, num,240,73)
+    if args.inputSubject==1:
+        train_X = np.concatenate( (train_X_raw[2,:,:,:], train_X_raw[1,:,:,:]),axis=0)
+        test_X = np.concatenate( (test_X_raw[2,:,:,:], test_X_raw[1,:,:,:]),axis=0)
 
+        #Reverse
+        train_Y = np.concatenate( (train_Y_raw[1], train_Y_raw[2]), axis=0)  #Input (3, num,240,73)
+        test_Y = np.concatenate( (test_Y_raw[1],test_Y_raw[2]),axis=0)   #Input (3, num,240,73)
+    else: #args.inputSubject==0:
+        train_X = np.concatenate( (train_X_raw[0,:,:,:], train_X_raw[0,:,:,:]),axis=0)
+        test_X = np.concatenate( (test_X_raw[0,:,:,:], test_X_raw[0,:,:,:]),axis=0)
+
+        #Reverse
+        train_Y = np.concatenate( (train_Y_raw[1], train_Y_raw[2]), axis=0)  #Input (3, num,240,73)
+        test_Y = np.concatenate( (test_Y_raw[1],test_Y_raw[2]),axis=0)   #Input (3, num,240,73)
+
+    #train_Y = train_Y[2]  #Input (3, num,240,73)
+    #test_Y = test_Y[2]  #Input (3, num,240,73)
 
 
 ######################################

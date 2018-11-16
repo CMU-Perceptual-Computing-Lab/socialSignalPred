@@ -160,7 +160,12 @@ class regressor_fcn_bn_test(nn.Module):
             nn.ReLU(),
             nn.BatchNorm1d(256),
 
-            nn.Conv1d(256,1,1),        #1d-convolution
+            nn.Dropout(0.25),
+            nn.Conv1d(256,512,15,padding=7),        #256, 73, 200
+            nn.ReLU(),
+            nn.BatchNorm1d(512),
+
+            nn.Conv1d(512,1,1),        #1d-convolution
             #nn.ReLU(),
             #nn.BatchNorm1d(1)
 
