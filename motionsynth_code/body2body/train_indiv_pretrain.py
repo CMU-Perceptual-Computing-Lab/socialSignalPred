@@ -78,8 +78,8 @@ datapath ='../../motionsynth_data/data/processed/'
 # train_dblist = ['data_hagglingSellers_speech_body_120frm_5gap_white_training']
 # test_dblist = ['data_hagglingSellers_speech_body_120frm_10gap_white_testing']
 
-train_dblist = ['data_hagglingSellers_speech_body_group_240frm_30gap_white_noGa_training']
-#train_dblist = ['data_hagglingSellers_speech_body_group_240frm_15gap_white_noGa_testing_tiny']
+#train_dblist = ['data_hagglingSellers_speech_body_group_240frm_30gap_white_noGa_training']
+train_dblist = ['data_hagglingSellers_speech_body_group_240frm_15gap_white_noGa_testing']
 test_dblist = ['data_hagglingSellers_speech_body_group_240frm_15gap_white_noGa_testing']
 
 pkl_file = open(datapath + train_dblist[0] + '.pkl', 'rb')
@@ -405,8 +405,11 @@ for epoch in range(num_epochs):
 
 
         # ===================forward=====================
-        output = model(inputData)
+        #output = model(inputData)
+        output= model(inputData)
+        output = ae_model.decoder(output)
 
+        loss = criterion(output, outputGT)
         test_loss += loss.item()*batch_size_test
 
 
