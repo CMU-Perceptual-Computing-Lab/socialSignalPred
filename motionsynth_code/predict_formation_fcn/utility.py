@@ -197,7 +197,8 @@ def data_2dTo3D(data_2d, newRowIdx =1):
         - initRot_list: 3 x 1     # to go back to original absolute coordination
 """
 import sys
-sys.path.append('/ssd/codes/pytorch_motionSynth/motionsynth_data/motion')
+sys.path.append('../../motionsynth_data/motion')
+#sys.path.append('/ssd/codes/pytorch_motionSynth/motionsynth_data/motion')
 from Pivots import Pivots
 from Quaternions import Quaternions
 def ConvertTrajectory_velocityForm(posData, bodyNormalData):
