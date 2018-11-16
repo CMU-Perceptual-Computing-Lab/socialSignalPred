@@ -1,0 +1,2281 @@
+Input data size: (9235, 73, 120)
+model: social_autoencoder_first_try9, epoch [0/500001], avg loss:0.1138
+    On testing data: average loss: 0.0954 (best 1000.0000)
+
+model: social_autoencoder_first_try9, epoch [1/500001], avg loss:0.0855
+    On testing data: average loss: 0.0827 (best 0.0954)
+
+model: social_autoencoder_first_try9, epoch [2/500001], avg loss:0.0662
+    On testing data: average loss: 0.0661 (best 0.0827)
+
+model: social_autoencoder_first_try9, epoch [3/500001], avg loss:0.0600
+    On testing data: average loss: 0.0653 (best 0.0661)
+
+model: social_autoencoder_first_try9, epoch [4/500001], avg loss:0.0541
+    On testing data: average loss: 0.0534 (best 0.0653)
+
+model: social_autoencoder_first_try9, epoch [5/500001], avg loss:0.0483
+    On testing data: average loss: 0.0507 (best 0.0534)
+
+model: social_autoencoder_first_try9, epoch [6/500001], avg loss:0.0451
+    On testing data: average loss: 0.0462 (best 0.0507)
+
+model: social_autoencoder_first_try9, epoch [7/500001], avg loss:0.0424
+    On testing data: average loss: 0.0445 (best 0.0462)
+
+model: social_autoencoder_first_try9, epoch [8/500001], avg loss:0.0400
+    On testing data: average loss: 0.0400 (best 0.0445)
+
+model: social_autoencoder_first_try9, epoch [9/500001], avg loss:0.0378
+    On testing data: average loss: 0.0392 (best 0.0400)
+
+model: social_autoencoder_first_try9, epoch [10/500001], avg loss:0.0357
+    On testing data: average loss: 0.0358 (best 0.0392)
+
+model: social_autoencoder_first_try9, epoch [11/500001], avg loss:0.0337
+    On testing data: average loss: 0.0332 (best 0.0358)
+
+model: social_autoencoder_first_try9, epoch [12/500001], avg loss:0.0318
+    On testing data: average loss: 0.0308 (best 0.0332)
+
+model: social_autoencoder_first_try9, epoch [13/500001], avg loss:0.0301
+    On testing data: average loss: 0.0283 (best 0.0308)
+
+model: social_autoencoder_first_try9, epoch [14/500001], avg loss:0.0286
+    On testing data: average loss: 0.0264 (best 0.0283)
+
+model: social_autoencoder_first_try9, epoch [15/500001], avg loss:0.0274
+    On testing data: average loss: 0.0248 (best 0.0264)
+
+model: social_autoencoder_first_try9, epoch [16/500001], avg loss:0.0263
+    On testing data: average loss: 0.0236 (best 0.0248)
+
+model: social_autoencoder_first_try9, epoch [17/500001], avg loss:0.0253
+    On testing data: average loss: 0.0228 (best 0.0236)
+
+model: social_autoencoder_first_try9, epoch [18/500001], avg loss:0.0245
+    On testing data: average loss: 0.0218 (best 0.0228)
+
+model: social_autoencoder_first_try9, epoch [19/500001], avg loss:0.0240
+    On testing data: average loss: 0.0210 (best 0.0218)
+
+model: social_autoencoder_first_try9, epoch [20/500001], avg loss:0.0234
+    On testing data: average loss: 0.0203 (best 0.0210)
+
+model: social_autoencoder_first_try9, epoch [21/500001], avg loss:0.0228
+    On testing data: average loss: 0.0197 (best 0.0203)
+
+model: social_autoencoder_first_try9, epoch [22/500001], avg loss:0.0223
+    On testing data: average loss: 0.0191 (best 0.0197)
+
+model: social_autoencoder_first_try9, epoch [23/500001], avg loss:0.0218
+    On testing data: average loss: 0.0186 (best 0.0191)
+
+model: social_autoencoder_first_try9, epoch [24/500001], avg loss:0.0215
+    On testing data: average loss: 0.0181 (best 0.0186)
+
+model: social_autoencoder_first_try9, epoch [25/500001], avg loss:0.0211
+    On testing data: average loss: 0.0177 (best 0.0181)
+
+model: social_autoencoder_first_try9, epoch [26/500001], avg loss:0.0208
+    On testing data: average loss: 0.0173 (best 0.0177)
+
+model: social_autoencoder_first_try9, epoch [27/500001], avg loss:0.0205
+    On testing data: average loss: 0.0169 (best 0.0173)
+
+model: social_autoencoder_first_try9, epoch [28/500001], avg loss:0.0203
+    On testing data: average loss: 0.0166 (best 0.0169)
+
+model: social_autoencoder_first_try9, epoch [29/500001], avg loss:0.0200
+    On testing data: average loss: 0.0164 (best 0.0166)
+
+model: social_autoencoder_first_try9, epoch [30/500001], avg loss:0.0199
+    On testing data: average loss: 0.0160 (best 0.0164)
+
+model: social_autoencoder_first_try9, epoch [31/500001], avg loss:0.0196
+    On testing data: average loss: 0.0158 (best 0.0160)
+
+model: social_autoencoder_first_try9, epoch [32/500001], avg loss:0.0194
+    On testing data: average loss: 0.0157 (best 0.0158)
+
+model: social_autoencoder_first_try9, epoch [33/500001], avg loss:0.0192
+    On testing data: average loss: 0.0154 (best 0.0157)
+
+model: social_autoencoder_first_try9, epoch [34/500001], avg loss:0.0191
+    On testing data: average loss: 0.0152 (best 0.0154)
+
+model: social_autoencoder_first_try9, epoch [35/500001], avg loss:0.0188
+    On testing data: average loss: 0.0150 (best 0.0152)
+
+model: social_autoencoder_first_try9, epoch [36/500001], avg loss:0.0188
+    On testing data: average loss: 0.0148 (best 0.0150)
+
+model: social_autoencoder_first_try9, epoch [37/500001], avg loss:0.0186
+    On testing data: average loss: 0.0149 (best 0.0148)
+
+model: social_autoencoder_first_try9, epoch [38/500001], avg loss:0.0185
+    On testing data: average loss: 0.0145 (best 0.0148)
+
+model: social_autoencoder_first_try9, epoch [39/500001], avg loss:0.0184
+    On testing data: average loss: 0.0145 (best 0.0145)
+
+model: social_autoencoder_first_try9, epoch [40/500001], avg loss:0.0183
+    On testing data: average loss: 0.0144 (best 0.0145)
+
+model: social_autoencoder_first_try9, epoch [41/500001], avg loss:0.0182
+    On testing data: average loss: 0.0142 (best 0.0144)
+
+model: social_autoencoder_first_try9, epoch [42/500001], avg loss:0.0181
+    On testing data: average loss: 0.0140 (best 0.0142)
+
+model: social_autoencoder_first_try9, epoch [43/500001], avg loss:0.0180
+    On testing data: average loss: 0.0140 (best 0.0140)
+
+model: social_autoencoder_first_try9, epoch [44/500001], avg loss:0.0178
+    On testing data: average loss: 0.0140 (best 0.0140)
+
+model: social_autoencoder_first_try9, epoch [45/500001], avg loss:0.0177
+    On testing data: average loss: 0.0138 (best 0.0140)
+
+model: social_autoencoder_first_try9, epoch [46/500001], avg loss:0.0177
+    On testing data: average loss: 0.0136 (best 0.0138)
+
+model: social_autoencoder_first_try9, epoch [47/500001], avg loss:0.0176
+    On testing data: average loss: 0.0141 (best 0.0136)
+
+model: social_autoencoder_first_try9, epoch [48/500001], avg loss:0.0177
+    On testing data: average loss: 0.0132 (best 0.0136)
+
+model: social_autoencoder_first_try9, epoch [49/500001], avg loss:0.0175
+    On testing data: average loss: 0.0138 (best 0.0132)
+
+model: social_autoencoder_first_try9, epoch [50/500001], avg loss:0.0173
+    On testing data: average loss: 0.0132 (best 0.0132)
+
+model: social_autoencoder_first_try9, epoch [51/500001], avg loss:0.0173
+    On testing data: average loss: 0.0136 (best 0.0132)
+
+model: social_autoencoder_first_try9, epoch [52/500001], avg loss:0.0171
+    On testing data: average loss: 0.0131 (best 0.0132)
+
+model: social_autoencoder_first_try9, epoch [53/500001], avg loss:0.0171
+    On testing data: average loss: 0.0133 (best 0.0131)
+
+model: social_autoencoder_first_try9, epoch [54/500001], avg loss:0.0171
+    On testing data: average loss: 0.0129 (best 0.0131)
+
+model: social_autoencoder_first_try9, epoch [55/500001], avg loss:0.0170
+    On testing data: average loss: 0.0132 (best 0.0129)
+
+model: social_autoencoder_first_try9, epoch [56/500001], avg loss:0.0170
+    On testing data: average loss: 0.0130 (best 0.0129)
+
+model: social_autoencoder_first_try9, epoch [57/500001], avg loss:0.0168
+    On testing data: average loss: 0.0128 (best 0.0129)
+
+model: social_autoencoder_first_try9, epoch [58/500001], avg loss:0.0168
+    On testing data: average loss: 0.0131 (best 0.0128)
+
+model: social_autoencoder_first_try9, epoch [59/500001], avg loss:0.0168
+    On testing data: average loss: 0.0129 (best 0.0128)
+
+model: social_autoencoder_first_try9, epoch [60/500001], avg loss:0.0168
+    On testing data: average loss: 0.0126 (best 0.0128)
+
+model: social_autoencoder_first_try9, epoch [61/500001], avg loss:0.0168
+    On testing data: average loss: 0.0126 (best 0.0126)
+
+model: social_autoencoder_first_try9, epoch [62/500001], avg loss:0.0166
+    On testing data: average loss: 0.0127 (best 0.0126)
+
+model: social_autoencoder_first_try9, epoch [63/500001], avg loss:0.0166
+    On testing data: average loss: 0.0125 (best 0.0126)
+
+model: social_autoencoder_first_try9, epoch [64/500001], avg loss:0.0165
+    On testing data: average loss: 0.0125 (best 0.0125)
+
+model: social_autoencoder_first_try9, epoch [65/500001], avg loss:0.0165
+    On testing data: average loss: 0.0121 (best 0.0125)
+
+model: social_autoencoder_first_try9, epoch [66/500001], avg loss:0.0165
+    On testing data: average loss: 0.0124 (best 0.0121)
+
+model: social_autoencoder_first_try9, epoch [67/500001], avg loss:0.0164
+    On testing data: average loss: 0.0128 (best 0.0121)
+
+model: social_autoencoder_first_try9, epoch [68/500001], avg loss:0.0164
+    On testing data: average loss: 0.0120 (best 0.0121)
+
+model: social_autoencoder_first_try9, epoch [69/500001], avg loss:0.0164
+    On testing data: average loss: 0.0122 (best 0.0120)
+
+model: social_autoencoder_first_try9, epoch [70/500001], avg loss:0.0163
+    On testing data: average loss: 0.0129 (best 0.0120)
+
+model: social_autoencoder_first_try9, epoch [71/500001], avg loss:0.0164
+    On testing data: average loss: 0.0127 (best 0.0120)
+
+model: social_autoencoder_first_try9, epoch [72/500001], avg loss:0.0163
+    On testing data: average loss: 0.0121 (best 0.0120)
+
+model: social_autoencoder_first_try9, epoch [73/500001], avg loss:0.0162
+    On testing data: average loss: 0.0120 (best 0.0120)
+
+model: social_autoencoder_first_try9, epoch [74/500001], avg loss:0.0161
+    On testing data: average loss: 0.0125 (best 0.0120)
+
+model: social_autoencoder_first_try9, epoch [75/500001], avg loss:0.0161
+    On testing data: average loss: 0.0118 (best 0.0120)
+
+model: social_autoencoder_first_try9, epoch [76/500001], avg loss:0.0161
+    On testing data: average loss: 0.0117 (best 0.0118)
+
+model: social_autoencoder_first_try9, epoch [77/500001], avg loss:0.0161
+    On testing data: average loss: 0.0123 (best 0.0117)
+
+model: social_autoencoder_first_try9, epoch [78/500001], avg loss:0.0161
+    On testing data: average loss: 0.0122 (best 0.0117)
+
+model: social_autoencoder_first_try9, epoch [79/500001], avg loss:0.0160
+    On testing data: average loss: 0.0116 (best 0.0117)
+
+model: social_autoencoder_first_try9, epoch [80/500001], avg loss:0.0159
+    On testing data: average loss: 0.0121 (best 0.0116)
+
+model: social_autoencoder_first_try9, epoch [81/500001], avg loss:0.0160
+    On testing data: average loss: 0.0124 (best 0.0116)
+
+model: social_autoencoder_first_try9, epoch [82/500001], avg loss:0.0160
+    On testing data: average loss: 0.0117 (best 0.0116)
+
+model: social_autoencoder_first_try9, epoch [83/500001], avg loss:0.0158
+    On testing data: average loss: 0.0118 (best 0.0116)
+
+model: social_autoencoder_first_try9, epoch [84/500001], avg loss:0.0158
+    On testing data: average loss: 0.0117 (best 0.0116)
+
+model: social_autoencoder_first_try9, epoch [85/500001], avg loss:0.0157
+    On testing data: average loss: 0.0118 (best 0.0116)
+
+model: social_autoencoder_first_try9, epoch [86/500001], avg loss:0.0159
+    On testing data: average loss: 0.0126 (best 0.0116)
+
+model: social_autoencoder_first_try9, epoch [87/500001], avg loss:0.0159
+    On testing data: average loss: 0.0119 (best 0.0116)
+
+model: social_autoencoder_first_try9, epoch [88/500001], avg loss:0.0158
+    On testing data: average loss: 0.0113 (best 0.0116)
+
+model: social_autoencoder_first_try9, epoch [89/500001], avg loss:0.0158
+    On testing data: average loss: 0.0120 (best 0.0113)
+
+model: social_autoencoder_first_try9, epoch [90/500001], avg loss:0.0157
+    On testing data: average loss: 0.0119 (best 0.0113)
+
+model: social_autoencoder_first_try9, epoch [91/500001], avg loss:0.0156
+    On testing data: average loss: 0.0114 (best 0.0113)
+
+model: social_autoencoder_first_try9, epoch [92/500001], avg loss:0.0156
+    On testing data: average loss: 0.0119 (best 0.0113)
+
+model: social_autoencoder_first_try9, epoch [93/500001], avg loss:0.0156
+    On testing data: average loss: 0.0120 (best 0.0113)
+
+model: social_autoencoder_first_try9, epoch [94/500001], avg loss:0.0155
+    On testing data: average loss: 0.0113 (best 0.0113)
+
+model: social_autoencoder_first_try9, epoch [95/500001], avg loss:0.0155
+    On testing data: average loss: 0.0114 (best 0.0113)
+
+model: social_autoencoder_first_try9, epoch [96/500001], avg loss:0.0156
+    On testing data: average loss: 0.0116 (best 0.0113)
+
+model: social_autoencoder_first_try9, epoch [97/500001], avg loss:0.0155
+    On testing data: average loss: 0.0115 (best 0.0113)
+
+model: social_autoencoder_first_try9, epoch [98/500001], avg loss:0.0154
+    On testing data: average loss: 0.0111 (best 0.0113)
+
+model: social_autoencoder_first_try9, epoch [99/500001], avg loss:0.0155
+    On testing data: average loss: 0.0112 (best 0.0111)
+
+model: social_autoencoder_first_try9, epoch [100/500001], avg loss:0.0154
+    On testing data: average loss: 0.0115 (best 0.0111)
+
+model: social_autoencoder_first_try9, epoch [101/500001], avg loss:0.0155
+    On testing data: average loss: 0.0117 (best 0.0111)
+
+model: social_autoencoder_first_try9, epoch [102/500001], avg loss:0.0153
+    On testing data: average loss: 0.0117 (best 0.0111)
+
+model: social_autoencoder_first_try9, epoch [103/500001], avg loss:0.0154
+    On testing data: average loss: 0.0111 (best 0.0111)
+
+model: social_autoencoder_first_try9, epoch [104/500001], avg loss:0.0154
+    On testing data: average loss: 0.0110 (best 0.0111)
+
+model: social_autoencoder_first_try9, epoch [105/500001], avg loss:0.0153
+    On testing data: average loss: 0.0112 (best 0.0110)
+
+model: social_autoencoder_first_try9, epoch [106/500001], avg loss:0.0153
+    On testing data: average loss: 0.0111 (best 0.0110)
+
+model: social_autoencoder_first_try9, epoch [107/500001], avg loss:0.0153
+    On testing data: average loss: 0.0111 (best 0.0110)
+
+model: social_autoencoder_first_try9, epoch [108/500001], avg loss:0.0152
+    On testing data: average loss: 0.0110 (best 0.0110)
+
+model: social_autoencoder_first_try9, epoch [109/500001], avg loss:0.0151
+    On testing data: average loss: 0.0112 (best 0.0110)
+
+model: social_autoencoder_first_try9, epoch [110/500001], avg loss:0.0152
+    On testing data: average loss: 0.0113 (best 0.0110)
+
+model: social_autoencoder_first_try9, epoch [111/500001], avg loss:0.0152
+    On testing data: average loss: 0.0110 (best 0.0110)
+
+model: social_autoencoder_first_try9, epoch [112/500001], avg loss:0.0151
+    On testing data: average loss: 0.0108 (best 0.0110)
+
+model: social_autoencoder_first_try9, epoch [113/500001], avg loss:0.0152
+    On testing data: average loss: 0.0110 (best 0.0108)
+
+model: social_autoencoder_first_try9, epoch [114/500001], avg loss:0.0151
+    On testing data: average loss: 0.0108 (best 0.0108)
+
+model: social_autoencoder_first_try9, epoch [115/500001], avg loss:0.0151
+    On testing data: average loss: 0.0106 (best 0.0108)
+
+model: social_autoencoder_first_try9, epoch [116/500001], avg loss:0.0153
+    On testing data: average loss: 0.0108 (best 0.0106)
+
+model: social_autoencoder_first_try9, epoch [117/500001], avg loss:0.0151
+    On testing data: average loss: 0.0117 (best 0.0106)
+
+model: social_autoencoder_first_try9, epoch [118/500001], avg loss:0.0151
+    On testing data: average loss: 0.0110 (best 0.0106)
+
+model: social_autoencoder_first_try9, epoch [119/500001], avg loss:0.0150
+    On testing data: average loss: 0.0107 (best 0.0106)
+
+model: social_autoencoder_first_try9, epoch [120/500001], avg loss:0.0150
+    On testing data: average loss: 0.0114 (best 0.0106)
+
+model: social_autoencoder_first_try9, epoch [121/500001], avg loss:0.0150
+    On testing data: average loss: 0.0110 (best 0.0106)
+
+model: social_autoencoder_first_try9, epoch [122/500001], avg loss:0.0150
+    On testing data: average loss: 0.0107 (best 0.0106)
+
+model: social_autoencoder_first_try9, epoch [123/500001], avg loss:0.0151
+    On testing data: average loss: 0.0111 (best 0.0106)
+
+model: social_autoencoder_first_try9, epoch [124/500001], avg loss:0.0149
+    On testing data: average loss: 0.0108 (best 0.0106)
+
+model: social_autoencoder_first_try9, epoch [125/500001], avg loss:0.0148
+    On testing data: average loss: 0.0108 (best 0.0106)
+
+model: social_autoencoder_first_try9, epoch [126/500001], avg loss:0.0149
+    On testing data: average loss: 0.0114 (best 0.0106)
+
+model: social_autoencoder_first_try9, epoch [127/500001], avg loss:0.0149
+    On testing data: average loss: 0.0108 (best 0.0106)
+
+model: social_autoencoder_first_try9, epoch [128/500001], avg loss:0.0148
+    On testing data: average loss: 0.0108 (best 0.0106)
+
+model: social_autoencoder_first_try9, epoch [129/500001], avg loss:0.0149
+    On testing data: average loss: 0.0115 (best 0.0106)
+
+model: social_autoencoder_first_try9, epoch [130/500001], avg loss:0.0147
+    On testing data: average loss: 0.0109 (best 0.0106)
+
+model: social_autoencoder_first_try9, epoch [131/500001], avg loss:0.0148
+    On testing data: average loss: 0.0103 (best 0.0106)
+
+model: social_autoencoder_first_try9, epoch [132/500001], avg loss:0.0149
+    On testing data: average loss: 0.0113 (best 0.0103)
+
+model: social_autoencoder_first_try9, epoch [133/500001], avg loss:0.0148
+    On testing data: average loss: 0.0107 (best 0.0103)
+
+model: social_autoencoder_first_try9, epoch [134/500001], avg loss:0.0148
+    On testing data: average loss: 0.0105 (best 0.0103)
+
+model: social_autoencoder_first_try9, epoch [135/500001], avg loss:0.0147
+    On testing data: average loss: 0.0110 (best 0.0103)
+
+model: social_autoencoder_first_try9, epoch [136/500001], avg loss:0.0146
+    On testing data: average loss: 0.0106 (best 0.0103)
+
+model: social_autoencoder_first_try9, epoch [137/500001], avg loss:0.0147
+    On testing data: average loss: 0.0107 (best 0.0103)
+
+model: social_autoencoder_first_try9, epoch [138/500001], avg loss:0.0147
+    On testing data: average loss: 0.0107 (best 0.0103)
+
+model: social_autoencoder_first_try9, epoch [139/500001], avg loss:0.0147
+    On testing data: average loss: 0.0108 (best 0.0103)
+
+model: social_autoencoder_first_try9, epoch [140/500001], avg loss:0.0146
+    On testing data: average loss: 0.0107 (best 0.0103)
+
+model: social_autoencoder_first_try9, epoch [141/500001], avg loss:0.0146
+    On testing data: average loss: 0.0106 (best 0.0103)
+
+model: social_autoencoder_first_try9, epoch [142/500001], avg loss:0.0147
+    On testing data: average loss: 0.0105 (best 0.0103)
+
+model: social_autoencoder_first_try9, epoch [143/500001], avg loss:0.0146
+    On testing data: average loss: 0.0107 (best 0.0103)
+
+model: social_autoencoder_first_try9, epoch [144/500001], avg loss:0.0147
+    On testing data: average loss: 0.0110 (best 0.0103)
+
+model: social_autoencoder_first_try9, epoch [145/500001], avg loss:0.0146
+    On testing data: average loss: 0.0110 (best 0.0103)
+
+model: social_autoencoder_first_try9, epoch [146/500001], avg loss:0.0146
+    On testing data: average loss: 0.0105 (best 0.0103)
+
+model: social_autoencoder_first_try9, epoch [147/500001], avg loss:0.0145
+    On testing data: average loss: 0.0103 (best 0.0103)
+
+model: social_autoencoder_first_try9, epoch [148/500001], avg loss:0.0146
+    On testing data: average loss: 0.0106 (best 0.0103)
+
+model: social_autoencoder_first_try9, epoch [149/500001], avg loss:0.0145
+    On testing data: average loss: 0.0109 (best 0.0103)
+
+model: social_autoencoder_first_try9, epoch [150/500001], avg loss:0.0145
+    On testing data: average loss: 0.0107 (best 0.0103)
+
+model: social_autoencoder_first_try9, epoch [151/500001], avg loss:0.0145
+    On testing data: average loss: 0.0104 (best 0.0103)
+
+model: social_autoencoder_first_try9, epoch [152/500001], avg loss:0.0144
+    On testing data: average loss: 0.0103 (best 0.0103)
+
+model: social_autoencoder_first_try9, epoch [153/500001], avg loss:0.0144
+    On testing data: average loss: 0.0105 (best 0.0103)
+
+model: social_autoencoder_first_try9, epoch [154/500001], avg loss:0.0144
+    On testing data: average loss: 0.0108 (best 0.0103)
+
+model: social_autoencoder_first_try9, epoch [155/500001], avg loss:0.0145
+    On testing data: average loss: 0.0109 (best 0.0103)
+
+model: social_autoencoder_first_try9, epoch [156/500001], avg loss:0.0146
+    On testing data: average loss: 0.0105 (best 0.0103)
+
+model: social_autoencoder_first_try9, epoch [157/500001], avg loss:0.0145
+    On testing data: average loss: 0.0100 (best 0.0103)
+
+model: social_autoencoder_first_try9, epoch [158/500001], avg loss:0.0145
+    On testing data: average loss: 0.0102 (best 0.0100)
+
+model: social_autoencoder_first_try9, epoch [159/500001], avg loss:0.0145
+    On testing data: average loss: 0.0110 (best 0.0100)
+
+model: social_autoencoder_first_try9, epoch [160/500001], avg loss:0.0145
+    On testing data: average loss: 0.0103 (best 0.0100)
+
+model: social_autoencoder_first_try9, epoch [161/500001], avg loss:0.0143
+    On testing data: average loss: 0.0103 (best 0.0100)
+
+model: social_autoencoder_first_try9, epoch [162/500001], avg loss:0.0144
+    On testing data: average loss: 0.0105 (best 0.0100)
+
+model: social_autoencoder_first_try9, epoch [163/500001], avg loss:0.0143
+    On testing data: average loss: 0.0103 (best 0.0100)
+
+model: social_autoencoder_first_try9, epoch [164/500001], avg loss:0.0144
+    On testing data: average loss: 0.0102 (best 0.0100)
+
+model: social_autoencoder_first_try9, epoch [165/500001], avg loss:0.0144
+    On testing data: average loss: 0.0102 (best 0.0100)
+
+model: social_autoencoder_first_try9, epoch [166/500001], avg loss:0.0142
+    On testing data: average loss: 0.0104 (best 0.0100)
+
+model: social_autoencoder_first_try9, epoch [167/500001], avg loss:0.0142
+    On testing data: average loss: 0.0103 (best 0.0100)
+
+model: social_autoencoder_first_try9, epoch [168/500001], avg loss:0.0144
+    On testing data: average loss: 0.0105 (best 0.0100)
+
+model: social_autoencoder_first_try9, epoch [169/500001], avg loss:0.0142
+    On testing data: average loss: 0.0101 (best 0.0100)
+
+model: social_autoencoder_first_try9, epoch [170/500001], avg loss:0.0143
+    On testing data: average loss: 0.0102 (best 0.0100)
+
+model: social_autoencoder_first_try9, epoch [171/500001], avg loss:0.0142
+    On testing data: average loss: 0.0104 (best 0.0100)
+
+model: social_autoencoder_first_try9, epoch [172/500001], avg loss:0.0143
+    On testing data: average loss: 0.0105 (best 0.0100)
+
+model: social_autoencoder_first_try9, epoch [173/500001], avg loss:0.0143
+    On testing data: average loss: 0.0104 (best 0.0100)
+
+model: social_autoencoder_first_try9, epoch [174/500001], avg loss:0.0142
+    On testing data: average loss: 0.0104 (best 0.0100)
+
+model: social_autoencoder_first_try9, epoch [175/500001], avg loss:0.0141
+    On testing data: average loss: 0.0102 (best 0.0100)
+
+model: social_autoencoder_first_try9, epoch [176/500001], avg loss:0.0142
+    On testing data: average loss: 0.0098 (best 0.0100)
+
+model: social_autoencoder_first_try9, epoch [177/500001], avg loss:0.0143
+    On testing data: average loss: 0.0098 (best 0.0098)
+
+model: social_autoencoder_first_try9, epoch [178/500001], avg loss:0.0142
+    On testing data: average loss: 0.0103 (best 0.0098)
+
+model: social_autoencoder_first_try9, epoch [179/500001], avg loss:0.0143
+    On testing data: average loss: 0.0109 (best 0.0098)
+
+model: social_autoencoder_first_try9, epoch [180/500001], avg loss:0.0142
+    On testing data: average loss: 0.0101 (best 0.0098)
+
+model: social_autoencoder_first_try9, epoch [181/500001], avg loss:0.0141
+    On testing data: average loss: 0.0100 (best 0.0098)
+
+model: social_autoencoder_first_try9, epoch [182/500001], avg loss:0.0141
+    On testing data: average loss: 0.0101 (best 0.0098)
+
+model: social_autoencoder_first_try9, epoch [183/500001], avg loss:0.0141
+    On testing data: average loss: 0.0100 (best 0.0098)
+
+model: social_autoencoder_first_try9, epoch [184/500001], avg loss:0.0141
+    On testing data: average loss: 0.0101 (best 0.0098)
+
+model: social_autoencoder_first_try9, epoch [185/500001], avg loss:0.0141
+    On testing data: average loss: 0.0101 (best 0.0098)
+
+model: social_autoencoder_first_try9, epoch [186/500001], avg loss:0.0140
+    On testing data: average loss: 0.0101 (best 0.0098)
+
+model: social_autoencoder_first_try9, epoch [187/500001], avg loss:0.0140
+    On testing data: average loss: 0.0101 (best 0.0098)
+
+model: social_autoencoder_first_try9, epoch [188/500001], avg loss:0.0141
+    On testing data: average loss: 0.0102 (best 0.0098)
+
+model: social_autoencoder_first_try9, epoch [189/500001], avg loss:0.0140
+    On testing data: average loss: 0.0101 (best 0.0098)
+
+model: social_autoencoder_first_try9, epoch [190/500001], avg loss:0.0141
+    On testing data: average loss: 0.0097 (best 0.0098)
+
+model: social_autoencoder_first_try9, epoch [191/500001], avg loss:0.0140
+    On testing data: average loss: 0.0100 (best 0.0097)
+
+model: social_autoencoder_first_try9, epoch [192/500001], avg loss:0.0140
+    On testing data: average loss: 0.0102 (best 0.0097)
+
+model: social_autoencoder_first_try9, epoch [193/500001], avg loss:0.0140
+    On testing data: average loss: 0.0103 (best 0.0097)
+
+model: social_autoencoder_first_try9, epoch [194/500001], avg loss:0.0140
+    On testing data: average loss: 0.0098 (best 0.0097)
+
+model: social_autoencoder_first_try9, epoch [195/500001], avg loss:0.0140
+    On testing data: average loss: 0.0098 (best 0.0097)
+
+model: social_autoencoder_first_try9, epoch [196/500001], avg loss:0.0139
+    On testing data: average loss: 0.0100 (best 0.0097)
+
+model: social_autoencoder_first_try9, epoch [197/500001], avg loss:0.0138
+    On testing data: average loss: 0.0100 (best 0.0097)
+
+model: social_autoencoder_first_try9, epoch [198/500001], avg loss:0.0140
+    On testing data: average loss: 0.0098 (best 0.0097)
+
+model: social_autoencoder_first_try9, epoch [199/500001], avg loss:0.0139
+    On testing data: average loss: 0.0100 (best 0.0097)
+
+model: social_autoencoder_first_try9, epoch [200/500001], avg loss:0.0138
+    On testing data: average loss: 0.0103 (best 0.0097)
+
+model: social_autoencoder_first_try9, epoch [201/500001], avg loss:0.0140
+    On testing data: average loss: 0.0105 (best 0.0097)
+
+model: social_autoencoder_first_try9, epoch [202/500001], avg loss:0.0140
+    On testing data: average loss: 0.0101 (best 0.0097)
+
+model: social_autoencoder_first_try9, epoch [203/500001], avg loss:0.0140
+    On testing data: average loss: 0.0099 (best 0.0097)
+
+model: social_autoencoder_first_try9, epoch [204/500001], avg loss:0.0139
+    On testing data: average loss: 0.0099 (best 0.0097)
+
+model: social_autoencoder_first_try9, epoch [205/500001], avg loss:0.0139
+    On testing data: average loss: 0.0099 (best 0.0097)
+
+model: social_autoencoder_first_try9, epoch [206/500001], avg loss:0.0138
+    On testing data: average loss: 0.0099 (best 0.0097)
+
+model: social_autoencoder_first_try9, epoch [207/500001], avg loss:0.0138
+    On testing data: average loss: 0.0098 (best 0.0097)
+
+model: social_autoencoder_first_try9, epoch [208/500001], avg loss:0.0139
+    On testing data: average loss: 0.0098 (best 0.0097)
+
+model: social_autoencoder_first_try9, epoch [209/500001], avg loss:0.0138
+    On testing data: average loss: 0.0098 (best 0.0097)
+
+model: social_autoencoder_first_try9, epoch [210/500001], avg loss:0.0138
+    On testing data: average loss: 0.0096 (best 0.0097)
+
+model: social_autoencoder_first_try9, epoch [211/500001], avg loss:0.0139
+    On testing data: average loss: 0.0097 (best 0.0096)
+
+model: social_autoencoder_first_try9, epoch [212/500001], avg loss:0.0139
+    On testing data: average loss: 0.0097 (best 0.0096)
+
+model: social_autoencoder_first_try9, epoch [213/500001], avg loss:0.0140
+    On testing data: average loss: 0.0097 (best 0.0096)
+
+model: social_autoencoder_first_try9, epoch [214/500001], avg loss:0.0139
+    On testing data: average loss: 0.0100 (best 0.0096)
+
+model: social_autoencoder_first_try9, epoch [215/500001], avg loss:0.0138
+    On testing data: average loss: 0.0097 (best 0.0096)
+
+model: social_autoencoder_first_try9, epoch [216/500001], avg loss:0.0138
+    On testing data: average loss: 0.0097 (best 0.0096)
+
+model: social_autoencoder_first_try9, epoch [217/500001], avg loss:0.0138
+    On testing data: average loss: 0.0098 (best 0.0096)
+
+model: social_autoencoder_first_try9, epoch [218/500001], avg loss:0.0138
+    On testing data: average loss: 0.0099 (best 0.0096)
+
+model: social_autoencoder_first_try9, epoch [219/500001], avg loss:0.0138
+    On testing data: average loss: 0.0099 (best 0.0096)
+
+model: social_autoencoder_first_try9, epoch [220/500001], avg loss:0.0138
+    On testing data: average loss: 0.0097 (best 0.0096)
+
+model: social_autoencoder_first_try9, epoch [221/500001], avg loss:0.0138
+    On testing data: average loss: 0.0094 (best 0.0096)
+
+model: social_autoencoder_first_try9, epoch [222/500001], avg loss:0.0137
+    On testing data: average loss: 0.0098 (best 0.0094)
+
+model: social_autoencoder_first_try9, epoch [223/500001], avg loss:0.0136
+    On testing data: average loss: 0.0102 (best 0.0094)
+
+model: social_autoencoder_first_try9, epoch [224/500001], avg loss:0.0139
+    On testing data: average loss: 0.0102 (best 0.0094)
+
+model: social_autoencoder_first_try9, epoch [225/500001], avg loss:0.0137
+    On testing data: average loss: 0.0096 (best 0.0094)
+
+model: social_autoencoder_first_try9, epoch [226/500001], avg loss:0.0137
+    On testing data: average loss: 0.0096 (best 0.0094)
+
+model: social_autoencoder_first_try9, epoch [227/500001], avg loss:0.0136
+    On testing data: average loss: 0.0100 (best 0.0094)
+
+model: social_autoencoder_first_try9, epoch [228/500001], avg loss:0.0137
+    On testing data: average loss: 0.0099 (best 0.0094)
+
+model: social_autoencoder_first_try9, epoch [229/500001], avg loss:0.0137
+    On testing data: average loss: 0.0094 (best 0.0094)
+
+model: social_autoencoder_first_try9, epoch [230/500001], avg loss:0.0137
+    On testing data: average loss: 0.0099 (best 0.0094)
+
+model: social_autoencoder_first_try9, epoch [231/500001], avg loss:0.0137
+    On testing data: average loss: 0.0101 (best 0.0094)
+
+model: social_autoencoder_first_try9, epoch [232/500001], avg loss:0.0136
+    On testing data: average loss: 0.0098 (best 0.0094)
+
+model: social_autoencoder_first_try9, epoch [233/500001], avg loss:0.0137
+    On testing data: average loss: 0.0097 (best 0.0094)
+
+model: social_autoencoder_first_try9, epoch [234/500001], avg loss:0.0136
+    On testing data: average loss: 0.0098 (best 0.0094)
+
+model: social_autoencoder_first_try9, epoch [235/500001], avg loss:0.0137
+    On testing data: average loss: 0.0097 (best 0.0094)
+
+model: social_autoencoder_first_try9, epoch [236/500001], avg loss:0.0137
+    On testing data: average loss: 0.0096 (best 0.0094)
+
+model: social_autoencoder_first_try9, epoch [237/500001], avg loss:0.0137
+    On testing data: average loss: 0.0097 (best 0.0094)
+
+model: social_autoencoder_first_try9, epoch [238/500001], avg loss:0.0136
+    On testing data: average loss: 0.0099 (best 0.0094)
+
+model: social_autoencoder_first_try9, epoch [239/500001], avg loss:0.0137
+    On testing data: average loss: 0.0098 (best 0.0094)
+
+model: social_autoencoder_first_try9, epoch [240/500001], avg loss:0.0136
+    On testing data: average loss: 0.0096 (best 0.0094)
+
+model: social_autoencoder_first_try9, epoch [241/500001], avg loss:0.0136
+    On testing data: average loss: 0.0096 (best 0.0094)
+
+model: social_autoencoder_first_try9, epoch [242/500001], avg loss:0.0136
+    On testing data: average loss: 0.0100 (best 0.0094)
+
+model: social_autoencoder_first_try9, epoch [243/500001], avg loss:0.0136
+    On testing data: average loss: 0.0099 (best 0.0094)
+
+model: social_autoencoder_first_try9, epoch [244/500001], avg loss:0.0136
+    On testing data: average loss: 0.0095 (best 0.0094)
+
+model: social_autoencoder_first_try9, epoch [245/500001], avg loss:0.0136
+    On testing data: average loss: 0.0095 (best 0.0094)
+
+model: social_autoencoder_first_try9, epoch [246/500001], avg loss:0.0136
+    On testing data: average loss: 0.0096 (best 0.0094)
+
+model: social_autoencoder_first_try9, epoch [247/500001], avg loss:0.0135
+    On testing data: average loss: 0.0096 (best 0.0094)
+
+model: social_autoencoder_first_try9, epoch [248/500001], avg loss:0.0136
+    On testing data: average loss: 0.0097 (best 0.0094)
+
+model: social_autoencoder_first_try9, epoch [249/500001], avg loss:0.0136
+    On testing data: average loss: 0.0099 (best 0.0094)
+
+model: social_autoencoder_first_try9, epoch [250/500001], avg loss:0.0135
+    On testing data: average loss: 0.0099 (best 0.0094)
+
+model: social_autoencoder_first_try9, epoch [251/500001], avg loss:0.0135
+    On testing data: average loss: 0.0097 (best 0.0094)
+
+model: social_autoencoder_first_try9, epoch [252/500001], avg loss:0.0135
+    On testing data: average loss: 0.0096 (best 0.0094)
+
+model: social_autoencoder_first_try9, epoch [253/500001], avg loss:0.0135
+    On testing data: average loss: 0.0095 (best 0.0094)
+
+model: social_autoencoder_first_try9, epoch [254/500001], avg loss:0.0135
+    On testing data: average loss: 0.0096 (best 0.0094)
+
+model: social_autoencoder_first_try9, epoch [255/500001], avg loss:0.0135
+    On testing data: average loss: 0.0095 (best 0.0094)
+
+model: social_autoencoder_first_try9, epoch [256/500001], avg loss:0.0135
+    On testing data: average loss: 0.0094 (best 0.0094)
+
+model: social_autoencoder_first_try9, epoch [257/500001], avg loss:0.0135
+    On testing data: average loss: 0.0096 (best 0.0094)
+
+model: social_autoencoder_first_try9, epoch [258/500001], avg loss:0.0135
+    On testing data: average loss: 0.0096 (best 0.0094)
+
+model: social_autoencoder_first_try9, epoch [259/500001], avg loss:0.0135
+    On testing data: average loss: 0.0096 (best 0.0094)
+
+model: social_autoencoder_first_try9, epoch [260/500001], avg loss:0.0135
+    On testing data: average loss: 0.0097 (best 0.0094)
+
+model: social_autoencoder_first_try9, epoch [261/500001], avg loss:0.0135
+    On testing data: average loss: 0.0095 (best 0.0094)
+
+model: social_autoencoder_first_try9, epoch [262/500001], avg loss:0.0135
+    On testing data: average loss: 0.0096 (best 0.0094)
+
+model: social_autoencoder_first_try9, epoch [263/500001], avg loss:0.0135
+    On testing data: average loss: 0.0097 (best 0.0094)
+
+model: social_autoencoder_first_try9, epoch [264/500001], avg loss:0.0135
+    On testing data: average loss: 0.0096 (best 0.0094)
+
+model: social_autoencoder_first_try9, epoch [265/500001], avg loss:0.0135
+    On testing data: average loss: 0.0095 (best 0.0094)
+
+model: social_autoencoder_first_try9, epoch [266/500001], avg loss:0.0134
+    On testing data: average loss: 0.0095 (best 0.0094)
+
+model: social_autoencoder_first_try9, epoch [267/500001], avg loss:0.0135
+    On testing data: average loss: 0.0095 (best 0.0094)
+
+model: social_autoencoder_first_try9, epoch [268/500001], avg loss:0.0135
+    On testing data: average loss: 0.0097 (best 0.0094)
+
+model: social_autoencoder_first_try9, epoch [269/500001], avg loss:0.0134
+    On testing data: average loss: 0.0100 (best 0.0094)
+
+model: social_autoencoder_first_try9, epoch [270/500001], avg loss:0.0135
+    On testing data: average loss: 0.0098 (best 0.0094)
+
+model: social_autoencoder_first_try9, epoch [271/500001], avg loss:0.0135
+    On testing data: average loss: 0.0095 (best 0.0094)
+
+model: social_autoencoder_first_try9, epoch [272/500001], avg loss:0.0135
+    On testing data: average loss: 0.0093 (best 0.0094)
+
+model: social_autoencoder_first_try9, epoch [273/500001], avg loss:0.0134
+    On testing data: average loss: 0.0093 (best 0.0093)
+
+model: social_autoencoder_first_try9, epoch [274/500001], avg loss:0.0134
+    On testing data: average loss: 0.0095 (best 0.0093)
+
+model: social_autoencoder_first_try9, epoch [275/500001], avg loss:0.0134
+    On testing data: average loss: 0.0094 (best 0.0093)
+
+model: social_autoencoder_first_try9, epoch [276/500001], avg loss:0.0133
+    On testing data: average loss: 0.0095 (best 0.0093)
+
+model: social_autoencoder_first_try9, epoch [277/500001], avg loss:0.0133
+    On testing data: average loss: 0.0099 (best 0.0093)
+
+model: social_autoencoder_first_try9, epoch [278/500001], avg loss:0.0133
+    On testing data: average loss: 0.0095 (best 0.0093)
+
+model: social_autoencoder_first_try9, epoch [279/500001], avg loss:0.0134
+    On testing data: average loss: 0.0092 (best 0.0093)
+
+model: social_autoencoder_first_try9, epoch [280/500001], avg loss:0.0135
+    On testing data: average loss: 0.0095 (best 0.0092)
+
+model: social_autoencoder_first_try9, epoch [281/500001], avg loss:0.0134
+    On testing data: average loss: 0.0097 (best 0.0092)
+
+model: social_autoencoder_first_try9, epoch [282/500001], avg loss:0.0134
+    On testing data: average loss: 0.0096 (best 0.0092)
+
+model: social_autoencoder_first_try9, epoch [283/500001], avg loss:0.0134
+    On testing data: average loss: 0.0095 (best 0.0092)
+
+model: social_autoencoder_first_try9, epoch [284/500001], avg loss:0.0134
+    On testing data: average loss: 0.0094 (best 0.0092)
+
+model: social_autoencoder_first_try9, epoch [285/500001], avg loss:0.0134
+    On testing data: average loss: 0.0093 (best 0.0092)
+
+model: social_autoencoder_first_try9, epoch [286/500001], avg loss:0.0134
+    On testing data: average loss: 0.0095 (best 0.0092)
+
+model: social_autoencoder_first_try9, epoch [287/500001], avg loss:0.0133
+    On testing data: average loss: 0.0097 (best 0.0092)
+
+model: social_autoencoder_first_try9, epoch [288/500001], avg loss:0.0134
+    On testing data: average loss: 0.0095 (best 0.0092)
+
+model: social_autoencoder_first_try9, epoch [289/500001], avg loss:0.0133
+    On testing data: average loss: 0.0097 (best 0.0092)
+
+model: social_autoencoder_first_try9, epoch [290/500001], avg loss:0.0134
+    On testing data: average loss: 0.0095 (best 0.0092)
+
+model: social_autoencoder_first_try9, epoch [291/500001], avg loss:0.0133
+    On testing data: average loss: 0.0094 (best 0.0092)
+
+model: social_autoencoder_first_try9, epoch [292/500001], avg loss:0.0133
+    On testing data: average loss: 0.0096 (best 0.0092)
+
+model: social_autoencoder_first_try9, epoch [293/500001], avg loss:0.0133
+    On testing data: average loss: 0.0097 (best 0.0092)
+
+model: social_autoencoder_first_try9, epoch [294/500001], avg loss:0.0134
+    On testing data: average loss: 0.0096 (best 0.0092)
+
+model: social_autoencoder_first_try9, epoch [295/500001], avg loss:0.0133
+    On testing data: average loss: 0.0094 (best 0.0092)
+
+model: social_autoencoder_first_try9, epoch [296/500001], avg loss:0.0134
+    On testing data: average loss: 0.0093 (best 0.0092)
+
+model: social_autoencoder_first_try9, epoch [297/500001], avg loss:0.0134
+    On testing data: average loss: 0.0092 (best 0.0092)
+
+model: social_autoencoder_first_try9, epoch [298/500001], avg loss:0.0134
+    On testing data: average loss: 0.0093 (best 0.0092)
+
+model: social_autoencoder_first_try9, epoch [299/500001], avg loss:0.0134
+    On testing data: average loss: 0.0096 (best 0.0092)
+
+model: social_autoencoder_first_try9, epoch [300/500001], avg loss:0.0132
+    On testing data: average loss: 0.0095 (best 0.0092)
+
+model: social_autoencoder_first_try9, epoch [301/500001], avg loss:0.0132
+    On testing data: average loss: 0.0095 (best 0.0092)
+
+model: social_autoencoder_first_try9, epoch [302/500001], avg loss:0.0133
+    On testing data: average loss: 0.0095 (best 0.0092)
+
+model: social_autoencoder_first_try9, epoch [303/500001], avg loss:0.0133
+    On testing data: average loss: 0.0097 (best 0.0092)
+
+model: social_autoencoder_first_try9, epoch [304/500001], avg loss:0.0133
+    On testing data: average loss: 0.0099 (best 0.0092)
+
+model: social_autoencoder_first_try9, epoch [305/500001], avg loss:0.0133
+    On testing data: average loss: 0.0097 (best 0.0092)
+
+model: social_autoencoder_first_try9, epoch [306/500001], avg loss:0.0133
+    On testing data: average loss: 0.0093 (best 0.0092)
+
+model: social_autoencoder_first_try9, epoch [307/500001], avg loss:0.0132
+    On testing data: average loss: 0.0093 (best 0.0092)
+
+model: social_autoencoder_first_try9, epoch [308/500001], avg loss:0.0132
+    On testing data: average loss: 0.0095 (best 0.0092)
+
+model: social_autoencoder_first_try9, epoch [309/500001], avg loss:0.0132
+    On testing data: average loss: 0.0097 (best 0.0092)
+
+model: social_autoencoder_first_try9, epoch [310/500001], avg loss:0.0133
+    On testing data: average loss: 0.0094 (best 0.0092)
+
+model: social_autoencoder_first_try9, epoch [311/500001], avg loss:0.0132
+    On testing data: average loss: 0.0094 (best 0.0092)
+
+model: social_autoencoder_first_try9, epoch [312/500001], avg loss:0.0132
+    On testing data: average loss: 0.0094 (best 0.0092)
+
+model: social_autoencoder_first_try9, epoch [313/500001], avg loss:0.0133
+    On testing data: average loss: 0.0094 (best 0.0092)
+
+model: social_autoencoder_first_try9, epoch [314/500001], avg loss:0.0133
+    On testing data: average loss: 0.0095 (best 0.0092)
+
+model: social_autoencoder_first_try9, epoch [315/500001], avg loss:0.0133
+    On testing data: average loss: 0.0090 (best 0.0092)
+
+model: social_autoencoder_first_try9, epoch [316/500001], avg loss:0.0133
+    On testing data: average loss: 0.0092 (best 0.0090)
+
+model: social_autoencoder_first_try9, epoch [317/500001], avg loss:0.0132
+    On testing data: average loss: 0.0096 (best 0.0090)
+
+model: social_autoencoder_first_try9, epoch [318/500001], avg loss:0.0133
+    On testing data: average loss: 0.0096 (best 0.0090)
+
+model: social_autoencoder_first_try9, epoch [319/500001], avg loss:0.0132
+    On testing data: average loss: 0.0094 (best 0.0090)
+
+model: social_autoencoder_first_try9, epoch [320/500001], avg loss:0.0133
+    On testing data: average loss: 0.0092 (best 0.0090)
+
+model: social_autoencoder_first_try9, epoch [321/500001], avg loss:0.0133
+    On testing data: average loss: 0.0093 (best 0.0090)
+
+model: social_autoencoder_first_try9, epoch [322/500001], avg loss:0.0132
+    On testing data: average loss: 0.0094 (best 0.0090)
+
+model: social_autoencoder_first_try9, epoch [323/500001], avg loss:0.0132
+    On testing data: average loss: 0.0096 (best 0.0090)
+
+model: social_autoencoder_first_try9, epoch [324/500001], avg loss:0.0132
+    On testing data: average loss: 0.0093 (best 0.0090)
+
+model: social_autoencoder_first_try9, epoch [325/500001], avg loss:0.0133
+    On testing data: average loss: 0.0095 (best 0.0090)
+
+model: social_autoencoder_first_try9, epoch [326/500001], avg loss:0.0131
+    On testing data: average loss: 0.0096 (best 0.0090)
+
+model: social_autoencoder_first_try9, epoch [327/500001], avg loss:0.0132
+    On testing data: average loss: 0.0094 (best 0.0090)
+
+model: social_autoencoder_first_try9, epoch [328/500001], avg loss:0.0132
+    On testing data: average loss: 0.0093 (best 0.0090)
+
+model: social_autoencoder_first_try9, epoch [329/500001], avg loss:0.0132
+    On testing data: average loss: 0.0093 (best 0.0090)
+
+model: social_autoencoder_first_try9, epoch [330/500001], avg loss:0.0131
+    On testing data: average loss: 0.0092 (best 0.0090)
+
+model: social_autoencoder_first_try9, epoch [331/500001], avg loss:0.0131
+    On testing data: average loss: 0.0092 (best 0.0090)
+
+model: social_autoencoder_first_try9, epoch [332/500001], avg loss:0.0132
+    On testing data: average loss: 0.0094 (best 0.0090)
+
+model: social_autoencoder_first_try9, epoch [333/500001], avg loss:0.0130
+    On testing data: average loss: 0.0094 (best 0.0090)
+
+model: social_autoencoder_first_try9, epoch [334/500001], avg loss:0.0132
+    On testing data: average loss: 0.0095 (best 0.0090)
+
+model: social_autoencoder_first_try9, epoch [335/500001], avg loss:0.0133
+    On testing data: average loss: 0.0093 (best 0.0090)
+
+model: social_autoencoder_first_try9, epoch [336/500001], avg loss:0.0132
+    On testing data: average loss: 0.0093 (best 0.0090)
+
+model: social_autoencoder_first_try9, epoch [337/500001], avg loss:0.0130
+    On testing data: average loss: 0.0093 (best 0.0090)
+
+model: social_autoencoder_first_try9, epoch [338/500001], avg loss:0.0132
+    On testing data: average loss: 0.0094 (best 0.0090)
+
+model: social_autoencoder_first_try9, epoch [339/500001], avg loss:0.0131
+    On testing data: average loss: 0.0092 (best 0.0090)
+
+model: social_autoencoder_first_try9, epoch [340/500001], avg loss:0.0132
+    On testing data: average loss: 0.0092 (best 0.0090)
+
+model: social_autoencoder_first_try9, epoch [341/500001], avg loss:0.0132
+    On testing data: average loss: 0.0091 (best 0.0090)
+
+model: social_autoencoder_first_try9, epoch [342/500001], avg loss:0.0131
+    On testing data: average loss: 0.0094 (best 0.0090)
+
+model: social_autoencoder_first_try9, epoch [343/500001], avg loss:0.0130
+    On testing data: average loss: 0.0093 (best 0.0090)
+
+model: social_autoencoder_first_try9, epoch [344/500001], avg loss:0.0132
+    On testing data: average loss: 0.0092 (best 0.0090)
+
+model: social_autoencoder_first_try9, epoch [345/500001], avg loss:0.0132
+    On testing data: average loss: 0.0094 (best 0.0090)
+
+model: social_autoencoder_first_try9, epoch [346/500001], avg loss:0.0132
+    On testing data: average loss: 0.0096 (best 0.0090)
+
+model: social_autoencoder_first_try9, epoch [347/500001], avg loss:0.0132
+    On testing data: average loss: 0.0096 (best 0.0090)
+
+model: social_autoencoder_first_try9, epoch [348/500001], avg loss:0.0131
+    On testing data: average loss: 0.0095 (best 0.0090)
+
+model: social_autoencoder_first_try9, epoch [349/500001], avg loss:0.0131
+    On testing data: average loss: 0.0090 (best 0.0090)
+
+model: social_autoencoder_first_try9, epoch [350/500001], avg loss:0.0131
+    On testing data: average loss: 0.0091 (best 0.0090)
+
+model: social_autoencoder_first_try9, epoch [351/500001], avg loss:0.0132
+    On testing data: average loss: 0.0093 (best 0.0090)
+
+model: social_autoencoder_first_try9, epoch [352/500001], avg loss:0.0131
+    On testing data: average loss: 0.0096 (best 0.0090)
+
+model: social_autoencoder_first_try9, epoch [353/500001], avg loss:0.0131
+    On testing data: average loss: 0.0093 (best 0.0090)
+
+model: social_autoencoder_first_try9, epoch [354/500001], avg loss:0.0131
+    On testing data: average loss: 0.0091 (best 0.0090)
+
+model: social_autoencoder_first_try9, epoch [355/500001], avg loss:0.0131
+    On testing data: average loss: 0.0093 (best 0.0090)
+
+model: social_autoencoder_first_try9, epoch [356/500001], avg loss:0.0130
+    On testing data: average loss: 0.0093 (best 0.0090)
+
+model: social_autoencoder_first_try9, epoch [357/500001], avg loss:0.0131
+    On testing data: average loss: 0.0094 (best 0.0090)
+
+model: social_autoencoder_first_try9, epoch [358/500001], avg loss:0.0132
+    On testing data: average loss: 0.0093 (best 0.0090)
+
+model: social_autoencoder_first_try9, epoch [359/500001], avg loss:0.0131
+    On testing data: average loss: 0.0092 (best 0.0090)
+
+model: social_autoencoder_first_try9, epoch [360/500001], avg loss:0.0131
+    On testing data: average loss: 0.0093 (best 0.0090)
+
+model: social_autoencoder_first_try9, epoch [361/500001], avg loss:0.0131
+    On testing data: average loss: 0.0093 (best 0.0090)
+
+model: social_autoencoder_first_try9, epoch [362/500001], avg loss:0.0131
+    On testing data: average loss: 0.0094 (best 0.0090)
+
+model: social_autoencoder_first_try9, epoch [363/500001], avg loss:0.0130
+    On testing data: average loss: 0.0094 (best 0.0090)
+
+model: social_autoencoder_first_try9, epoch [364/500001], avg loss:0.0131
+    On testing data: average loss: 0.0093 (best 0.0090)
+
+model: social_autoencoder_first_try9, epoch [365/500001], avg loss:0.0131
+    On testing data: average loss: 0.0094 (best 0.0090)
+
+model: social_autoencoder_first_try9, epoch [366/500001], avg loss:0.0131
+    On testing data: average loss: 0.0092 (best 0.0090)
+
+model: social_autoencoder_first_try9, epoch [367/500001], avg loss:0.0130
+    On testing data: average loss: 0.0091 (best 0.0090)
+
+model: social_autoencoder_first_try9, epoch [368/500001], avg loss:0.0131
+    On testing data: average loss: 0.0092 (best 0.0090)
+
+model: social_autoencoder_first_try9, epoch [369/500001], avg loss:0.0131
+    On testing data: average loss: 0.0092 (best 0.0090)
+
+model: social_autoencoder_first_try9, epoch [370/500001], avg loss:0.0130
+    On testing data: average loss: 0.0093 (best 0.0090)
+
+model: social_autoencoder_first_try9, epoch [371/500001], avg loss:0.0130
+    On testing data: average loss: 0.0092 (best 0.0090)
+
+model: social_autoencoder_first_try9, epoch [372/500001], avg loss:0.0131
+    On testing data: average loss: 0.0091 (best 0.0090)
+
+model: social_autoencoder_first_try9, epoch [373/500001], avg loss:0.0131
+    On testing data: average loss: 0.0092 (best 0.0090)
+
+model: social_autoencoder_first_try9, epoch [374/500001], avg loss:0.0131
+    On testing data: average loss: 0.0093 (best 0.0090)
+
+model: social_autoencoder_first_try9, epoch [375/500001], avg loss:0.0130
+    On testing data: average loss: 0.0093 (best 0.0090)
+
+model: social_autoencoder_first_try9, epoch [376/500001], avg loss:0.0131
+    On testing data: average loss: 0.0096 (best 0.0090)
+
+model: social_autoencoder_first_try9, epoch [377/500001], avg loss:0.0130
+    On testing data: average loss: 0.0097 (best 0.0090)
+
+model: social_autoencoder_first_try9, epoch [378/500001], avg loss:0.0131
+    On testing data: average loss: 0.0093 (best 0.0090)
+
+model: social_autoencoder_first_try9, epoch [379/500001], avg loss:0.0132
+    On testing data: average loss: 0.0090 (best 0.0090)
+
+model: social_autoencoder_first_try9, epoch [380/500001], avg loss:0.0131
+    On testing data: average loss: 0.0092 (best 0.0090)
+
+model: social_autoencoder_first_try9, epoch [381/500001], avg loss:0.0131
+    On testing data: average loss: 0.0096 (best 0.0090)
+
+model: social_autoencoder_first_try9, epoch [382/500001], avg loss:0.0131
+    On testing data: average loss: 0.0093 (best 0.0090)
+
+model: social_autoencoder_first_try9, epoch [383/500001], avg loss:0.0129
+    On testing data: average loss: 0.0091 (best 0.0090)
+
+model: social_autoencoder_first_try9, epoch [384/500001], avg loss:0.0130
+    On testing data: average loss: 0.0092 (best 0.0090)
+
+model: social_autoencoder_first_try9, epoch [385/500001], avg loss:0.0130
+    On testing data: average loss: 0.0093 (best 0.0090)
+
+model: social_autoencoder_first_try9, epoch [386/500001], avg loss:0.0130
+    On testing data: average loss: 0.0092 (best 0.0090)
+
+model: social_autoencoder_first_try9, epoch [387/500001], avg loss:0.0130
+    On testing data: average loss: 0.0092 (best 0.0090)
+
+model: social_autoencoder_first_try9, epoch [388/500001], avg loss:0.0129
+    On testing data: average loss: 0.0092 (best 0.0090)
+
+model: social_autoencoder_first_try9, epoch [389/500001], avg loss:0.0130
+    On testing data: average loss: 0.0094 (best 0.0090)
+
+model: social_autoencoder_first_try9, epoch [390/500001], avg loss:0.0130
+    On testing data: average loss: 0.0091 (best 0.0090)
+
+model: social_autoencoder_first_try9, epoch [391/500001], avg loss:0.0130
+    On testing data: average loss: 0.0091 (best 0.0090)
+
+model: social_autoencoder_first_try9, epoch [392/500001], avg loss:0.0130
+    On testing data: average loss: 0.0093 (best 0.0090)
+
+model: social_autoencoder_first_try9, epoch [393/500001], avg loss:0.0130
+    On testing data: average loss: 0.0096 (best 0.0090)
+
+model: social_autoencoder_first_try9, epoch [394/500001], avg loss:0.0130
+    On testing data: average loss: 0.0092 (best 0.0090)
+
+model: social_autoencoder_first_try9, epoch [395/500001], avg loss:0.0130
+    On testing data: average loss: 0.0092 (best 0.0090)
+
+model: social_autoencoder_first_try9, epoch [396/500001], avg loss:0.0129
+    On testing data: average loss: 0.0093 (best 0.0090)
+
+model: social_autoencoder_first_try9, epoch [397/500001], avg loss:0.0130
+    On testing data: average loss: 0.0094 (best 0.0090)
+
+model: social_autoencoder_first_try9, epoch [398/500001], avg loss:0.0130
+    On testing data: average loss: 0.0093 (best 0.0090)
+
+model: social_autoencoder_first_try9, epoch [399/500001], avg loss:0.0130
+    On testing data: average loss: 0.0091 (best 0.0090)
+
+model: social_autoencoder_first_try9, epoch [400/500001], avg loss:0.0130
+    On testing data: average loss: 0.0091 (best 0.0090)
+
+model: social_autoencoder_first_try9, epoch [401/500001], avg loss:0.0130
+    On testing data: average loss: 0.0092 (best 0.0090)
+
+model: social_autoencoder_first_try9, epoch [402/500001], avg loss:0.0130
+    On testing data: average loss: 0.0091 (best 0.0090)
+
+model: social_autoencoder_first_try9, epoch [403/500001], avg loss:0.0129
+    On testing data: average loss: 0.0092 (best 0.0090)
+
+model: social_autoencoder_first_try9, epoch [404/500001], avg loss:0.0129
+    On testing data: average loss: 0.0096 (best 0.0090)
+
+model: social_autoencoder_first_try9, epoch [405/500001], avg loss:0.0131
+    On testing data: average loss: 0.0091 (best 0.0090)
+
+model: social_autoencoder_first_try9, epoch [406/500001], avg loss:0.0129
+    On testing data: average loss: 0.0090 (best 0.0090)
+
+model: social_autoencoder_first_try9, epoch [407/500001], avg loss:0.0130
+    On testing data: average loss: 0.0090 (best 0.0090)
+
+model: social_autoencoder_first_try9, epoch [408/500001], avg loss:0.0130
+    On testing data: average loss: 0.0092 (best 0.0090)
+
+model: social_autoencoder_first_try9, epoch [409/500001], avg loss:0.0129
+    On testing data: average loss: 0.0093 (best 0.0090)
+
+model: social_autoencoder_first_try9, epoch [410/500001], avg loss:0.0129
+    On testing data: average loss: 0.0091 (best 0.0090)
+
+model: social_autoencoder_first_try9, epoch [411/500001], avg loss:0.0130
+    On testing data: average loss: 0.0091 (best 0.0090)
+
+model: social_autoencoder_first_try9, epoch [412/500001], avg loss:0.0129
+    On testing data: average loss: 0.0091 (best 0.0090)
+
+model: social_autoencoder_first_try9, epoch [413/500001], avg loss:0.0129
+    On testing data: average loss: 0.0093 (best 0.0090)
+
+model: social_autoencoder_first_try9, epoch [414/500001], avg loss:0.0129
+    On testing data: average loss: 0.0093 (best 0.0090)
+
+model: social_autoencoder_first_try9, epoch [415/500001], avg loss:0.0129
+    On testing data: average loss: 0.0091 (best 0.0090)
+
+model: social_autoencoder_first_try9, epoch [416/500001], avg loss:0.0129
+    On testing data: average loss: 0.0091 (best 0.0090)
+
+model: social_autoencoder_first_try9, epoch [417/500001], avg loss:0.0129
+    On testing data: average loss: 0.0092 (best 0.0090)
+
+model: social_autoencoder_first_try9, epoch [418/500001], avg loss:0.0130
+    On testing data: average loss: 0.0092 (best 0.0090)
+
+model: social_autoencoder_first_try9, epoch [419/500001], avg loss:0.0129
+    On testing data: average loss: 0.0092 (best 0.0090)
+
+model: social_autoencoder_first_try9, epoch [420/500001], avg loss:0.0129
+    On testing data: average loss: 0.0092 (best 0.0090)
+
+model: social_autoencoder_first_try9, epoch [421/500001], avg loss:0.0128
+    On testing data: average loss: 0.0091 (best 0.0090)
+
+model: social_autoencoder_first_try9, epoch [422/500001], avg loss:0.0129
+    On testing data: average loss: 0.0092 (best 0.0090)
+
+model: social_autoencoder_first_try9, epoch [423/500001], avg loss:0.0130
+    On testing data: average loss: 0.0092 (best 0.0090)
+
+model: social_autoencoder_first_try9, epoch [424/500001], avg loss:0.0128
+    On testing data: average loss: 0.0091 (best 0.0090)
+
+model: social_autoencoder_first_try9, epoch [425/500001], avg loss:0.0130
+    On testing data: average loss: 0.0094 (best 0.0090)
+
+model: social_autoencoder_first_try9, epoch [426/500001], avg loss:0.0129
+    On testing data: average loss: 0.0093 (best 0.0090)
+
+model: social_autoencoder_first_try9, epoch [427/500001], avg loss:0.0129
+    On testing data: average loss: 0.0091 (best 0.0090)
+
+model: social_autoencoder_first_try9, epoch [428/500001], avg loss:0.0129
+    On testing data: average loss: 0.0092 (best 0.0090)
+
+model: social_autoencoder_first_try9, epoch [429/500001], avg loss:0.0129
+    On testing data: average loss: 0.0094 (best 0.0090)
+
+model: social_autoencoder_first_try9, epoch [430/500001], avg loss:0.0129
+    On testing data: average loss: 0.0093 (best 0.0090)
+
+model: social_autoencoder_first_try9, epoch [431/500001], avg loss:0.0129
+    On testing data: average loss: 0.0090 (best 0.0090)
+
+model: social_autoencoder_first_try9, epoch [432/500001], avg loss:0.0130
+    On testing data: average loss: 0.0090 (best 0.0090)
+
+model: social_autoencoder_first_try9, epoch [433/500001], avg loss:0.0129
+    On testing data: average loss: 0.0092 (best 0.0090)
+
+model: social_autoencoder_first_try9, epoch [434/500001], avg loss:0.0130
+    On testing data: average loss: 0.0096 (best 0.0090)
+
+model: social_autoencoder_first_try9, epoch [435/500001], avg loss:0.0129
+    On testing data: average loss: 0.0090 (best 0.0090)
+
+model: social_autoencoder_first_try9, epoch [436/500001], avg loss:0.0129
+    On testing data: average loss: 0.0091 (best 0.0090)
+
+model: social_autoencoder_first_try9, epoch [437/500001], avg loss:0.0129
+    On testing data: average loss: 0.0094 (best 0.0090)
+
+model: social_autoencoder_first_try9, epoch [438/500001], avg loss:0.0129
+    On testing data: average loss: 0.0092 (best 0.0090)
+
+model: social_autoencoder_first_try9, epoch [439/500001], avg loss:0.0129
+    On testing data: average loss: 0.0090 (best 0.0090)
+
+model: social_autoencoder_first_try9, epoch [440/500001], avg loss:0.0130
+    On testing data: average loss: 0.0093 (best 0.0090)
+
+model: social_autoencoder_first_try9, epoch [441/500001], avg loss:0.0129
+    On testing data: average loss: 0.0092 (best 0.0090)
+
+model: social_autoencoder_first_try9, epoch [442/500001], avg loss:0.0128
+    On testing data: average loss: 0.0091 (best 0.0090)
+
+model: social_autoencoder_first_try9, epoch [443/500001], avg loss:0.0129
+    On testing data: average loss: 0.0092 (best 0.0090)
+
+model: social_autoencoder_first_try9, epoch [444/500001], avg loss:0.0129
+    On testing data: average loss: 0.0095 (best 0.0090)
+
+model: social_autoencoder_first_try9, epoch [445/500001], avg loss:0.0129
+    On testing data: average loss: 0.0092 (best 0.0090)
+
+model: social_autoencoder_first_try9, epoch [446/500001], avg loss:0.0128
+    On testing data: average loss: 0.0091 (best 0.0090)
+
+model: social_autoencoder_first_try9, epoch [447/500001], avg loss:0.0129
+    On testing data: average loss: 0.0092 (best 0.0090)
+
+model: social_autoencoder_first_try9, epoch [448/500001], avg loss:0.0128
+    On testing data: average loss: 0.0093 (best 0.0090)
+
+model: social_autoencoder_first_try9, epoch [449/500001], avg loss:0.0129
+    On testing data: average loss: 0.0091 (best 0.0090)
+
+model: social_autoencoder_first_try9, epoch [450/500001], avg loss:0.0129
+    On testing data: average loss: 0.0091 (best 0.0090)
+
+model: social_autoencoder_first_try9, epoch [451/500001], avg loss:0.0129
+    On testing data: average loss: 0.0092 (best 0.0090)
+
+model: social_autoencoder_first_try9, epoch [452/500001], avg loss:0.0129
+    On testing data: average loss: 0.0092 (best 0.0090)
+
+model: social_autoencoder_first_try9, epoch [453/500001], avg loss:0.0128
+    On testing data: average loss: 0.0089 (best 0.0090)
+
+model: social_autoencoder_first_try9, epoch [454/500001], avg loss:0.0128
+    On testing data: average loss: 0.0090 (best 0.0089)
+
+model: social_autoencoder_first_try9, epoch [455/500001], avg loss:0.0128
+    On testing data: average loss: 0.0091 (best 0.0089)
+
+model: social_autoencoder_first_try9, epoch [456/500001], avg loss:0.0129
+    On testing data: average loss: 0.0091 (best 0.0089)
+
+model: social_autoencoder_first_try9, epoch [457/500001], avg loss:0.0129
+    On testing data: average loss: 0.0091 (best 0.0089)
+
+model: social_autoencoder_first_try9, epoch [458/500001], avg loss:0.0129
+    On testing data: average loss: 0.0092 (best 0.0089)
+
+model: social_autoencoder_first_try9, epoch [459/500001], avg loss:0.0128
+    On testing data: average loss: 0.0091 (best 0.0089)
+
+model: social_autoencoder_first_try9, epoch [460/500001], avg loss:0.0129
+    On testing data: average loss: 0.0090 (best 0.0089)
+
+model: social_autoencoder_first_try9, epoch [461/500001], avg loss:0.0128
+    On testing data: average loss: 0.0091 (best 0.0089)
+
+model: social_autoencoder_first_try9, epoch [462/500001], avg loss:0.0129
+    On testing data: average loss: 0.0091 (best 0.0089)
+
+model: social_autoencoder_first_try9, epoch [463/500001], avg loss:0.0128
+    On testing data: average loss: 0.0092 (best 0.0089)
+
+model: social_autoencoder_first_try9, epoch [464/500001], avg loss:0.0129
+    On testing data: average loss: 0.0091 (best 0.0089)
+
+model: social_autoencoder_first_try9, epoch [465/500001], avg loss:0.0129
+    On testing data: average loss: 0.0092 (best 0.0089)
+
+model: social_autoencoder_first_try9, epoch [466/500001], avg loss:0.0129
+    On testing data: average loss: 0.0092 (best 0.0089)
+
+model: social_autoencoder_first_try9, epoch [467/500001], avg loss:0.0129
+    On testing data: average loss: 0.0092 (best 0.0089)
+
+model: social_autoencoder_first_try9, epoch [468/500001], avg loss:0.0129
+    On testing data: average loss: 0.0088 (best 0.0089)
+
+model: social_autoencoder_first_try9, epoch [469/500001], avg loss:0.0128
+    On testing data: average loss: 0.0090 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [470/500001], avg loss:0.0129
+    On testing data: average loss: 0.0091 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [471/500001], avg loss:0.0128
+    On testing data: average loss: 0.0092 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [472/500001], avg loss:0.0128
+    On testing data: average loss: 0.0092 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [473/500001], avg loss:0.0128
+    On testing data: average loss: 0.0090 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [474/500001], avg loss:0.0129
+    On testing data: average loss: 0.0090 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [475/500001], avg loss:0.0128
+    On testing data: average loss: 0.0090 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [476/500001], avg loss:0.0127
+    On testing data: average loss: 0.0092 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [477/500001], avg loss:0.0130
+    On testing data: average loss: 0.0091 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [478/500001], avg loss:0.0128
+    On testing data: average loss: 0.0090 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [479/500001], avg loss:0.0128
+    On testing data: average loss: 0.0090 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [480/500001], avg loss:0.0128
+    On testing data: average loss: 0.0092 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [481/500001], avg loss:0.0128
+    On testing data: average loss: 0.0092 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [482/500001], avg loss:0.0128
+    On testing data: average loss: 0.0090 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [483/500001], avg loss:0.0129
+    On testing data: average loss: 0.0091 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [484/500001], avg loss:0.0128
+    On testing data: average loss: 0.0092 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [485/500001], avg loss:0.0128
+    On testing data: average loss: 0.0091 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [486/500001], avg loss:0.0128
+    On testing data: average loss: 0.0092 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [487/500001], avg loss:0.0128
+    On testing data: average loss: 0.0091 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [488/500001], avg loss:0.0129
+    On testing data: average loss: 0.0091 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [489/500001], avg loss:0.0128
+    On testing data: average loss: 0.0089 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [490/500001], avg loss:0.0128
+    On testing data: average loss: 0.0091 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [491/500001], avg loss:0.0128
+    On testing data: average loss: 0.0093 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [492/500001], avg loss:0.0128
+    On testing data: average loss: 0.0090 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [493/500001], avg loss:0.0127
+    On testing data: average loss: 0.0088 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [494/500001], avg loss:0.0127
+    On testing data: average loss: 0.0091 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [495/500001], avg loss:0.0129
+    On testing data: average loss: 0.0092 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [496/500001], avg loss:0.0128
+    On testing data: average loss: 0.0093 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [497/500001], avg loss:0.0128
+    On testing data: average loss: 0.0088 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [498/500001], avg loss:0.0128
+    On testing data: average loss: 0.0090 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [499/500001], avg loss:0.0128
+    On testing data: average loss: 0.0092 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [500/500001], avg loss:0.0128
+    On testing data: average loss: 0.0091 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [501/500001], avg loss:0.0129
+    On testing data: average loss: 0.0090 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [502/500001], avg loss:0.0127
+    On testing data: average loss: 0.0090 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [503/500001], avg loss:0.0127
+    On testing data: average loss: 0.0092 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [504/500001], avg loss:0.0128
+    On testing data: average loss: 0.0091 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [505/500001], avg loss:0.0127
+    On testing data: average loss: 0.0090 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [506/500001], avg loss:0.0128
+    On testing data: average loss: 0.0090 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [507/500001], avg loss:0.0127
+    On testing data: average loss: 0.0093 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [508/500001], avg loss:0.0128
+    On testing data: average loss: 0.0089 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [509/500001], avg loss:0.0128
+    On testing data: average loss: 0.0090 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [510/500001], avg loss:0.0128
+    On testing data: average loss: 0.0091 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [511/500001], avg loss:0.0128
+    On testing data: average loss: 0.0091 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [512/500001], avg loss:0.0128
+    On testing data: average loss: 0.0092 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [513/500001], avg loss:0.0128
+    On testing data: average loss: 0.0090 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [514/500001], avg loss:0.0128
+    On testing data: average loss: 0.0091 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [515/500001], avg loss:0.0128
+    On testing data: average loss: 0.0090 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [516/500001], avg loss:0.0127
+    On testing data: average loss: 0.0092 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [517/500001], avg loss:0.0128
+    On testing data: average loss: 0.0090 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [518/500001], avg loss:0.0128
+    On testing data: average loss: 0.0090 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [519/500001], avg loss:0.0128
+    On testing data: average loss: 0.0090 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [520/500001], avg loss:0.0127
+    On testing data: average loss: 0.0089 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [521/500001], avg loss:0.0127
+    On testing data: average loss: 0.0091 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [522/500001], avg loss:0.0128
+    On testing data: average loss: 0.0092 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [523/500001], avg loss:0.0129
+    On testing data: average loss: 0.0090 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [524/500001], avg loss:0.0127
+    On testing data: average loss: 0.0089 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [525/500001], avg loss:0.0128
+    On testing data: average loss: 0.0092 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [526/500001], avg loss:0.0128
+    On testing data: average loss: 0.0090 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [527/500001], avg loss:0.0128
+    On testing data: average loss: 0.0091 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [528/500001], avg loss:0.0128
+    On testing data: average loss: 0.0091 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [529/500001], avg loss:0.0128
+    On testing data: average loss: 0.0090 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [530/500001], avg loss:0.0127
+    On testing data: average loss: 0.0090 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [531/500001], avg loss:0.0127
+    On testing data: average loss: 0.0091 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [532/500001], avg loss:0.0128
+    On testing data: average loss: 0.0089 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [533/500001], avg loss:0.0127
+    On testing data: average loss: 0.0091 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [534/500001], avg loss:0.0128
+    On testing data: average loss: 0.0091 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [535/500001], avg loss:0.0128
+    On testing data: average loss: 0.0091 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [536/500001], avg loss:0.0128
+    On testing data: average loss: 0.0090 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [537/500001], avg loss:0.0127
+    On testing data: average loss: 0.0090 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [538/500001], avg loss:0.0126
+    On testing data: average loss: 0.0091 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [539/500001], avg loss:0.0127
+    On testing data: average loss: 0.0091 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [540/500001], avg loss:0.0126
+    On testing data: average loss: 0.0089 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [541/500001], avg loss:0.0128
+    On testing data: average loss: 0.0089 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [542/500001], avg loss:0.0127
+    On testing data: average loss: 0.0090 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [543/500001], avg loss:0.0127
+    On testing data: average loss: 0.0090 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [544/500001], avg loss:0.0127
+    On testing data: average loss: 0.0090 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [545/500001], avg loss:0.0128
+    On testing data: average loss: 0.0092 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [546/500001], avg loss:0.0128
+    On testing data: average loss: 0.0092 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [547/500001], avg loss:0.0127
+    On testing data: average loss: 0.0089 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [548/500001], avg loss:0.0127
+    On testing data: average loss: 0.0091 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [549/500001], avg loss:0.0128
+    On testing data: average loss: 0.0090 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [550/500001], avg loss:0.0125
+    On testing data: average loss: 0.0091 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [551/500001], avg loss:0.0127
+    On testing data: average loss: 0.0090 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [552/500001], avg loss:0.0127
+    On testing data: average loss: 0.0092 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [553/500001], avg loss:0.0127
+    On testing data: average loss: 0.0090 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [554/500001], avg loss:0.0128
+    On testing data: average loss: 0.0090 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [555/500001], avg loss:0.0128
+    On testing data: average loss: 0.0091 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [556/500001], avg loss:0.0128
+    On testing data: average loss: 0.0091 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [557/500001], avg loss:0.0128
+    On testing data: average loss: 0.0089 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [558/500001], avg loss:0.0127
+    On testing data: average loss: 0.0091 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [559/500001], avg loss:0.0128
+    On testing data: average loss: 0.0092 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [560/500001], avg loss:0.0128
+    On testing data: average loss: 0.0090 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [561/500001], avg loss:0.0127
+    On testing data: average loss: 0.0089 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [562/500001], avg loss:0.0127
+    On testing data: average loss: 0.0090 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [563/500001], avg loss:0.0126
+    On testing data: average loss: 0.0091 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [564/500001], avg loss:0.0126
+    On testing data: average loss: 0.0091 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [565/500001], avg loss:0.0127
+    On testing data: average loss: 0.0091 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [566/500001], avg loss:0.0127
+    On testing data: average loss: 0.0091 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [567/500001], avg loss:0.0128
+    On testing data: average loss: 0.0089 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [568/500001], avg loss:0.0127
+    On testing data: average loss: 0.0089 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [569/500001], avg loss:0.0127
+    On testing data: average loss: 0.0090 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [570/500001], avg loss:0.0126
+    On testing data: average loss: 0.0092 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [571/500001], avg loss:0.0126
+    On testing data: average loss: 0.0092 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [572/500001], avg loss:0.0127
+    On testing data: average loss: 0.0089 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [573/500001], avg loss:0.0127
+    On testing data: average loss: 0.0090 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [574/500001], avg loss:0.0127
+    On testing data: average loss: 0.0090 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [575/500001], avg loss:0.0127
+    On testing data: average loss: 0.0090 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [576/500001], avg loss:0.0127
+    On testing data: average loss: 0.0090 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [577/500001], avg loss:0.0128
+    On testing data: average loss: 0.0090 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [578/500001], avg loss:0.0127
+    On testing data: average loss: 0.0090 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [579/500001], avg loss:0.0126
+    On testing data: average loss: 0.0091 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [580/500001], avg loss:0.0127
+    On testing data: average loss: 0.0090 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [581/500001], avg loss:0.0126
+    On testing data: average loss: 0.0089 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [582/500001], avg loss:0.0125
+    On testing data: average loss: 0.0089 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [583/500001], avg loss:0.0126
+    On testing data: average loss: 0.0091 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [584/500001], avg loss:0.0127
+    On testing data: average loss: 0.0090 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [585/500001], avg loss:0.0126
+    On testing data: average loss: 0.0090 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [586/500001], avg loss:0.0126
+    On testing data: average loss: 0.0090 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [587/500001], avg loss:0.0127
+    On testing data: average loss: 0.0089 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [588/500001], avg loss:0.0127
+    On testing data: average loss: 0.0090 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [589/500001], avg loss:0.0127
+    On testing data: average loss: 0.0091 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [590/500001], avg loss:0.0127
+    On testing data: average loss: 0.0089 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [591/500001], avg loss:0.0127
+    On testing data: average loss: 0.0089 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [592/500001], avg loss:0.0126
+    On testing data: average loss: 0.0090 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [593/500001], avg loss:0.0126
+    On testing data: average loss: 0.0090 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [594/500001], avg loss:0.0127
+    On testing data: average loss: 0.0089 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [595/500001], avg loss:0.0125
+    On testing data: average loss: 0.0090 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [596/500001], avg loss:0.0126
+    On testing data: average loss: 0.0090 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [597/500001], avg loss:0.0127
+    On testing data: average loss: 0.0089 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [598/500001], avg loss:0.0127
+    On testing data: average loss: 0.0089 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [599/500001], avg loss:0.0128
+    On testing data: average loss: 0.0089 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [600/500001], avg loss:0.0127
+    On testing data: average loss: 0.0091 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [601/500001], avg loss:0.0126
+    On testing data: average loss: 0.0089 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [602/500001], avg loss:0.0126
+    On testing data: average loss: 0.0089 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [603/500001], avg loss:0.0127
+    On testing data: average loss: 0.0090 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [604/500001], avg loss:0.0126
+    On testing data: average loss: 0.0090 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [605/500001], avg loss:0.0127
+    On testing data: average loss: 0.0089 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [606/500001], avg loss:0.0126
+    On testing data: average loss: 0.0089 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [607/500001], avg loss:0.0126
+    On testing data: average loss: 0.0090 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [608/500001], avg loss:0.0126
+    On testing data: average loss: 0.0089 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [609/500001], avg loss:0.0127
+    On testing data: average loss: 0.0090 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [610/500001], avg loss:0.0126
+    On testing data: average loss: 0.0090 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [611/500001], avg loss:0.0127
+    On testing data: average loss: 0.0091 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [612/500001], avg loss:0.0126
+    On testing data: average loss: 0.0090 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [613/500001], avg loss:0.0127
+    On testing data: average loss: 0.0089 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [614/500001], avg loss:0.0126
+    On testing data: average loss: 0.0090 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [615/500001], avg loss:0.0126
+    On testing data: average loss: 0.0091 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [616/500001], avg loss:0.0127
+    On testing data: average loss: 0.0091 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [617/500001], avg loss:0.0126
+    On testing data: average loss: 0.0088 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [618/500001], avg loss:0.0126
+    On testing data: average loss: 0.0090 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [619/500001], avg loss:0.0126
+    On testing data: average loss: 0.0091 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [620/500001], avg loss:0.0127
+    On testing data: average loss: 0.0090 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [621/500001], avg loss:0.0126
+    On testing data: average loss: 0.0089 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [622/500001], avg loss:0.0127
+    On testing data: average loss: 0.0089 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [623/500001], avg loss:0.0126
+    On testing data: average loss: 0.0090 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [624/500001], avg loss:0.0127
+    On testing data: average loss: 0.0089 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [625/500001], avg loss:0.0126
+    On testing data: average loss: 0.0091 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [626/500001], avg loss:0.0127
+    On testing data: average loss: 0.0089 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [627/500001], avg loss:0.0125
+    On testing data: average loss: 0.0089 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [628/500001], avg loss:0.0127
+    On testing data: average loss: 0.0089 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [629/500001], avg loss:0.0126
+    On testing data: average loss: 0.0090 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [630/500001], avg loss:0.0126
+    On testing data: average loss: 0.0090 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [631/500001], avg loss:0.0126
+    On testing data: average loss: 0.0090 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [632/500001], avg loss:0.0126
+    On testing data: average loss: 0.0090 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [633/500001], avg loss:0.0126
+    On testing data: average loss: 0.0090 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [634/500001], avg loss:0.0126
+    On testing data: average loss: 0.0088 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [635/500001], avg loss:0.0126
+    On testing data: average loss: 0.0091 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [636/500001], avg loss:0.0127
+    On testing data: average loss: 0.0092 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [637/500001], avg loss:0.0127
+    On testing data: average loss: 0.0089 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [638/500001], avg loss:0.0127
+    On testing data: average loss: 0.0088 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [639/500001], avg loss:0.0126
+    On testing data: average loss: 0.0090 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [640/500001], avg loss:0.0126
+    On testing data: average loss: 0.0090 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [641/500001], avg loss:0.0126
+    On testing data: average loss: 0.0089 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [642/500001], avg loss:0.0125
+    On testing data: average loss: 0.0091 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [643/500001], avg loss:0.0125
+    On testing data: average loss: 0.0088 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [644/500001], avg loss:0.0126
+    On testing data: average loss: 0.0089 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [645/500001], avg loss:0.0126
+    On testing data: average loss: 0.0090 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [646/500001], avg loss:0.0125
+    On testing data: average loss: 0.0088 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [647/500001], avg loss:0.0126
+    On testing data: average loss: 0.0091 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [648/500001], avg loss:0.0126
+    On testing data: average loss: 0.0090 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [649/500001], avg loss:0.0126
+    On testing data: average loss: 0.0089 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [650/500001], avg loss:0.0126
+    On testing data: average loss: 0.0089 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [651/500001], avg loss:0.0124
+    On testing data: average loss: 0.0090 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [652/500001], avg loss:0.0126
+    On testing data: average loss: 0.0089 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [653/500001], avg loss:0.0124
+    On testing data: average loss: 0.0089 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [654/500001], avg loss:0.0126
+    On testing data: average loss: 0.0090 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [655/500001], avg loss:0.0126
+    On testing data: average loss: 0.0088 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [656/500001], avg loss:0.0127
+    On testing data: average loss: 0.0088 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [657/500001], avg loss:0.0126
+    On testing data: average loss: 0.0091 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [658/500001], avg loss:0.0127
+    On testing data: average loss: 0.0089 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [659/500001], avg loss:0.0126
+    On testing data: average loss: 0.0088 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [660/500001], avg loss:0.0126
+    On testing data: average loss: 0.0089 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [661/500001], avg loss:0.0125
+    On testing data: average loss: 0.0089 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [662/500001], avg loss:0.0126
+    On testing data: average loss: 0.0088 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [663/500001], avg loss:0.0126
+    On testing data: average loss: 0.0089 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [664/500001], avg loss:0.0126
+    On testing data: average loss: 0.0090 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [665/500001], avg loss:0.0125
+    On testing data: average loss: 0.0088 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [666/500001], avg loss:0.0125
+    On testing data: average loss: 0.0088 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [667/500001], avg loss:0.0125
+    On testing data: average loss: 0.0090 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [668/500001], avg loss:0.0126
+    On testing data: average loss: 0.0089 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [669/500001], avg loss:0.0126
+    On testing data: average loss: 0.0089 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [670/500001], avg loss:0.0125
+    On testing data: average loss: 0.0090 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [671/500001], avg loss:0.0126
+    On testing data: average loss: 0.0091 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [672/500001], avg loss:0.0127
+    On testing data: average loss: 0.0089 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [673/500001], avg loss:0.0126
+    On testing data: average loss: 0.0088 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [674/500001], avg loss:0.0126
+    On testing data: average loss: 0.0088 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [675/500001], avg loss:0.0126
+    On testing data: average loss: 0.0090 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [676/500001], avg loss:0.0127
+    On testing data: average loss: 0.0089 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [677/500001], avg loss:0.0125
+    On testing data: average loss: 0.0089 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [678/500001], avg loss:0.0126
+    On testing data: average loss: 0.0088 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [679/500001], avg loss:0.0126
+    On testing data: average loss: 0.0089 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [680/500001], avg loss:0.0125
+    On testing data: average loss: 0.0089 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [681/500001], avg loss:0.0125
+    On testing data: average loss: 0.0089 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [682/500001], avg loss:0.0126
+    On testing data: average loss: 0.0087 (best 0.0088)
+
+model: social_autoencoder_first_try9, epoch [683/500001], avg loss:0.0125
+    On testing data: average loss: 0.0088 (best 0.0087)
+
+model: social_autoencoder_first_try9, epoch [684/500001], avg loss:0.0126
+    On testing data: average loss: 0.0090 (best 0.0087)
+
+model: social_autoencoder_first_try9, epoch [685/500001], avg loss:0.0125
+    On testing data: average loss: 0.0089 (best 0.0087)
+
+model: social_autoencoder_first_try9, epoch [686/500001], avg loss:0.0125
+    On testing data: average loss: 0.0088 (best 0.0087)
+
+model: social_autoencoder_first_try9, epoch [687/500001], avg loss:0.0126
+    On testing data: average loss: 0.0089 (best 0.0087)
+
+model: social_autoencoder_first_try9, epoch [688/500001], avg loss:0.0126
+    On testing data: average loss: 0.0089 (best 0.0087)
+
+model: social_autoencoder_first_try9, epoch [689/500001], avg loss:0.0125
+    On testing data: average loss: 0.0087 (best 0.0087)
+
+model: social_autoencoder_first_try9, epoch [690/500001], avg loss:0.0125
+    On testing data: average loss: 0.0089 (best 0.0087)
+
+model: social_autoencoder_first_try9, epoch [691/500001], avg loss:0.0124
+    On testing data: average loss: 0.0088 (best 0.0087)
+
+model: social_autoencoder_first_try9, epoch [692/500001], avg loss:0.0125
+    On testing data: average loss: 0.0089 (best 0.0087)
+
+model: social_autoencoder_first_try9, epoch [693/500001], avg loss:0.0125
+    On testing data: average loss: 0.0089 (best 0.0087)
+
+model: social_autoencoder_first_try9, epoch [694/500001], avg loss:0.0125
+    On testing data: average loss: 0.0089 (best 0.0087)
+
+model: social_autoencoder_first_try9, epoch [695/500001], avg loss:0.0126
+    On testing data: average loss: 0.0088 (best 0.0087)
+
+model: social_autoencoder_first_try9, epoch [696/500001], avg loss:0.0126
+    On testing data: average loss: 0.0089 (best 0.0087)
+
+model: social_autoencoder_first_try9, epoch [697/500001], avg loss:0.0126
+    On testing data: average loss: 0.0089 (best 0.0087)
+
+model: social_autoencoder_first_try9, epoch [698/500001], avg loss:0.0126
+    On testing data: average loss: 0.0089 (best 0.0087)
+
+model: social_autoencoder_first_try9, epoch [699/500001], avg loss:0.0125
+    On testing data: average loss: 0.0090 (best 0.0087)
+
+model: social_autoencoder_first_try9, epoch [700/500001], avg loss:0.0126
+    On testing data: average loss: 0.0089 (best 0.0087)
+
+model: social_autoencoder_first_try9, epoch [701/500001], avg loss:0.0127
+    On testing data: average loss: 0.0088 (best 0.0087)
+
+model: social_autoencoder_first_try9, epoch [702/500001], avg loss:0.0125
+    On testing data: average loss: 0.0088 (best 0.0087)
+
+model: social_autoencoder_first_try9, epoch [703/500001], avg loss:0.0125
+    On testing data: average loss: 0.0089 (best 0.0087)
+
+model: social_autoencoder_first_try9, epoch [704/500001], avg loss:0.0124
+    On testing data: average loss: 0.0088 (best 0.0087)
+
+model: social_autoencoder_first_try9, epoch [705/500001], avg loss:0.0126
+    On testing data: average loss: 0.0088 (best 0.0087)
+
+model: social_autoencoder_first_try9, epoch [706/500001], avg loss:0.0125
+    On testing data: average loss: 0.0088 (best 0.0087)
+
+model: social_autoencoder_first_try9, epoch [707/500001], avg loss:0.0124
+    On testing data: average loss: 0.0089 (best 0.0087)
+
+model: social_autoencoder_first_try9, epoch [708/500001], avg loss:0.0125
+    On testing data: average loss: 0.0088 (best 0.0087)
+
+model: social_autoencoder_first_try9, epoch [709/500001], avg loss:0.0125
+    On testing data: average loss: 0.0088 (best 0.0087)
+
+model: social_autoencoder_first_try9, epoch [710/500001], avg loss:0.0126
+    On testing data: average loss: 0.0090 (best 0.0087)
+
+model: social_autoencoder_first_try9, epoch [711/500001], avg loss:0.0126
+    On testing data: average loss: 0.0090 (best 0.0087)
+
+model: social_autoencoder_first_try9, epoch [712/500001], avg loss:0.0126
+    On testing data: average loss: 0.0087 (best 0.0087)
+
+model: social_autoencoder_first_try9, epoch [713/500001], avg loss:0.0126
+    On testing data: average loss: 0.0088 (best 0.0087)
+
+model: social_autoencoder_first_try9, epoch [714/500001], avg loss:0.0125
+    On testing data: average loss: 0.0090 (best 0.0087)
+
+model: social_autoencoder_first_try9, epoch [715/500001], avg loss:0.0126
+    On testing data: average loss: 0.0087 (best 0.0087)
+
+model: social_autoencoder_first_try9, epoch [716/500001], avg loss:0.0125
+    On testing data: average loss: 0.0089 (best 0.0087)
+
+model: social_autoencoder_first_try9, epoch [717/500001], avg loss:0.0126
+    On testing data: average loss: 0.0091 (best 0.0087)
+
+model: social_autoencoder_first_try9, epoch [718/500001], avg loss:0.0126
+    On testing data: average loss: 0.0086 (best 0.0087)
+
+model: social_autoencoder_first_try9, epoch [719/500001], avg loss:0.0127
+    On testing data: average loss: 0.0088 (best 0.0086)
+
+model: social_autoencoder_first_try9, epoch [720/500001], avg loss:0.0125
+    On testing data: average loss: 0.0088 (best 0.0086)
+
+model: social_autoencoder_first_try9, epoch [721/500001], avg loss:0.0125
+    On testing data: average loss: 0.0089 (best 0.0086)
+
+model: social_autoencoder_first_try9, epoch [722/500001], avg loss:0.0126
+    On testing data: average loss: 0.0090 (best 0.0086)
+
+model: social_autoencoder_first_try9, epoch [723/500001], avg loss:0.0125
+    On testing data: average loss: 0.0088 (best 0.0086)
+
+model: social_autoencoder_first_try9, epoch [724/500001], avg loss:0.0125
+    On testing data: average loss: 0.0088 (best 0.0086)
+
+model: social_autoencoder_first_try9, epoch [725/500001], avg loss:0.0125
+    On testing data: average loss: 0.0090 (best 0.0086)
+
+model: social_autoencoder_first_try9, epoch [726/500001], avg loss:0.0126
+    On testing data: average loss: 0.0087 (best 0.0086)
+
+model: social_autoencoder_first_try9, epoch [727/500001], avg loss:0.0126
+    On testing data: average loss: 0.0088 (best 0.0086)
+
+model: social_autoencoder_first_try9, epoch [728/500001], avg loss:0.0125
+    On testing data: average loss: 0.0089 (best 0.0086)
+
+model: social_autoencoder_first_try9, epoch [729/500001], avg loss:0.0125
+    On testing data: average loss: 0.0089 (best 0.0086)
+
+model: social_autoencoder_first_try9, epoch [730/500001], avg loss:0.0125
+    On testing data: average loss: 0.0087 (best 0.0086)
+
+model: social_autoencoder_first_try9, epoch [731/500001], avg loss:0.0125
+    On testing data: average loss: 0.0089 (best 0.0086)
+
+model: social_autoencoder_first_try9, epoch [732/500001], avg loss:0.0125
+    On testing data: average loss: 0.0088 (best 0.0086)
+
+model: social_autoencoder_first_try9, epoch [733/500001], avg loss:0.0126
+    On testing data: average loss: 0.0087 (best 0.0086)
+
+model: social_autoencoder_first_try9, epoch [734/500001], avg loss:0.0124
+    On testing data: average loss: 0.0090 (best 0.0086)
+
+model: social_autoencoder_first_try9, epoch [735/500001], avg loss:0.0126
+    On testing data: average loss: 0.0088 (best 0.0086)
+
+model: social_autoencoder_first_try9, epoch [736/500001], avg loss:0.0125
+    On testing data: average loss: 0.0089 (best 0.0086)
+
+model: social_autoencoder_first_try9, epoch [737/500001], avg loss:0.0125
+    On testing data: average loss: 0.0087 (best 0.0086)
+
+model: social_autoencoder_first_try9, epoch [738/500001], avg loss:0.0125
+    On testing data: average loss: 0.0089 (best 0.0086)
+
+model: social_autoencoder_first_try9, epoch [739/500001], avg loss:0.0125
+    On testing data: average loss: 0.0088 (best 0.0086)
+
+model: social_autoencoder_first_try9, epoch [740/500001], avg loss:0.0125
+    On testing data: average loss: 0.0088 (best 0.0086)
+
+model: social_autoencoder_first_try9, epoch [741/500001], avg loss:0.0125
+    On testing data: average loss: 0.0088 (best 0.0086)
+
+model: social_autoencoder_first_try9, epoch [742/500001], avg loss:0.0125
+    On testing data: average loss: 0.0088 (best 0.0086)
+
+model: social_autoencoder_first_try9, epoch [743/500001], avg loss:0.0125
+    On testing data: average loss: 0.0087 (best 0.0086)
+
+model: social_autoencoder_first_try9, epoch [744/500001], avg loss:0.0124
+    On testing data: average loss: 0.0088 (best 0.0086)
+
+model: social_autoencoder_first_try9, epoch [745/500001], avg loss:0.0125
+    On testing data: average loss: 0.0088 (best 0.0086)
+
+model: social_autoencoder_first_try9, epoch [746/500001], avg loss:0.0125
+    On testing data: average loss: 0.0088 (best 0.0086)
+
+model: social_autoencoder_first_try9, epoch [747/500001], avg loss:0.0125
+    On testing data: average loss: 0.0088 (best 0.0086)
+
+model: social_autoencoder_first_try9, epoch [748/500001], avg loss:0.0125
+    On testing data: average loss: 0.0090 (best 0.0086)
+
+model: social_autoencoder_first_try9, epoch [749/500001], avg loss:0.0124
+    On testing data: average loss: 0.0087 (best 0.0086)
+
+model: social_autoencoder_first_try9, epoch [750/500001], avg loss:0.0125
+    On testing data: average loss: 0.0088 (best 0.0086)
+
+model: social_autoencoder_first_try9, epoch [751/500001], avg loss:0.0124
+    On testing data: average loss: 0.0089 (best 0.0086)
+
+model: social_autoencoder_first_try9, epoch [752/500001], avg loss:0.0125
+    On testing data: average loss: 0.0088 (best 0.0086)
+
+model: social_autoencoder_first_try9, epoch [753/500001], avg loss:0.0125
+    On testing data: average loss: 0.0088 (best 0.0086)
+
+model: social_autoencoder_first_try9, epoch [754/500001], avg loss:0.0125
+    On testing data: average loss: 0.0088 (best 0.0086)
+
+model: social_autoencoder_first_try9, epoch [755/500001], avg loss:0.0126
+    On testing data: average loss: 0.0087 (best 0.0086)
+
+model: social_autoencoder_first_try9, epoch [756/500001], avg loss:0.0124
+    On testing data: average loss: 0.0089 (best 0.0086)
+
+model: social_autoencoder_first_try9, epoch [757/500001], avg loss:0.0125
+    On testing data: average loss: 0.0087 (best 0.0086)
+
+model: social_autoencoder_first_try9, epoch [758/500001], avg loss:0.0125
+    On testing data: average loss: 0.0088 (best 0.0086)
+
+model: social_autoencoder_first_try9, epoch [759/500001], avg loss:0.0124
+    On testing data: average loss: 0.0088 (best 0.0086)
+

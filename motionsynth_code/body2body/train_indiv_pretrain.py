@@ -79,8 +79,8 @@ datapath ='../../motionsynth_data/data/processed/'
 # test_dblist = ['data_hagglingSellers_speech_body_120frm_10gap_white_testing']
 
 train_dblist = ['data_hagglingSellers_speech_body_group_240frm_30gap_white_noGa_training']
-#train_dblist = ['data_hagglingSellers_speech_body_group_240frm_15gap_white_noGa_testing_tiny']
-test_dblist = ['data_hagglingSellers_speech_body_group_240frm_15gap_white_noGa_testing']
+train_dblist = ['data_hagglingSellers_speech_body_group_240frm_15gap_white_noGa_testing_tiny']
+test_dblist = ['data_hagglingSellers_speech_body_group_240frm_15gap_white_noGa_testing_tiny']
 
 pkl_file = open(datapath + train_dblist[0] + '.pkl', 'rb')
 train_data = pickle.load(pkl_file)
@@ -123,17 +123,17 @@ for frameIdx in range(1,train_X_raw.shape[1],10):
 ######################################
 # Checkout Folder and pretrain file setting
 checkpointRoot = './'
-checkpointFolder = checkpointRoot+ '/social_autoencoder_first_try9/'
-preTrainFileName= 'checkpoint_e718_loss0.0086.pth'
+ae_checkpointFolder = checkpointRoot+ '/social_autoencoder_first_try9_120frm_best_noReg/'
+preTrainFileName= 'checkpoint_e1009_loss0.0085.pth'
 
 
 # ######################################
 # # Load Pretrained Auto-encoder
-ae_preprocess = np.load(checkpointFolder + 'preprocess_core.npz') #preprocess['Xmean' or 'Xstd']: (1, 73,1))
+ae_preprocess = np.load(ae_checkpointFolder + 'preprocess_core.npz') #preprocess['Xmean' or 'Xstd']: (1, 73,1))
 ae_model = modelZoo.autoencoder_first().cuda()
 
 #Creat Model
-trainResultName = checkpointFolder + preTrainFileName
+trainResultName = ae_checkpointFolder + preTrainFileName
 loaded_state = torch.load(trainResultName, map_location=lambda storage, loc: storage)
 
 ae_model.load_state_dict(loaded_state,strict=False) #strict False is needed some version issue for batchnorm
