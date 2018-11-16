@@ -153,6 +153,116 @@ class regressor_fcn_bn_encoder(nn.Module):
         return latent
 
 
+class regressor_fcn_bn_encoder_2(nn.Module):
+    def __init__(self):
+        super(regressor_fcn_bn_encoder_2, self).__init__()
+
+        self.encoder = nn.Sequential(
+            nn.Dropout(0.25),
+            nn.Conv1d(146,256,3,padding=1),        #256, 73, 200
+            nn.ReLU(),
+            nn.BatchNorm1d(256),
+
+            nn.Dropout(0.25),
+            nn.Conv1d(256,256,3,padding=1),        #256, 73, 200
+            nn.ReLU(),
+            nn.BatchNorm1d(256),
+
+            nn.Dropout(0.25),
+            nn.Conv1d(256,256,3,padding=1),        #256, 73, 200
+            nn.ReLU(),
+            nn.BatchNorm1d(256),
+            nn.MaxPool1d(kernel_size=2, stride=2),   #256, 73, 120
+        )
+
+        # self.decoder = nn.Sequential(
+        #     #nn.MaxUnpool1d(kernel_size=2, stride=2),
+        #     nn.Dropout(0.25),
+        #     nn.ConvTranspose1d(256, 73, 25, stride=2, padding=12, output_padding=1),
+        #     #nn.ReLU(True)
+        #   )  
+
+    def forward(self, input_):
+        latent = self.encoder(input_)
+        #output = self.decoder(latent)
+        #return output
+        return latent
+
+
+
+class regressor_fcn_bn_encoder_5(nn.Module):
+    def __init__(self):
+        super(regressor_fcn_bn_encoder_5, self).__init__()
+
+        self.encoder = nn.Sequential(
+            nn.Dropout(0.25),
+            nn.Conv1d(146,256,5,padding=3),        #256, 73, 200
+            nn.ReLU(),
+            nn.BatchNorm1d(256),
+
+            nn.Dropout(0.25),
+            nn.Conv1d(256,256,5,padding=3),        #256, 73, 200
+            nn.ReLU(),
+            nn.BatchNorm1d(256),
+
+            nn.Dropout(0.25),
+            nn.Conv1d(256,256,5,padding=3),        #256, 73, 200
+            nn.ReLU(),
+            nn.BatchNorm1d(256),
+            nn.MaxPool1d(kernel_size=2, stride=2),   #256, 73, 120
+        )
+
+        # self.decoder = nn.Sequential(
+        #     #nn.MaxUnpool1d(kernel_size=2, stride=2),
+        #     nn.Dropout(0.25),
+        #     nn.ConvTranspose1d(256, 73, 25, stride=2, padding=12, output_padding=1),
+        #     #nn.ReLU(True)
+        #   )  
+
+    def forward(self, input_):
+        latent = self.encoder(input_)
+        #output = self.decoder(latent)
+        #return output
+        return latent
+
+
+class regressor_fcn_bn_encoder_7(nn.Module):
+    def __init__(self):
+        super(regressor_fcn_bn_encoder_7, self).__init__()
+
+        self.encoder = nn.Sequential(
+            nn.Dropout(0.25),
+            nn.Conv1d(146,256,7,padding=5),        #256, 73, 200
+            nn.ReLU(),
+            nn.BatchNorm1d(256),
+
+            nn.Dropout(0.25),
+            nn.Conv1d(256,256,7,padding=5),        #256, 73, 200
+            nn.ReLU(),
+            nn.BatchNorm1d(256),
+
+            nn.Dropout(0.25),
+            nn.Conv1d(256,256,7,padding=5),        #256, 73, 200
+            nn.ReLU(),
+            nn.BatchNorm1d(256),
+            nn.MaxPool1d(kernel_size=2, stride=2),   #256, 73, 120
+        )
+
+        # self.decoder = nn.Sequential(
+        #     #nn.MaxUnpool1d(kernel_size=2, stride=2),
+        #     nn.Dropout(0.25),
+        #     nn.ConvTranspose1d(256, 73, 25, stride=2, padding=12, output_padding=1),
+        #     #nn.ReLU(True)
+        #   )  
+
+    def forward(self, input_):
+        latent = self.encoder(input_)
+        #output = self.decoder(latent)
+        #return output
+        return latent
+
+
+
 class regressor_fcn_bn(nn.Module):
     def __init__(self):
         super(regressor_fcn_bn, self).__init__()

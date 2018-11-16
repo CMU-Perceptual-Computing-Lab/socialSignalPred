@@ -26,7 +26,6 @@ sys.path.append('/ssd/codes/glvis_python/')
 import glViewer
 
 
-
 ######################################3
 # Logging
 import logging

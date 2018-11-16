@@ -78,6 +78,7 @@ checkpointFolder = checkpointRoot+ '/social_autoencoder_first_try9/'
 preTrainFileName= 'checkpoint_e279_loss0.0092.pth'
 
 
+
 ######################################
 # Load Data pre-processing
 preprocess = np.load(checkpointFolder + 'preprocess_core.npz') #preprocess['Xmean' or 'Xstd']: (1, 73,1)

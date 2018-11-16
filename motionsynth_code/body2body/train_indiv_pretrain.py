@@ -48,9 +48,11 @@ args = parser.parse_args()
 ######################################
 # Manual Parameter Setting
 #args.model ='regressor_holden'
-args.model ='regressor_fcn'
-args.model ='regressor_fcn_bn'
-args.model ='regressor_fcn_bn_encoder'
+# args.model ='regressor_fcn'
+# args.model ='regressor_fcn_bn'
+# args.model ='regressor_fcn_bn_encoder'
+# args.model ='regressor_fcn_bn_encoder_2'
+
 
 
 #args.solver = 'sgd'
@@ -79,20 +81,23 @@ datapath ='../../motionsynth_data/data/processed/'
 # test_dblist = ['data_hagglingSellers_speech_body_120frm_10gap_white_testing']
 
 train_dblist = ['data_hagglingSellers_speech_body_group_240frm_30gap_white_noGa_training']
-#train_dblist = ['data_hagglingSellers_speech_body_group_240frm_15gap_white_noGa_training']
 test_dblist = ['data_hagglingSellers_speech_body_group_240frm_15gap_white_noGa_testing']
 
-pkl_file = open(datapath + train_dblist[0] + '.pkl', 'rb')
-train_data = pickle.load(pkl_file)
-pkl_file.close()
-#train_data = np.load(datapath + train_dblist[0] + '.npz')
+
+train_dblist = ['data_hagglingSellers_speech_body_group_120frm_10gap_white_noGa_training']
+test_dblist = ['data_hagglingSellers_speech_body_group_120frm_30gap_white_noGa_testing']
+
+# pkl_file = open(datapath + train_dblist[0] + '.pkl', 'rb')
+# train_data = pickle.load(pkl_file)
+# pkl_file.close()
+train_data = np.load(datapath + train_dblist[0] + '.npz')
 train_X_raw= train_data['data']  #Input (numClip, frames, featureDim:73)
 #train_speech_raw = train_data['speech']  #Input (numClip, frames)
 
-#test_data = np.load(datapath + test_dblist[0] + '.npz')
-pkl_file = open(datapath + test_dblist[0] + '.pkl', 'rb')
-test_data = pickle.load(pkl_file)
-pkl_file.close()
+test_data = np.load(datapath + test_dblist[0] + '.npz')
+# pkl_file = open(datapath + test_dblist[0] + '.pkl', 'rb')
+# test_data = pickle.load(pkl_file)
+# pkl_file.close()
 test_X_raw= test_data['data']      #Input (numClip, frames, featureDim:73)
 #test_speech_raw = test_data['speech']    #Input (numClip, frames)
 
@@ -429,7 +434,7 @@ for epoch in range(num_epochs):
 
     ######################################
     # Save parameters, if current results are the best
-    if bNewBest or (epoch + pretrain_epoch) % args.checkpoint_freq == 0:
+    if bNewBest or (epoch + pretrain_epoch) % args.checkpoint_freq == 0  or ( (epoch + pretrain_epoch<50) and ((epoch + pretrain_epoch)%10 ==0) ):
     #if (epoch + pretrain_epoch) % 1 == 0:
         fileName = checkpointFolder+ '/checkpoint_e' + str(epoch + pretrain_epoch) + '_loss{:.4f}'.format(test_loss) + '.pth'
         torch.save(model.state_dict(), fileName)

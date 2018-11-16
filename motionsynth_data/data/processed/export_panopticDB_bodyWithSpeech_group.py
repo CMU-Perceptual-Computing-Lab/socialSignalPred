@@ -10,6 +10,7 @@ import Animation as Animation
 from Quaternions import Quaternions
 from Pivots import Pivots
 
+import cPickle as pickle
 
 def softmax(x, **kw):
     softness = kw.pop('softness', 1.0)
@@ -139,7 +140,7 @@ def process_file(filename, window=1, window_step=1):
 
 
 
-import pickle
+
 def process_file_withSpeech(filename, window=240, window_step=120):
     
     anim, names, frametime = BVH.load(filename)
@@ -435,7 +436,8 @@ def process_file_withSpeech_byGroup(filename, window=240, window_step=120):
             """ init rot data"""
             #slice = absoluteInfo_list[pIdx]['rot'][j:j+window]
             slice = absoluteInfo_list[pIdx]['rot'][j]   #take only the first frame's
-            windows_abRot[pIdx].append(slice)
+            #windows_abRot[pIdx].append(slice)
+            windows_abRot[pIdx].append(slice.qs)
 
             """ Speacking data """
             cls = speechData_list[pIdx]['indicator'][j:j+window]
@@ -728,7 +730,7 @@ seq_initPos = [[],[],[]]
 seq_initRot = [[],[],[]]
 for i, item in enumerate(h36m_files):
     print('Processing %i of %i (%s)' % (i, len(h36m_files), item))
-    clips, speech, initPos, initRot = process_file_withSpeech_byGroup(item,120,10)
+    clips, speech, initPos, initRot = process_file_withSpeech_byGroup(item,120,30)
 
     for pIdx in range(3):
         seq_data[pIdx] += clips[pIdx]
@@ -736,21 +738,27 @@ for i, item in enumerate(h36m_files):
         seq_initPos[pIdx] += initPos[pIdx]
         seq_initRot[pIdx] += initRot[pIdx]
 
-    # if i==2:
-    #     break
+    if i==2:
+        break
     
 for pIdx in range(3):
     seq_data[pIdx] = np.array(seq_data[pIdx])       #(chunkNum, frames, featureDim:73)
     seq_speech[pIdx] = np.array(seq_speech[pIdx])   #(chunkNum, frames)
     seq_initPos[pIdx] = np.array(seq_initPos[pIdx]) #(chunkNum, 1, featureDim:3)
-    #seq_initRot[pIdx] = np.array(seq_initRot[pIdx]) chunknum x 1
+    seq_initRot[pIdx] = np.array(seq_initRot[pIdx]) #chunknum x 1
 
 seq_data  = np.array(seq_data)  #(3, chunkNum, frames, featureDim:73)
 seq_speech  = np.array(seq_speech)  #(3, chunkNum, frames)
 seq_initPos  = np.array(seq_initPos)  #(3, chunkNum, 1, featureDim:3)
-#seq_initRot: 3 x chunkNum x 1  # seq_initRot[ptIdx][chunkIdx]
+seq_initRot = np.array(seq_initRot)#: 3 x chunkNum x 1  # seq_initRot[ptIdx][chunkIdx]
 
 print("size: {}".format(seq_data[0].shape))
-output = open('data_hagglingSellers_speech_body_group_120frm_10gap_white_noGa_testing.pkl', 'wb')
-pickle.dump({'data':seq_data, 'speech':seq_speech, 'initPos':seq_initPos, 'initRot':seq_initRot, 'seqNames': h36m_files}, output)
-output.close()
+
+
+"""Save as npz"""
+np.savez('data_hagglingSellers_speech_body_group_120frm_30gap_white_noGa_testing_tiny', data=seq_data,speech=seq_speech, seqNames=h36m_files)#,initPos=seq_initPos, initRot=seq_initRot)
+
+"""Save as pkl"""
+# output = open('data_hagglingSellers_speech_body_group_120frm_10gap_white_noGa_training.pkl', 'wb')
+# pickle.dump({'data':seq_data, 'speech':seq_speech, 'initPos':seq_initPos, 'initRot':seq_initRot, 'seqNames': h36m_files}, output)
+# output.close()
