@@ -69,8 +69,8 @@ checkpointRoot = './'
 # checkpointFolder = checkpointRoot+ '/social_naive_lstm_try1/'
 # preTrainFileName= 'checkpoint_e200_acc0.7240.pth'
 
-checkpointFolder = checkpointRoot+ '/social_naive_lstm_try2/'
-preTrainFileName= 'checkpoint_e15_acc0.7696.pth'
+checkpointFolder = checkpointRoot+ '/social_regressor_fcn_bn_dropout_own/'
+preTrainFileName= 'checkpoint_e1_acc0.7593.pth'
 
 
 ######################################

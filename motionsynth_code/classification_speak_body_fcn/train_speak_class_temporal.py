@@ -329,7 +329,17 @@ for epoch in range(num_epochs):
 
         #model.hidden = model.init_hidden() #clear out hidden state of the LSTM
         output = model(inputData)
-        loss = criterion(output, outputGT)
+
+        l1_reg = None
+        for W in model.parameters():
+            if l1_reg is None:
+                l1_reg = W.norm(1)
+            else:
+                l1_reg = l1_reg + W.norm(1)        
+        l1_regularization = 0.1 * l1_reg
+
+
+        loss = criterion(output, outputGT)+ l1_regularization
 
         test_loss += loss.item()*batch_size_test
         #test_loss += loss.data.cpu().numpy().item()* batch_size_test # sum up batch loss
