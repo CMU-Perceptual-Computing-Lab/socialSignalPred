@@ -43,7 +43,7 @@ args = parser.parse_args()
 
 ######################################
 # Manual Parameter Setting
-args.model ='autoencoder_3conv_vae'
+#args.model ='autoencoder_3conv_vae'
 #args.solver = 'sgd'
 #args.finetune = 'social_autoencoder_3conv_vae'
 #args.check_root = '/posefs2b/Users/hanbyulj/pytorch_motionSynth/checkpoint'
@@ -65,8 +65,8 @@ datapath ='../../motionsynth_data/data/processed/'
 
 #train_dblist = ['data_hagglingSellers_speech_formation_30frm_5gap_white_training']
 #train_dblist = ['data_hagglingSellers_speech_body_120frm_10gap_white_training']
-train_dblist = ['data_hagglingSellers_speech_body_120frm_10gap_white_noGa_testing_tiny']
-test_dblist = ['data_hagglingSellers_speech_body_120frm_10gap_white_noGa_testing_tiny']
+train_dblist = ['data_hagglingSellers_speech_body_120frm_10gap_white_noGa_training']
+test_dblist = ['data_hagglingSellers_speech_body_120frm_10gap_white_noGa_testing']
 
 train_data = np.load(datapath + train_dblist[0] + '.npz')
 train_X_raw= train_data['clips']  #Input (numClip, frames, featureDim:73)
@@ -107,11 +107,11 @@ learning_rate = 1e-3
 # if args.autoreg ==1: #and "vae" in args.model:
 #     model = getattr(modelZoo,args.model)(frameLeng=160).cuda()
 # else:
-#     model = getattr(modelZoo,args.model)().cuda()
+model = getattr(modelZoo,args.model)().cuda()
 #model = modelZoo.autoencoder_first().cuda()
-featureDim = train_X_raw.shape[2]
-latentDim = 200
-model = modelZoo.autoencoder_3conv_vect_vae(featureDim,latentDim).cuda()
+#featureDim = train_X_raw.shape[2]
+#latentDim = 200
+#model = modelZoo.autoencoder_3conv_vect_vae(featureDim,latentDim).cuda()
 model.train()
 
 # Loss Function #
@@ -245,10 +245,20 @@ for epoch in range(num_epochs):
         #outputGT = Variable(torch.from_numpy(inputData_np)).cuda()  #(batch, 73, frameNum)  
 
         # ===================forward=====================
-        output, mu, logvar = model(inputData)
+        #output, mu, logvar = model(inputData)
+        output = model(inputData)
         #loss = criterion(output, outputGT)
-        #loss = criterion(output, inputData)
-        loss, recon_loss, kld_loss = modelZoo.vae_loss_function(output, inputData, mu, logvar,criterion,args.weight_kld)
+
+        l1_reg = None
+        for W in model.parameters():
+            if l1_reg is None:
+                l1_reg = W.norm(1)
+            else:
+                l1_reg = l1_reg + W.norm(1)        
+        l1_regularization = 0.1 * l1_reg
+
+        loss = criterion(output, inputData) +l1_regularization
+        #loss, recon_loss, kld_loss = modelZoo.vae_loss_function(output, inputData, mu, logvar,criterion,args.weight_kld)
 
         # ===================backward====================
         optimizer.zero_grad()
@@ -259,11 +269,11 @@ for epoch in range(num_epochs):
         # print('model: {}, epoch [{}/{}], loss:{:.4f}'
         #             .format(checkpointFolder_base, epoch +pretrain_epoch, num_epochs, loss.item()))
         avgLoss += loss.item()*batch_size
-        avgReconLoss += recon_loss.item()*batch_size
-        avgKLDLoss += kld_loss.item()*batch_size
+        # avgReconLoss += recon_loss.item()*batch_size
+        # avgKLDLoss += kld_loss.item()*batch_size
     
         if tensorboard_bLog:
-            info = { 'loss': loss.item(), 'reconLoss': recon_loss.item(), 'kldLoss': kld_loss.item() }
+            info = { 'loss': loss.item()}
 
             for tag, value in info.items():
                 tb_logger.scalar_summary(tag, value, stepNum)
@@ -272,10 +282,8 @@ for epoch in range(num_epochs):
 
     ######################################
     # Logging
-    temp_str = 'model: {}, epoch [{}/{}], avg loss:{:.4f} (recon: {:.4f}, kld: {:.4f})'.format(checkpointFolder_base, epoch +pretrain_epoch, num_epochs,
-                                                                 avgLoss/ (len(batchinds)*batch_size),
-                                                                 avgReconLoss/ (len(batchinds)*batch_size),
-                                                                 avgKLDLoss/ (len(batchinds)*batch_size)
+    temp_str = 'model: {}, epoch [{}/{}], avg loss:{:.4f}'.format(checkpointFolder_base, epoch +pretrain_epoch, num_epochs,
+                                                                 avgLoss/ (len(batchinds)*batch_size)
                                                                   )
     logger.info(temp_str)
     
@@ -303,14 +311,15 @@ for epoch in range(num_epochs):
         #outputGT = Variable(torch.from_numpy(inputData_np)).cuda()  #(batch, 73, frameNum)
 
         # ===================forward=====================
-        output, mu, logvar = model(inputData)
+        #output, mu, logvar = model(inputData)
+        output = model(inputData)
         #loss = criterion(output, outputGT)
-        #loss = criterion(output, inputData)
-        loss, recon_loss, kld_loss = modelZoo.vae_loss_function(output, inputData, mu, logvar,criterion,args.weight_kld)
+        loss = criterion(output, inputData)
+        #loss, recon_loss, kld_loss = modelZoo.vae_loss_function(output, inputData, mu, logvar,criterion,args.weight_kld)
 
         test_loss += loss.item()*batch_size_test
-        test_avgReconLoss += recon_loss.item()*batch_size_test
-        test_avgKLDLoss += kld_loss.item()*batch_size_test
+        # test_avgReconLoss += recon_loss.item()*batch_size_test
+        # test_avgKLDLoss += kld_loss.item()*batch_size_test
         #test_loss += loss.data.cpu().numpy().item()* batch_size_test # sum up batch loss
 
 
@@ -318,10 +327,10 @@ for epoch in range(num_epochs):
     test_avgReconLoss /= len(batchinds)*batch_size_test
     test_avgKLDLoss /= len(batchinds)*batch_size_test
     
-    logger.info('    On testing data: average loss: {:.4f} (recon: {:.4f}, kld: {:.4f})||  (best {:.4f})\n'.format(test_loss, test_avgReconLoss, test_avgKLDLoss, curBestloss))
+    logger.info('    On testing data: average loss: {:.4f} (best {:.4f})\n'.format(test_loss, curBestloss))
     if tensorboard_bLog:
         #info = { 'test_loss': test_loss }
-        info = { 'test_loss': test_loss, 'test_reconLoss': test_avgReconLoss, 'test_KLDLoss': test_avgKLDLoss }
+        info = { 'test_loss': test_loss}
         for tag, value in info.items():
             tb_logger.scalar_summary(tag, value, stepNum)
         
