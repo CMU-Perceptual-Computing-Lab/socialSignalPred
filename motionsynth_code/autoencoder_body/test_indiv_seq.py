@@ -74,8 +74,8 @@ test_X_raw_initInfo =  test_data['initInfo']    #(3, chunkNum, 1, 3)
 ######################################
 # Checkout Folder and pretrain file setting
 checkpointRoot = './'
-checkpointFolder = checkpointRoot+ '/social_regressor_fcn_bn_try2/'
-preTrainFileName= 'checkpoint_e3900_loss0.4378.pth'
+checkpointFolder = checkpointRoot+ '/social_autoencoder_first_try9/'
+preTrainFileName= 'checkpoint_e279_loss0.0092.pth'
 
 
 ######################################
@@ -142,9 +142,10 @@ for seqIdx in range(len(test_X_raw_all)):
     # Input/Output Option
 
     ## Test data
-    test_X = test_X_raw[0:1,:,:]      #(1, frames, features:73) //person0,1's all values (position, head orientation, body orientation)
-    test_X = np.concatenate( (test_X, test_X_raw[1:2,:,:]), axis= 2)      #(1, frames, features:146)
-    test_Y = test_X_raw[2:3,:,:]    #(1, frames, features:73)
+    # test_X = test_X_raw[0:1,:,:]      #(1, frames, features:73) //person0,1's all values (position, head orientation, body orientation)
+    # test_X = np.concatenate( (test_X, test_X_raw[1:2,:,:]), axis= 2)      #(1, frames, features:146)
+    test_X = test_X_raw[2:3,:,:].copy()    #(1, frames, features:73)
+    test_Y = test_X_raw[2:3,:,:].copy()    #(1, frames, features:73)
 
     inputData_initTrans = test_X_initInfo[0]['pos']
     inputData_initTrans2 = test_X_initInfo[1]['pos']
@@ -165,13 +166,10 @@ for seqIdx in range(len(test_X_raw_all)):
     # Data pre-processing
     preprocess = np.load(checkpointFolder + 'preprocess_core.npz') #preprocess['Xmean' or 'Xstd']: (1, 73,1)
 
-    body_mean = preprocess['body_mean']
-    body_std = preprocess['body_std']
+    body_mean = preprocess['Xmean']
+    body_std = preprocess['Xstd']
 
-    body_mean_two = preprocess['body_mean_two']
-    body_std_two = preprocess['body_std_two']
-
-    test_X_std = (test_X - body_mean_two) / body_std_two
+    test_X_std = (test_X - body_mean) / body_std
     test_Y_std = (test_Y - body_mean) / body_std
 
 
@@ -212,17 +210,17 @@ for seqIdx in range(len(test_X_raw_all)):
     inputData_np_ori_1 = np.reshape(inputData_np_ori_1,(-1,73))
     inputData_np_ori_1 = np.swapaxes(inputData_np_ori_1,0,1)
 
-    inputData_np_ori_2 = inputData_np_ori[:,73:,:]
-    inputData_np_ori_2 = np.swapaxes(inputData_np_ori_2,1,2)  #(batch, frames, 73)
-    inputData_np_ori_2 = np.reshape(inputData_np_ori_2,(-1,73))
-    inputData_np_ori_2 = np.swapaxes(inputData_np_ori_2,0,1)
+    # inputData_np_ori_2 = inputData_np_ori[:,73:,:]
+    # inputData_np_ori_2 = np.swapaxes(inputData_np_ori_2,1,2)  #(batch, frames, 73)
+    # inputData_np_ori_2 = np.reshape(inputData_np_ori_2,(-1,73))
+    # inputData_np_ori_2 = np.swapaxes(inputData_np_ori_2,0,1)
 
     #glViewer.show_Holden_Data_73([ outputData_np_ori, inputData_np_ori, output_np] )
 
-    initTrans = [outputData_initTrans,outputData_initTrans, inputData_initTrans, inputData_initTrans2]
-    initRot = [outputData_initRot[0],outputData_initRot[0], inputData_initRot[0], inputData_initRot2[0]]
+    initTrans = [outputData_initTrans,outputData_initTrans, inputData_initTrans]
+    initRot = [outputData_initRot[0],outputData_initRot[0], inputData_initRot[0]]
     frameLen = output_np.shape[1]
-    bodyData = [ output_np, outputData_np_GT[:,:frameLen], inputData_np_ori_1[:,:frameLen], inputData_np_ori_2[:,:frameLen] ]
+    bodyData = [ output_np, outputData_np_GT[:,:frameLen], inputData_np_ori_1[:,:frameLen]]
 
 
     # ####################################

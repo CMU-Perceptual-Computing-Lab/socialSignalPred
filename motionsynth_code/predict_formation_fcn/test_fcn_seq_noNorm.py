@@ -102,6 +102,7 @@ test_attention_all = test_data['attention'] #face,body
 # test_refPos_all = test_data['refPos'] #to go to the original position
 # test_refRot_all = test_data['refRot'] #to go to the original orientation. Should take inverse for the quaternion
 
+bAblationStudy = False
 
 ######################################
 # Checkout Folder and pretrain file setting
@@ -147,10 +148,32 @@ preTrainFileName= 'checkpoint_e50_loss22.8530.pth'
 preTrainFileName= 'checkpoint_e12000_loss29.2500.pth'
  
 
+
+
+
+#Ablation study: position + BodyOri
+bAblationStudy = True
+checkpointFolder = checkpointRoot+ '/social_regressor_fcn_try1/'
+preTrainFileName= 'checkpoint_e3_loss18.9841.pth'
+mask = (2,3,  8,9)
+
+#Ablation study: position + FaceOri
+bAblationStudy = True
+checkpointFolder = checkpointRoot+ '/social_regressor_fcn_try2_posFace/'
+preTrainFileName= 'checkpoint_e21_loss18.4919.pth'
+mask = (4,5, 10,11)
+
+#Ablation study: position only
+bAblationStudy = True
+checkpointFolder = checkpointRoot+ '/social_regressor_fcn_try1_posOnly/'
+preTrainFileName= 'checkpoint_e20_loss25.2516.pth'
+mask = (2,3,4,5, 8,9,10,11)
+
+
 #Best: Error: 24.594 No normalization version. with l1 regularization
 checkpointFolder = checkpointRoot+ '/best/social_regressor_fcn_try6_noNorm_l1Reg/'
 preTrainFileName= 'checkpoint_e45_loss17.9812.pth'
-
+bAblationStudy = False
 
 ######################################
 # Load Data pre-processing
@@ -238,6 +261,18 @@ for seqIdx in range(len(test_X_raw_all)):
 
         test_X = np.swapaxes(np.expand_dims(test_X,0),1,2).astype(np.float32)  #(1, frames,feature:12)
         test_Y = np.swapaxes(np.expand_dims(test_Y,0),1,2).astype(np.float32)  #(1, frames,feature:6)
+
+        if bAblationStudy:
+            # """Pos only"""
+            # mask = (2,3,4,5, 8,9,10,11)
+            # """Pos + face ori only"""
+            # #mask = (4,5, 10,11)
+            # """Pos + body ori only"""
+            # #mask = (2,3,  8,9)
+            
+            test_X[:,mask,:] = preprocess['Xmean'][:, mask,:]
+            
+
 
         #test_X_stdd = (test_X - preprocess['Xmean'][:,:,0]) / preprocess['Xstd'][:,:,0]     #(frames, feature:12)
         test_X_stdd = (test_X[:,:] - preprocess['Xmean']) / preprocess['Xstd']
@@ -409,7 +444,7 @@ for p in posErr_list:
 
 total_avg_posErr = total_avg_posErr/cnt
 std = np.std(avg_posErr_list)
-print("total_avg_posErr: {}, std {}".format(total_avg_posErr, std))
+print("total_avg_posErr: {0:.2f}, std {1:.2f}".format(total_avg_posErr, std))
 
 
 ##Draw Error Figure
@@ -425,7 +460,7 @@ for p in bodyOriErr_list:
 
 total_avg_bodyOriErr = total_avg_bodyOriErr/cnt
 std = np.std(avg_bodyOriErr_list)
-print("total_avg_bodyOriErr: {}, std {}".format(total_avg_bodyOriErr,std))
+print("total_avg_bodyOriErr: {0:.2f}, std {1:.2f}".format(total_avg_bodyOriErr,std))
 
 
 ##Draw Error Figure
@@ -441,7 +476,7 @@ for p in faceOriErr_list:
 
 total_avg_faceOriErr = total_avg_faceOriErr/cnt
 std = np.std(avg_faceOriErr_list)
-print("total_avg_faceOriErr: {}, std {}".format(total_avg_faceOriErr,std))
+print("total_avg_faceOriErr: {0:.2f}, std {1:.2f}".format(total_avg_faceOriErr,std))
 
 
 #save current values

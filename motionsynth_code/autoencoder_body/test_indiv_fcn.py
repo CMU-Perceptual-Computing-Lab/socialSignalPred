@@ -75,8 +75,8 @@ test_speech_raw  = test_data['speech']  #Input (1044,240,73)
 ######################################
 # Checkout Folder and pretrain file setting
 checkpointRoot = './'
-checkpointFolder = checkpointRoot+ '/social_autoencoder_3conv_vect_vae_try16/'
-preTrainFileName= 'checkpoint_e283_loss0.3305.pth'
+checkpointFolder = checkpointRoot+ '/social_autoencoder_first_try9/'
+preTrainFileName= 'checkpoint_e46_loss0.0136.pth'
 
 
 ######################################
@@ -114,10 +114,10 @@ batch_size = 1#512
 criterion = nn.MSELoss()
 
 #Creat Model
-#model = modelZoo.autoencoder_first().cuda()
-featureDim = test_X_raw.shape[2]
-latentDim = 200
-model = modelZoo.autoencoder_3conv_vect_vae(featureDim,latentDim).cuda()
+model = modelZoo.autoencoder_first().cuda()
+# featureDim = test_X_raw.shape[2]
+# latentDim = 200
+# model = modelZoo.autoencoder_3conv_vect_vae(featureDim,latentDim).cuda()
 model.eval()
 
 #Creat Model
@@ -156,7 +156,8 @@ for _, bi in enumerate(batchinds):
 
     # ===================forward=====================
     # output, mu, logvar = model(inputData)
-    output, mu, logvar, z = model(inputData)
+    #output, mu, logvar, z = model(inputData)
+    output = model(inputData)
     #loss = criterion(output, outputGT)
     loss = criterion(output, inputData)
 
