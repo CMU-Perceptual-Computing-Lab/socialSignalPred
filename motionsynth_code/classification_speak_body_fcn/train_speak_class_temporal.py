@@ -63,7 +63,7 @@ train_dblist = ['data_hagglingSellers_speech_body_group_120frm_30gap_white_noGa_
 test_dblist = ['data_hagglingSellers_speech_body_group_120frm_30gap_white_noGa_testing_tiny']
 
 train_dblist = ['data_hagglingSellers_speech_body_group_120frm_10gap_white_noGa_training']
-test_dblist = ['data_hagglingSellers_speech_body_group_120frm_30gap_white_noGa_testing_']
+test_dblist = ['data_hagglingSellers_speech_body_group_120frm_30gap_white_noGa_testing']
 
 #train_data = np.load(datapath + train_dblist[0] + '.npz')
 
