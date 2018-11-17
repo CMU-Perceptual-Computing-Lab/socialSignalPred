@@ -256,7 +256,7 @@ traj_list_seq =[]
 traj2body_skeletonErr_list = []
 body2body_skeletonErr_list = []
 trajbody2body_skeletonErr_list =[]
-bVisualize = True
+bVisualize = False
 for seqIdx in range(len(test_X_raw_all)):
 
     # if seqIdx!=len(test_X_raw_all)-1:
@@ -264,7 +264,11 @@ for seqIdx in range(len(test_X_raw_all)):
 
     for iteration in [1]:#[0,1]:  
 
-        print('{}-{}'.format(os.path.basename(test_seqNames[seqIdx]), iteration))
+        seqName = os.path.basename(test_seqNames[seqIdx])
+        #if not ('170221_haggling_b3_group1' in seqName):
+        #     continue
+
+        print('{}-{}'.format(seqName, iteration))
 
         if iteration ==0:
             targetHumanIdx =1
@@ -345,7 +349,7 @@ for seqIdx in range(len(test_X_raw_all)):
        
 
         """Generate Trajectory in Holden's form by pos and body orientation"""
-        traj_list_holdenForm, initTrans_list, initRot_list = utility.ConvertTrajectory_velocityForm( [pred_pos], [pred_bodyNorm])       #Prediction version
+        traj_list_holdenForm, pred_initTrans_list, pred_initRot_list = utility.ConvertTrajectory_velocityForm( [pred_pos], [pred_bodyNorm])       #Prediction version
         #traj_list_holdenForm, initTrans_list, initRot_list = utility.ConvertTrajectory_velocityForm(vis_posData][:1], vis_bodyNormalData[:1])       #Prediction version
         #traj_list, initTrans_list, initRot_list = utility.ConvertTrajectory_velocityForm(posData[1:2], bodyNormalData[1:2])      #GT version
         #glViewer.set_Holden_Trajectory_3(traj_list, initTrans=initTrans_list, initRot=initRot_list)
@@ -364,8 +368,14 @@ for seqIdx in range(len(test_X_raw_all)):
 
         output_body_np = output.data.cpu().numpy()  #(batch, 73, frames)
         output_body_np = output_body_np[:,:69,:]      #crop the last 4, if there exists
-        output_body_np = output_body_np*tj2body_body_std[:,:-4,:] + tj2body_body_mean[:,:-4,:]
         
+        #Original code
+        #output_body_np = output_body_np*tj2body_body_std[:,:-4,:] + tj2body_body_mean[:,:-4,:]
+        
+        ##Quant: Baseline. Only Mean
+        output_body_np = output_body_np*tj2body_body_std[:,:-4,:]*0.0 + tj2body_body_mean[:,:-4,:]
+
+       
         ## Optional: Overwrite global trans oreintation info
         output_body_np[:,-3:,:] =  test_traj[:,:,:output_body_np.shape[2]]         
 
@@ -447,9 +457,13 @@ for seqIdx in range(len(test_X_raw_all)):
 
         #Add this guy for vis Unit
         #Visualize: traj2body body2body GTTarget input1 input2
+        # vis_bodyData = [ pred_traj2body, pred_body2body] + vis_bodyData
+        # vis_bodyGT_initRot = [ vis_bodyGT_initRot[0], vis_bodyGT_initRot[0]] + vis_bodyGT_initRot
+        # vis_bodyGT_initTrans = [ vis_bodyGT_initTrans[0], vis_bodyGT_initTrans[0]] +  vis_bodyGT_initTrans
         vis_bodyData = [ pred_traj2body, pred_body2body] + vis_bodyData
-        vis_bodyGT_initRot = [ vis_bodyGT_initRot[0], vis_bodyGT_initRot[0]] + vis_bodyGT_initRot
-        vis_bodyGT_initTrans = [ vis_bodyGT_initTrans[0], vis_bodyGT_initTrans[0]] +  vis_bodyGT_initTrans
+        vis_bodyGT_initRot = [ pred_initRot_list[0], pred_initRot_list[0]] + vis_bodyGT_initRot
+        vis_bodyGT_initTrans = [ pred_initTrans_list[0], pred_initTrans_list[0]] +  vis_bodyGT_initTrans
+
 
         """Set the same length"""
         frameLeng = pred_traj2body.shape[1]
@@ -474,10 +488,10 @@ for seqIdx in range(len(test_X_raw_all)):
         trajbody2body_skeletonErr_list.append(skelErr)
 
         
-
-        vis_bodyData = vis_bodyData[1:]
-        vis_bodyGT_initRot = vis_bodyGT_initRot[1:]
-        vis_bodyGT_initTrans = vis_bodyGT_initTrans[1:]
+        #Throw away the first pred vis (traj2body)
+        # vis_bodyData = vis_bodyData[1:]
+        # vis_bodyGT_initRot = vis_bodyGT_initRot[1:]
+        # vis_bodyGT_initTrans = vis_bodyGT_initTrans[1:]
 
         if bVisualize==False:
             continue

@@ -196,7 +196,7 @@ tj2body_traj_std = preprocess_traj2body['traj_std']
 posErr_list = []
 traj_list_seq =[]
 skeletonErr_list = []
-bVisualize = True
+bVisualize = False
 for seqIdx in range(len(test_X_raw_all)):
 
     # if seqIdx!=len(test_X_raw_all)-1:
@@ -204,7 +204,11 @@ for seqIdx in range(len(test_X_raw_all)):
 
     for iteration in [1]:#[0,1]:  
 
-        print('{}-{}'.format(os.path.basename(test_seqNames[seqIdx]), iteration))
+        seqName = os.path.basename(test_seqNames[seqIdx])
+        print('{}-{}'.format(seqName, iteration))
+
+        # if not ('170221_haggling_b3_group1' in seqName):
+        #     continue
 
         if iteration ==0:
             targetHumanIdx =1
@@ -378,7 +382,12 @@ for seqIdx in range(len(test_X_raw_all)):
 
         output_body_np = output.data.cpu().numpy()  #(batch, 73, frames)
         output_body_np = output_body_np[:,:69,:]      #crop the last 4, if there exists
-        output_body_np = output_body_np*tj2body_body_std[:,:-4,:] + tj2body_body_mean[:,:-4,:]
+
+        #Original
+        #output_body_np = output_body_np*tj2body_body_std[:,:-4,:] + tj2body_body_mean[:,:-4,:]
+
+        ##Baseline: always mean pose?
+        output_body_np = output_body_np*tj2body_body_std[:,:-4,:]*0.0 + tj2body_body_mean[:,:-4,:]
         
         ## Optional: Overwrite global trans oreintation info
         #output_np[:,-3:,:] =  test_traj[:,:,:output_np.shape[2]]         
@@ -430,7 +439,7 @@ for seqIdx in range(len(test_X_raw_all)):
         glViewer.setBodyNormal(bodyNormalData)
         
         # glViewer.set_Holden_Trajectory_3(traj_list, initTrans=initTrans_list, initRot=initRot_list)
-        # glViewer.set_Holden_Data_73([output_body_np],initTrans=initTrans_list,initRot=initRot_list)
+        glViewer.set_Holden_Data_73([output_body_np],initTrans=initTrans_list,initRot=initRot_list)
         # traj_list_seq.append(np.array(traj_list))
 
         """"Show body only GT"""
