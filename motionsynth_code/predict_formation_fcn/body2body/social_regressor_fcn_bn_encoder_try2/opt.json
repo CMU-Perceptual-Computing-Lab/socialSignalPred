@@ -1,0 +1,1 @@
+{"weight_kld": 0.1, "solver": "adam_ams", "finetune": "", "db": "haggling_socialmodel_wl", "batch": 512, "autoreg": 0, "check_root": "/home/hanbyulj/checkpoint", "epochs": 500001, "checkpoint_freq": 50, "gpu": 2, "model": "regressor_fcn_bn_encoder"}

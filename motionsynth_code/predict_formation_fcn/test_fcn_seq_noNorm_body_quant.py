@@ -404,9 +404,10 @@ for seqIdx in range(len(test_X_raw_all)):
         bodyGT_initRot = [ Quaternions(x) for x in bodyGT_initRot ]
 
 
-        bodyData = bodyData[:1]
-        bodyGT_initTrans = bodyGT_initTrans[:1]
-        bodyGT_initRot = bodyGT_initRot[:1]
+        # To draw only the predcition, throw away others
+        # bodyData = bodyData[:1]
+        # bodyGT_initTrans = bodyGT_initTrans[:1]
+        # bodyGT_initRot = bodyGT_initRot[:1]
 
 
         # ####################################
@@ -428,12 +429,12 @@ for seqIdx in range(len(test_X_raw_all)):
         glViewer.setFaceNormal(faceNormalData)
         glViewer.setBodyNormal(bodyNormalData)
         
-        glViewer.set_Holden_Trajectory_3(traj_list, initTrans=initTrans_list, initRot=initRot_list)
-        glViewer.set_Holden_Data_73([output_body_np],initTrans=initTrans_list,initRot=initRot_list)
+        # glViewer.set_Holden_Trajectory_3(traj_list, initTrans=initTrans_list, initRot=initRot_list)
+        # glViewer.set_Holden_Data_73([output_body_np],initTrans=initTrans_list,initRot=initRot_list)
         # traj_list_seq.append(np.array(traj_list))
 
         """"Show body only GT"""
-        # glViewer.set_Holden_Data_73(bodyData, ignore_root=False, initRot=bodyGT_initRot, initTrans= bodyGT_initTrans, bIsGT=True)
+        glViewer.set_Holden_Data_73(bodyData, ignore_root=False, initRot=bodyGT_initRot, initTrans= bodyGT_initTrans, bIsGT=True)
         #glViewer.set_Holden_Trajectory_3([ bodyData[0][-7:-4,:], bodyData[1][-7:-4,:], bodyData[2][-7:-4,:] ], initRot=initRot, initTrans= initTrans)
         glViewer.init_gl()
 

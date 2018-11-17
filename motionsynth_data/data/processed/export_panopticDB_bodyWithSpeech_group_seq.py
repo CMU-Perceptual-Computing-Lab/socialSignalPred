@@ -885,7 +885,7 @@ def get_files_haggling_sellers(directory, bReturnTesting):
 
 
 """Haggling testing games sellers"""
-bTesting = False
+bTesting = True
 h36m_files = get_files_haggling_buyers('panoptic',bTesting)
 print('Num: {}'.format(len(h36m_files)))
 seq_data = []
@@ -905,11 +905,11 @@ for i, item in enumerate(h36m_files):
     seq_speech.append(speech)
     seq_initPos.append(initPos)
 
-    # if i==3:
-    #     break
+    if i==3:
+        break
 
 #print("size: {}".format(seq_data.shape))
 #np.savez('data_hagglingSellers_speech_body_bySequence_white_testing', clips=h36m_clips, speech=h36m_classes)
-output = open('data_hagglingSellers_speech_body_bySequence_white_noGa_brl_training.pkl', 'wb')
+output = open('data_hagglingSellers_speech_body_bySequence_white_noGa_brl_testing_tiny.pkl', 'wb')
 pickle.dump({'data':seq_data, 'speech':seq_speech, 'initInfo':seq_initPos, 'seqNames': h36m_files}, output)
 output.close()
