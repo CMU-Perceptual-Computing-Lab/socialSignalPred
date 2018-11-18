@@ -67,16 +67,12 @@ datapath ='../../motionsynth_data/data/processed/'
 
 #test_dblist = ['data_hagglingSellers_speech_formation_pN_rN_rV_bySequence_white_testing_beta']
 
-
 test_dblist = ['data_hagglingSellers_speech_formation_pN_rN_rV_bySequence_white_testing_4fcn']
 test_dblist = ['data_hagglingSellers_speech_formation_bySequence_white_brl_training_4fcn_atten']   #no normalized
 test_dblist = ['data_hagglingSellers_speech_formation_bySequence_white_brl_testing_4fcn']   #no normalized
 
-
 test_dblist_body = ['data_hagglingSellers_speech_body_bySequence_white_noGa_brl_training']
 test_dblist_body = ['data_hagglingSellers_speech_body_bySequence_white_noGa_brl_testing']
-
-
 
 """Load formation data"""
 pkl_file = open(datapath + test_dblist[0] + '.pkl', 'rb')
@@ -384,10 +380,10 @@ for seqIdx in range(len(test_X_raw_all)):
         output_body_np = output_body_np[:,:69,:]      #crop the last 4, if there exists
 
         #Original
-        #output_body_np = output_body_np*tj2body_body_std[:,:-4,:] + tj2body_body_mean[:,:-4,:]
+        output_body_np = output_body_np*tj2body_body_std[:,:-4,:] + tj2body_body_mean[:,:-4,:]
 
         ##Baseline: always mean pose?
-        output_body_np = output_body_np*tj2body_body_std[:,:-4,:]*0.0 + tj2body_body_mean[:,:-4,:]
+        #output_body_np = output_body_np*tj2body_body_std[:,:-4,:]*0.0 + tj2body_body_mean[:,:-4,:]
         
         ## Optional: Overwrite global trans oreintation info
         #output_np[:,-3:,:] =  test_traj[:,:,:output_np.shape[2]]         
@@ -414,9 +410,9 @@ for seqIdx in range(len(test_X_raw_all)):
 
 
         # To draw only the predcition, throw away others
-        # bodyData = bodyData[:1]
-        # bodyGT_initTrans = bodyGT_initTrans[:1]
-        # bodyGT_initRot = bodyGT_initRot[:1]
+        bodyData = bodyData[:1]
+        bodyGT_initTrans = bodyGT_initTrans[:1]
+        bodyGT_initRot = bodyGT_initRot[:1]
 
 
         # ####################################

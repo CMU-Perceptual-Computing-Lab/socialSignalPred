@@ -250,13 +250,12 @@ model_ae_body = model_ae_body.eval()  #Do I need this again?
 ############################
 ## Choose a sequence
 #seqIdx =1
-
 posErr_list = []
 traj_list_seq =[]
 traj2body_skeletonErr_list = []
 body2body_skeletonErr_list = []
 trajbody2body_skeletonErr_list =[]
-bVisualize = False
+bVisualize = True
 for seqIdx in range(len(test_X_raw_all)):
 
     # if seqIdx!=len(test_X_raw_all)-1:
@@ -265,7 +264,8 @@ for seqIdx in range(len(test_X_raw_all)):
     for iteration in [1]:#[0,1]:  
 
         seqName = os.path.basename(test_seqNames[seqIdx])
-        #if not ('170221_haggling_b3_group1' in seqName):
+        #if not ('170221_haggling_b2_group4' in seqName):
+        # if not ('170221_haggling_b1_group4' in seqName):
         #     continue
 
         print('{}-{}'.format(seqName, iteration))
@@ -316,10 +316,8 @@ for seqIdx in range(len(test_X_raw_all)):
         predic_traj = predic_traj*traj_Ystd + traj_Ymean   #(batch, feature:6, frames)
         predic_traj = predic_traj[0, :,:] #(feature:6, frames)
 
-        
         #traj_X = traj_X[0,:,:] #(feature:12, frames)
         #vis_gt = outputData_np[0,:,:]  #(feature:6, frames)
-        
 
         """Generate visualization formats"""
         #Prediction
@@ -350,7 +348,7 @@ for seqIdx in range(len(test_X_raw_all)):
 
         """Generate Trajectory in Holden's form by pos and body orientation"""
         traj_list_holdenForm, pred_initTrans_list, pred_initRot_list = utility.ConvertTrajectory_velocityForm( [pred_pos], [pred_bodyNorm])       #Prediction version
-        #traj_list_holdenForm, initTrans_list, initRot_list = utility.ConvertTrajectory_velocityForm(vis_posData][:1], vis_bodyNormalData[:1])       #Prediction version
+        gt_traj_list_holdenForm, gt_initTrans_list, gt_initRot_list = utility.ConvertTrajectory_velocityForm(vis_posData[1:2], vis_bodyNormalData[1:2])       #GT version
         #traj_list, initTrans_list, initRot_list = utility.ConvertTrajectory_velocityForm(posData[1:2], bodyNormalData[1:2])      #GT version
         #glViewer.set_Holden_Trajectory_3(traj_list, initTrans=initTrans_list, initRot=initRot_list)
         # glViewer.init_gl()
@@ -370,10 +368,10 @@ for seqIdx in range(len(test_X_raw_all)):
         output_body_np = output_body_np[:,:69,:]      #crop the last 4, if there exists
         
         #Original code
-        #output_body_np = output_body_np*tj2body_body_std[:,:-4,:] + tj2body_body_mean[:,:-4,:]
+        output_body_np = output_body_np*tj2body_body_std[:,:-4,:] + tj2body_body_mean[:,:-4,:]
         
         ##Quant: Baseline. Only Mean
-        output_body_np = output_body_np*tj2body_body_std[:,:-4,:]*0.0 + tj2body_body_mean[:,:-4,:]
+        #output_body_np = output_body_np*tj2body_body_std[:,:-4,:]*0.0 + tj2body_body_mean[:,:-4,:]
 
        
         ## Optional: Overwrite global trans oreintation info
@@ -454,9 +452,8 @@ for seqIdx in range(len(test_X_raw_all)):
         skelErr = np.mean(skelErr,axis=0)   #frames
         body2body_skeletonErr_list.append(skelErr)
 
-
         #Add this guy for vis Unit
-        #Visualize: traj2body body2body GTTarget input1 input2
+        # Visualize: traj2body body2body GTTarget input1 input2
         # vis_bodyData = [ pred_traj2body, pred_body2body] + vis_bodyData
         # vis_bodyGT_initRot = [ vis_bodyGT_initRot[0], vis_bodyGT_initRot[0]] + vis_bodyGT_initRot
         # vis_bodyGT_initTrans = [ vis_bodyGT_initTrans[0], vis_bodyGT_initTrans[0]] +  vis_bodyGT_initTrans
@@ -488,34 +485,62 @@ for seqIdx in range(len(test_X_raw_all)):
         trajbody2body_skeletonErr_list.append(skelErr)
 
         
-        #Throw away the first pred vis (traj2body)
-        # vis_bodyData = vis_bodyData[1:]
-        # vis_bodyGT_initRot = vis_bodyGT_initRot[1:]
-        # vis_bodyGT_initTrans = vis_bodyGT_initTrans[1:]
+        #Final slection to draw a subset
+        #GT: GTTarget, inputBuyer, inputSeller
+        # vis_bodyData = [ vis_bodyData[2], vis_bodyData[3], vis_bodyData[4] ]
+        # vis_bodyGT_initRot = [ vis_bodyGT_initRot[2], vis_bodyGT_initRot[3], vis_bodyGT_initRot[4] ] 
+        # vis_bodyGT_initTrans = [ vis_bodyGT_initTrans[2], vis_bodyGT_initTrans[3], vis_bodyGT_initTrans[4] ]
+
+
+        #Traj2Body, inputBuyer, inputSeller
+        #vis_bodyData = [ vis_bodyData[0], vis_bodyData[3], vis_bodyData[4] ]
+        vis_bodyData = [ vis_bodyData[1], vis_bodyData[3], vis_bodyData[4] ]
+        vis_bodyGT_initRot = [ vis_bodyGT_initRot[0], vis_bodyGT_initRot[3], vis_bodyGT_initRot[4] ] 
+        vis_bodyGT_initTrans = [ vis_bodyGT_initTrans[0], vis_bodyGT_initTrans[3], vis_bodyGT_initTrans[4] ]
+
+
+        """ Select Trajectory to visualize """
+        #GT: GTTargetTrajectory + inputBuyer, inputSeller
+        # vis_posData = [vis_posData[1], vis_posData[2], vis_posData[3] ]
+        # vis_faceNormalData = [vis_faceNormalData[1], vis_faceNormalData[2], vis_faceNormalData[3] ]
+        # vis_bodyNormalData = [vis_bodyNormalData[1], vis_bodyNormalData[2], vis_bodyNormalData[3] ]
+
+        #Pred trajectory + inputBuyer, inputSeller
+        vis_posData = [vis_posData[0], vis_posData[2], vis_posData[3] ]
+        vis_faceNormalData = [vis_faceNormalData[0], vis_faceNormalData[2], vis_faceNormalData[3] ]
+        vis_bodyNormalData = [vis_bodyNormalData[0], vis_bodyNormalData[2], vis_bodyNormalData[3] ]
 
         if bVisualize==False:
             continue
 
+        """Visualize Location + Orientation"""
         glViewer.setPosOnly(vis_posData)
         glViewer.setFaceNormal(vis_faceNormalData)
         glViewer.setBodyNormal(vis_bodyNormalData)
         
-        # glViewer.set_Holden_Trajectory_3(traj_list_holdenForm, initTrans=initTrans_list, initRot=initRot_list)
-        # glViewer.set_Holden_Data_73([output_body_np],initTrans=initTrans_list,initRot=initRot_list)
-        # traj_list_seq.append(np.array(traj_list))
-
-        """"Show body only GT"""
-        vis_bodyData
-        glViewer.set_Holden_Data_73(vis_bodyData, ignore_root=False, initRot=vis_bodyGT_initRot, initTrans= vis_bodyGT_initTrans, bIsGT=True)
-       
-        # glViewer.set_Holden_Data_73(vis_bodyData, ignore_root=False, initRot=vis_bodyGT_initRot, initTrans= vis_bodyGT_initTrans, bIsGT=True)
+        """Visualize Trajectory"""
+        glViewer.set_Holden_Trajectory_3(traj_list_holdenForm, initTrans=pred_initTrans_list, initRot=pred_initRot_list)   #pred
+        #glViewer.set_Holden_Trajectory_3(gt_traj_list_holdenForm, initTrans=gt_initTrans_list, initRot=gt_initRot_list)   #GT
         #glViewer.set_Holden_Trajectory_3([ bodyData[0][-7:-4,:], bodyData[1][-7:-4,:], bodyData[2][-7:-4,:] ], initRot=initRot, initTrans= initTrans)
+
+        """Visualize Body"""
+        #glViewer.set_Holden_Data_73([output_body_np],initTrans=initTrans_list,initRot=initRot_list)
+        glViewer.set_Holden_Data_73(vis_bodyData, ignore_root=False, initRot=vis_bodyGT_initRot, initTrans= vis_bodyGT_initTrans, bIsGT=True)
+        #glViewer.set_Holden_Data_73(vis_bodyData, ignore_root=False, initRot=vis_bodyGT_initRot, initTrans= vis_bodyGT_initTrans, bIsGT=True)
+
+        #Rendering Model
+        outputFolder = '/ssd/render_ssp/{}'.format(seqName[:-4])
+        if os.path.exists(outputFolder) == False:
+            os.mkdir(outputFolder)
+        glViewer.setSaveOnlyMode(True)
+        glViewer.setSave(True)
+        glViewer.setSaveFoldeName(outputFolder)
+        glViewer.LoadCamViewInfo()
+
 
         glViewer.init_gl()
 
-
 # Compute error
-
 
 
 ##Draw Error Figure
@@ -533,8 +558,6 @@ total_avg_skelErr = total_avg_skelErr/cnt
 std = np.std(avg_skelErr_list)
 print("traj2body_skeletonErr_list: {}, std {}".format(total_avg_skelErr, std))
 
-
-
 ##Draw Error Figure
 avg_skelErr_list=[]
 total_avg_skelErr = 0
@@ -549,10 +572,6 @@ for p in body2body_skeletonErr_list:
 total_avg_skelErr = total_avg_skelErr/cnt
 std = np.std(avg_skelErr_list)
 print("body2body_skeletonErr_list: {}, std {}".format(total_avg_skelErr, std))
-
-
-
-
 
 ##Draw Error Figure
 avg_skelErr_list=[]
