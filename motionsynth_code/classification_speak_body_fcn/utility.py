@@ -57,8 +57,8 @@ def my_args_parser():
     parser.add_argument('--checkpoint_freq', type=int, default=50, metavar='N',
                         help='How frequently save the checkpoint (default: every 50 epoch)')
 
-    parser.add_argument('--model', type=str, default='regressor_fcn_bn',
-                        help='a model name in the model_zoo.py (default: regressor_fcn_bn')
+    parser.add_argument('--model', type=str, default='regressor_fcn_bn_updated',
+                        help='a model name in the model_zoo.py (default: regressor_fcn_bn_updated')
 
     parser.add_argument('--solver', type=str, default='adam_ams',
                         help='Optimization solver. adam or sgd, adam_ams. (default: adam_ams')

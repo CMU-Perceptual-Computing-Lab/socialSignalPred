@@ -65,6 +65,8 @@ test_dblist = ['data_hagglingSellers_speech_body_group_120frm_30gap_white_noGa_t
 train_dblist = ['data_hagglingSellers_speech_body_group_120frm_10gap_white_noGa_training']
 test_dblist = ['data_hagglingSellers_speech_body_group_120frm_30gap_white_noGa_testing']
 
+
+
 #train_data = np.load(datapath + train_dblist[0] + '.npz')
 
 pkl_file = open(datapath + train_dblist[0] + '.pkl', 'rb')
@@ -197,8 +199,22 @@ test_X = np.swapaxes(test_X, 1, 2).astype(np.float32) #(num, 200, 1)
 test_Y = test_Y.astype(np.float32)
 
 # Compute mean and var
-Xmean = train_X.mean(axis=2).mean(axis=0)[np.newaxis,:,np.newaxis]
-Xstd = np.array([[[train_X.std()]]]).repeat(train_X.shape[1], axis=1)
+# Xmean = train_X.mean(axis=2).mean(axis=0)[np.newaxis,:,np.newaxis]
+# Xstd = np.array([[[train_X.std()]]]).repeat(train_X.shape[1], axis=1)
+
+# Compute mean and std 
+feet = np.array([12,13,14,15,16,17,24,25,26,27,28,29])
+Xmean = train_X.mean(axis=2).mean(axis=0)[np.newaxis,:,np.newaxis]  #(1, 73, 1)
+Xmean[:,-7:-4] = 0.0
+Xmean[:,-4:]   = 0.5
+
+Xstd = np.array([[[train_X.std()]]]).repeat(train_X.shape[1], axis=1) #(1, 73, 1)
+Xstd[:,feet]  = 0.9 * Xstd[:,feet]
+Xstd[:,-7:-5] = 0.9 * train_X[:,-7:-5].std()
+Xstd[:,-5:-4] = 0.9 * train_X[:,-5:-4].std()
+Xstd[:,-4:]   = 0.5
+
+
 
 # Save mean and var
 np.savez_compressed(checkpointFolder+'/preprocess_core.npz', Xmean=Xmean, Xstd=Xstd)

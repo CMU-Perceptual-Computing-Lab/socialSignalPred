@@ -190,6 +190,34 @@ tj2body_traj_mean = preprocess_traj2body['traj_mean']
 tj2body_traj_std = preprocess_traj2body['traj_std']
 
 
+############################
+## Import Body2speak Model
+import modelZoo_body2speak
+checkpointRoot = './'
+#Other body (using social)
+checkpointFolder_body2speak = checkpointRoot+ '/body2speak/social_regressor_fcn_bn_dropout_social/'    
+preTrainFileName= 'checkpoint_e0_acc0.7059.pth'
+
+checkpointFolder_body2speak = checkpointRoot+ '/body2speak/social_regressor_fcn_bn_dropout_own/'
+preTrainFileName= 'checkpoint_e1_acc0.7593.pth'
+
+
+preprocess_body2speak = np.load(checkpointFolder_body2speak + 'preprocess_core.npz') #preprocess['Xmean' or 'Xstd']: (1, 73,1)
+
+b2s_body_mean = preprocess_body2speak['Xmean']
+b2s_body_std = preprocess_body2speak['Xstd']
+
+#model = getattr(modelZoo_traj2Body,args.model)().cuda()
+model_body2speak = modelZoo_body2speak.regressor_fcn_bn_dropout().cuda()
+model_body2speak.eval()
+
+#Create Model
+trainResultName = checkpointFolder_body2speak + preTrainFileName
+loaded_state = torch.load(trainResultName, map_location=lambda storage, loc: storage)
+
+model_body2speak.load_state_dict(loaded_state,strict=False) #strict False is needed some version issue for batchnorm
+model_body2speak = model_body2speak.eval()  #Do I need this again?
+
 
 ############################
 ## Import Body2body Model
@@ -246,7 +274,6 @@ model_ae_body.load_state_dict(loaded_state,strict=False) #strict False is needed
 model_ae_body = model_ae_body.eval()  #Do I need this again?
 
 
-
 ############################
 ## Choose a sequence
 #seqIdx =1
@@ -256,6 +283,7 @@ traj2body_skeletonErr_list = []
 body2body_skeletonErr_list = []
 trajbody2body_skeletonErr_list =[]
 bVisualize = True
+bRender = False         #IF true, save the opengl vis to files (/ssd/render_ssp/)
 for seqIdx in range(len(test_X_raw_all)):
 
     # if seqIdx!=len(test_X_raw_all)-1:
@@ -268,7 +296,16 @@ for seqIdx in range(len(test_X_raw_all)):
         # if not ('170221_haggling_b1_group4' in seqName):
         #     continue
 
+        #Rendering Model
+        if bRender:
+            outputFolder = '/ssd/render_ssp/{}'.format(seqName[:-4])
+            if os.path.exists(outputFolder) == False:
+                os.mkdir(outputFolder)
+            else:
+                continue
+
         print('{}-{}'.format(seqName, iteration))
+
 
         if iteration ==0:
             targetHumanIdx =1
@@ -440,6 +477,35 @@ for seqIdx in range(len(test_X_raw_all)):
         pred_body2body = pred_body2body[:69,:]    #(69, frames)
 
 
+        """Apply Body2Speak"""
+        ## Test data
+        input_body = body_raw_group[2:3,:,:].copy()      #(1, frames, features:73) //person0,1's all values (position, head orientation, body orientation)
+        ouput_speech_GT = speech_raw[2,:].copy()
+        
+        ######################################
+        # Data pre-processing
+        input_body = np.swapaxes(input_body, 1, 2).astype(np.float32)   #(1, features, frames)
+
+        ######################################
+        # Data pre-processing
+        test_X_std = (input_body - b2s_body_mean) / b2s_body_std
+        
+        inputData = Variable(torch.from_numpy(test_X_std)).cuda()  #(batch, 3, frameNum)
+
+        # ===================forward=====================
+        output = model_body2speak(inputData)
+        speak_output_np = output.data.cpu().numpy()  #(batch, 73, frames)  
+        
+        import matplotlib.pyplot as plt
+        plt.plot(np.squeeze(speak_output_np))
+        plt.hold(True)
+        plt.plot(ouput_speech_GT)
+        plt.show()
+
+
+        ####################################################################################
+        ################### Visualization ##################################################
+
         # ## Compute Skeleton Error
         #Only consider the predicted on
         HOLDEN_DATA_SCALING = 5
@@ -512,8 +578,9 @@ for seqIdx in range(len(test_X_raw_all)):
 
         if bVisualize==False:
             continue
+        continue
 
-        """Visualize Location + Orientation"""
+        """ Visualize Location + Orientation """
         glViewer.setPosOnly(vis_posData)
         glViewer.setFaceNormal(vis_faceNormalData)
         glViewer.setBodyNormal(vis_bodyNormalData)
@@ -528,14 +595,13 @@ for seqIdx in range(len(test_X_raw_all)):
         glViewer.set_Holden_Data_73(vis_bodyData, ignore_root=False, initRot=vis_bodyGT_initRot, initTrans= vis_bodyGT_initTrans, bIsGT=True)
         #glViewer.set_Holden_Data_73(vis_bodyData, ignore_root=False, initRot=vis_bodyGT_initRot, initTrans= vis_bodyGT_initTrans, bIsGT=True)
 
-        #Rendering Model
-        outputFolder = '/ssd/render_ssp/{}'.format(seqName[:-4])
-        if os.path.exists(outputFolder) == False:
-            os.mkdir(outputFolder)
-        glViewer.setSaveOnlyMode(True)
-        glViewer.setSave(True)
-        glViewer.setSaveFoldeName(outputFolder)
-        glViewer.LoadCamViewInfo()
+
+        """Render output to videos"""
+        if bRender:
+            glViewer.setSaveOnlyMode(True)
+            glViewer.setSave(True)
+            glViewer.setSaveFoldeName(outputFolder)
+            glViewer.LoadCamViewInfo()
 
 
         glViewer.init_gl()

@@ -143,10 +143,9 @@ class regressor_fcn_bn_dropout(nn.Module):
         return output
 
 
-
-class regressor_fcn_bn_test(nn.Module):
+class regressor_fcn_bn_updated(nn.Module):
     def __init__(self):
-        super(regressor_fcn_bn_test, self).__init__()
+        super(regressor_fcn_bn_updated, self).__init__()
 
 
         self.encoder = nn.Sequential(
@@ -186,4 +185,3 @@ class regressor_fcn_bn_test(nn.Module):
         output = self.out_act(latent)  #each values 0~1
         #output = self.decoder(latent)
         return output
-
