@@ -190,7 +190,7 @@ class regressor_fcn_bn_updated(nn.Module):
 
 class regressor_fcn_bn_updated2(nn.Module):
     def __init__(self):
-        super(regressor_fcn_bn_updated, self).__init__()
+        super(regressor_fcn_bn_updated2, self).__init__()
 
 
         self.encoder = nn.Sequential(
