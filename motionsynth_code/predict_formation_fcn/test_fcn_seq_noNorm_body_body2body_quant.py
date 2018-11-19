@@ -284,7 +284,7 @@ traj2body_skeletonErr_list = []
 body2body_skeletonErr_list = []
 trajbody2body_skeletonErr_list =[]
 bVisualize = True
-bRender = False         #IF true, save the opengl vis to files (/ssd/render_ssp/)
+bRender = True         #IF true, save the opengl vis to files (/ssd/render_ssp/)
 for seqIdx in range(len(test_X_raw_all)):
 
     # if seqIdx!=len(test_X_raw_all)-1:
@@ -498,13 +498,17 @@ for seqIdx in range(len(test_X_raw_all)):
         # ===================forward=====================
         output = model_body2speak(inputData)
         speak_output_np = output.data.cpu().numpy()  #(batch, 73, frames)  
-        
-        import matplotlib.pyplot as plt
-        plt.plot(np.squeeze(speak_output_np))
-        plt.hold(True)
-        plt.plot(ouput_speech_GT)
-        plt.show()
+        speak_output_np = np.squeeze(speak_output_np)>0.5
+        speak_output_np = speak_output_np*1     #0 or 1 value
 
+        # """VIsualize Speacking classification"""
+        # import matplotlib.pyplot as plt
+        # plt.plot(np.squeeze(speak_output_np))
+        # plt.hold(True)
+        # plt.plot(ouput_speech_GT)
+        # plt.show()
+
+        vis_speech = [speak_output_np, speech_raw[0,:].copy(), speech_raw[1,:].copy()]
 
         ####################################################################################
         ################### Visualization ##################################################
@@ -581,7 +585,6 @@ for seqIdx in range(len(test_X_raw_all)):
 
         if bVisualize==False:
             continue
-        continue
 
         """ Visualize Location + Orientation """
         glViewer.setPosOnly(vis_posData)
@@ -595,10 +598,12 @@ for seqIdx in range(len(test_X_raw_all)):
 
         """Visualize Body"""
         #glViewer.set_Holden_Data_73([output_body_np],initTrans=initTrans_list,initRot=initRot_list)
-        glViewer.set_Holden_Data_73(vis_bodyData, ignore_root=False, initRot=vis_bodyGT_initRot, initTrans= vis_bodyGT_initTrans, bIsGT=True)
+        glViewer.set_Holden_Data_73(vis_bodyData, ignore_root=False, initRot=vis_bodyGT_initRot, initTrans= vis_bodyGT_initTrans, bIsGT=False)
         #glViewer.set_Holden_Data_73(vis_bodyData, ignore_root=False, initRot=vis_bodyGT_initRot, initTrans= vis_bodyGT_initTrans, bIsGT=True)
 
-
+        """Visualize Speech"""
+        glViewer.setSpeech_binary( vis_speech )
+        
         """Render output to videos"""
         if bRender:
             glViewer.setSaveOnlyMode(True)
