@@ -738,8 +738,8 @@ for i, item in enumerate(h36m_files):
         seq_initPos[pIdx] += initPos[pIdx]
         seq_initRot[pIdx] += initRot[pIdx]
 
-    if i==2:
-        break
+    # if i==2:
+    #     break
     
 for pIdx in range(3):
     seq_data[pIdx] = np.array(seq_data[pIdx])       #(chunkNum, frames, featureDim:73)
@@ -756,7 +756,7 @@ print("size: {}".format(seq_data[0].shape))
 
 
 """Save as npz"""
-np.savez('data_hagglingSellers_speech_body_group_120frm_30gap_white_noGa_testing_tiny', data=seq_data,speech=seq_speech, seqNames=h36m_files)#,initPos=seq_initPos, initRot=seq_initRot)
+np.savez('data_hagglingSellers_speech_body_group_120frm_30gap_white_noGa_testing', data=seq_data,speech=seq_speech, seqNames=h36m_files)#,initPos=seq_initPos, initRot=seq_initRot)
 
 """Save as pkl"""
 # output = open('data_hagglingSellers_speech_body_group_120frm_10gap_white_noGa_training.pkl', 'wb')

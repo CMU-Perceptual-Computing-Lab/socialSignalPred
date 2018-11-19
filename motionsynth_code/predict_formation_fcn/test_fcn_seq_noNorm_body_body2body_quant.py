@@ -195,11 +195,12 @@ tj2body_traj_std = preprocess_traj2body['traj_std']
 import modelZoo_body2speak
 checkpointRoot = './'
 #Other body (using social)
-checkpointFolder_body2speak = checkpointRoot+ '/body2speak/social_regressor_fcn_bn_dropout_social/'    
-preTrainFileName= 'checkpoint_e0_acc0.7059.pth'
-
 checkpointFolder_body2speak = checkpointRoot+ '/body2speak/social_regressor_fcn_bn_dropout_own/'
 preTrainFileName= 'checkpoint_e1_acc0.7593.pth'
+
+
+checkpointFolder_body2speak = checkpointRoot+ '/body2speak/social_regressor_fcn_bn_dropout_social/'    
+preTrainFileName= 'checkpoint_e0_acc0.7059.pth'
 
 
 preprocess_body2speak = np.load(checkpointFolder_body2speak + 'preprocess_core.npz') #preprocess['Xmean' or 'Xstd']: (1, 73,1)
@@ -479,7 +480,9 @@ for seqIdx in range(len(test_X_raw_all)):
 
         """Apply Body2Speak"""
         ## Test data
-        input_body = body_raw_group[2:3,:,:].copy()      #(1, frames, features:73) //person0,1's all values (position, head orientation, body orientation)
+        # input_body = body_raw_group[2:3,:,:].copy()      #Own body
+        # ouput_speech_GT = speech_raw[2,:].copy()
+        input_body = body_raw_group[1:2,:,:].copy()      #other seller's body
         ouput_speech_GT = speech_raw[2,:].copy()
         
         ######################################

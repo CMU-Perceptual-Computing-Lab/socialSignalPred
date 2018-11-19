@@ -67,11 +67,10 @@ test_dblist = ['data_hagglingSellers_speech_body_group_120frm_30gap_white_noGa_t
 
 
 
-#train_data = np.load(datapath + train_dblist[0] + '.npz')
-
-pkl_file = open(datapath + train_dblist[0] + '.pkl', 'rb')
-train_data = pickle.load(pkl_file)
-pkl_file.close()
+train_data = np.load(datapath + train_dblist[0] + '.npz')
+# pkl_file = open(datapath + train_dblist[0] + '.pkl', 'rb')
+# train_data = pickle.load(pkl_file)
+# pkl_file.close()
 
 train_X_raw= train_data['data']  #Input (3, num,240,73)
 train_Y_raw = train_data['speech']  #Input (3, num,240,73)
@@ -79,10 +78,10 @@ train_Y_raw = train_data['speech']  #Input (3, num,240,73)
 # train_X = train_X[:-1:10,:,:]
 # train_Y = train_Y[:-1:10,:]
 
-#test_data = np.load(datapath + test_dblist[0] + '.npz')
-pkl_file = open(datapath + test_dblist[0] + '.pkl', 'rb')
-test_data = pickle.load(pkl_file)
-pkl_file.close()
+test_data = np.load(datapath + test_dblist[0] + '.npz')
+# pkl_file = open(datapath + test_dblist[0] + '.pkl', 'rb')
+# test_data = pickle.load(pkl_file)
+# pkl_file.close()
 
 test_X_raw = test_data['data']  #Input (1044,240,73)
 test_Y_raw = test_data['speech']  #Input (1044,240,73)
@@ -285,6 +284,17 @@ for epoch in range(num_epochs):
         #model.hidden = model.init_hidden() #clear out hidden state of the LSTM
         output = model(inputData) #output: (batch, frames, 1)
         loss = criterion(output, outputGT)
+
+        l1_reg = None
+        for W in model.parameters():
+            if l1_reg is None:
+                l1_reg = W.norm(1)
+            else:
+                l1_reg = l1_reg + W.norm(1)        
+        l1_regularization = 0.01 * l1_reg
+
+        loss = loss + l1_regularization
+
 
         # ===================backward====================
         optimizer.zero_grad()
