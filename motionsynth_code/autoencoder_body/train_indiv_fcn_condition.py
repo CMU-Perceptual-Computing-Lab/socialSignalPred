@@ -253,7 +253,7 @@ for epoch in range(num_epochs):
 
         idxStart  = bi*batch_size
         inputData_np = train_X[idxStart:(idxStart+batch_size),:,:]  #(batch, 73, frameNum)
-        speech_np = train_X_speech[idxStart:(idxStart+batch_size),:,:] #(batch, 1, frames)
+        speech_np = train_X_speech[idxStart:(idxStart+batch_size),:,:]*10 #(batch, 1, frames)
         inputData_np = np.concatenate((inputData_np,speech_np),axis=1) #(batch, 73+1, frames)
         #outputData_np = train_Y[idxStart:(idxStart+batch_size),:,:]
 
@@ -267,20 +267,19 @@ for epoch in range(num_epochs):
         output = model(inputData)
         #loss = criterion(output, outputGT)
 
-        if args.l1regw >0.0:
-
-            l1_reg = None
-            for W in model.parameters():
-                if l1_reg is None:
-                    l1_reg = W.norm(1)
-                else:
-                    l1_reg = l1_reg + W.norm(1)        
-            #l1_regularization = 0.1 * l1_reg
-            l1_regularization = args.l1regw * l1_reg
+        # if args.l1regw >0.0:
+        #     l1_reg = None
+        #     for W in model.parameters():
+        #         if l1_reg is None:
+        #             l1_reg = W.norm(1)
+        #         else:
+        #             l1_reg = l1_reg + W.norm(1)        
+        #     #l1_regularization = 0.1 * l1_reg
+        #     l1_regularization = args.l1regw * l1_reg
         
-            loss = criterion(output, inputData[:,:-1,:]) +l1_regularization
-        else:
-            loss = criterion(output, inputData[:,:-1,:])
+        #     loss = criterion(output, inputData[:,:-1,:]) +l1_regularization
+        # else:
+        loss = criterion(output, inputData[:,:-1,:])
 
         #loss, recon_loss, kld_loss = modelZoo.vae_loss_function(output, inputData, mu, logvar,criterion,args.weight_kld)
 

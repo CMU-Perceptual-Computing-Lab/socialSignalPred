@@ -284,7 +284,7 @@ traj2body_skeletonErr_list = []
 body2body_skeletonErr_list = []
 trajbody2body_skeletonErr_list =[]
 bVisualize = True
-bRender = True         #IF true, save the opengl vis to files (/ssd/render_ssp/)
+bRender = False         #IF true, save the opengl vis to files (/ssd/render_ssp/)
 for seqIdx in range(len(test_X_raw_all)):
 
     # if seqIdx!=len(test_X_raw_all)-1:

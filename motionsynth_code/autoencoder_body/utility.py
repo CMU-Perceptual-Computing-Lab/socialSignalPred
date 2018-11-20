@@ -75,7 +75,7 @@ def my_args_parser():
     parser.add_argument('--autoreg', type=int, default='0',
                         help='If >0, train with autoregressive mode. (using init 150 frames input and later 150 frames as output) (default: 0')
     
-    parser.add_argument('--l1regw', type=float, default='0.1',
+    parser.add_argument('--l1regw', type=float, default='0.0',
                         help='L1 regularization wieght. If 0, then no reg is used')
     
     return parser

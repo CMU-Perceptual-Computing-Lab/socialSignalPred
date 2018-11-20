@@ -54,6 +54,38 @@ class autoencoder_first(nn.Module):
         return x
 
 
+class autoencoder_first_speakConditional(nn.Module):
+    def __init__(self):
+        super(autoencoder_first_speakConditional, self).__init__()
+        self.encoder = nn.Sequential(
+            nn.Dropout(0.25),
+            nn.Conv1d(74,256,25,padding=12),        #256, 73, 200
+            nn.ReLU(True),
+            nn.MaxPool1d(kernel_size=2, stride=2)   #256, 73, 120
+        )
+        self.decoder = nn.Sequential(
+            #nn.MaxUnpool1d(kernel_size=2, stride=2),
+            nn.Dropout(0.25),
+            nn.ConvTranspose1d(257, 73, 25, stride=2, padding=12, output_padding=1),
+            #nn.ReLU(True)
+          )  
+
+    def decoder_label(latent, label):   #label is a binary value
+        #label_ = input_[:,-1:,:latent.shape[2]]
+        latent_condition = torch.cat( (latent,label), 1)       #input_[:,-1,:] is the speech label
+
+        output = self.decoder(latent_condition)
+        return output
+
+    def forward(self, input_):      
+        latent = self.encoder(input_)
+
+        label_ = input_[:,-1:,:latent.shape[2]]
+        latent_condition = torch.cat( (latent,label_), 1)       #input_[:,-1,:] is the speech label
+
+        output = self.decoder(latent_condition)
+        return output
+
 
 
 class naive_mlp(nn.Module):
