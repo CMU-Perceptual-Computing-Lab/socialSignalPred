@@ -291,7 +291,7 @@ for epoch in range(num_epochs):
                 l1_reg = W.norm(1)
             else:
                 l1_reg = l1_reg + W.norm(1)        
-        l1_regularization = 0.01 * l1_reg
+        l1_regularization = 0.001 * l1_reg
 
         loss = loss + l1_regularization
 
