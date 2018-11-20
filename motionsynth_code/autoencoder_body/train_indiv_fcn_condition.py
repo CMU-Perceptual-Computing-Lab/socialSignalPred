@@ -327,7 +327,7 @@ for epoch in range(num_epochs):
 
         idxStart  = bi*batch_size
         inputData_np = test_X[idxStart:(idxStart+batch_size),:,:]
-        speech_np = test_X_speech[idxStart:(idxStart+batch_size),:,:] #(batch, 1, frames)
+        speech_np = test_X_speech[idxStart:(idxStart+batch_size),:,:]*10 #(batch, 1, frames)
         inputData_np = np.concatenate((inputData_np,speech_np),axis=1) #(batch, 73+1, frames)
         #outputData_np = test_Y[idxStart:(idxStart+batch_size),:,:]
 
