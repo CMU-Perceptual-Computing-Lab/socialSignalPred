@@ -591,6 +591,7 @@ class regressor_fcn_bn_encoder_noDrop_2(nn.Module):
             nn.Conv1d(10,256,25,padding=12),        #256, 73, 200
             nn.ReLU(),
             nn.BatchNorm1d(256),
+            nn.MaxPool1d(kernel_size=2, stride=2)   #256, 73, 120
         )
 
         # self.decoder = nn.Sequential(
