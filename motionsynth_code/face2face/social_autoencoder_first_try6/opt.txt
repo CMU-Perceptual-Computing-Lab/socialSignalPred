@@ -1,0 +1,14 @@
+----------------- Options ---------------
+                  autoreg: 0                             	[default: 0]
+                    batch: 2048                          
+               check_root: ./                            
+          checkpoint_freq: 50                            
+                       db: haggling_socialmodel_wl       
+                   epochs: 500001                        
+                 finetune:                               
+                      gpu: 0                             
+            latentDim_vae: 100                           	[default: 100]
+                    model: autoencoder_3conv_vect_vae    
+                   solver: adam_ams                      
+               weight_kld: 0.001                         	[default: 0.001]
+----------------- End -------------------
