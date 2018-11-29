@@ -48,8 +48,8 @@ args = parser.parse_args()
 
 ######################################
 # Manual Setting
-args.model = 'regressor_fcn'
-#args.model = 'regressor_fcn_3'
+#args.model = 'regressor_fcn'
+args.model = 'regressor_fcn_3'
 
 # Some initializations #
 torch.cuda.set_device(args.gpu)

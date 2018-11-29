@@ -75,12 +75,26 @@ train_dblist = ['data_hagglingSellers_speech_face_120frm_10gap_white_training']
 test_dblist = ['data_hagglingSellers_speech_face_120frm_10gap_white_testing']
 
 train_data = np.load(datapath + train_dblist[0] + '.npz')
-train_X_raw= train_data['clips']  #Input (numClip, chunkLengh, dim:200)  
-train_Y_raw = train_data['speech']  #Input (numClip, chunkLengh)
+train_X_raw= train_data['clips']  #Input (numClip:34468, chunkLengh, dim:200)  
+train_speech_raw = train_data['speech']  #Input (numClip:34468, chunkLengh)
 
 test_data = np.load(datapath + test_dblist[0] + '.npz')
-test_X_raw= test_data['clips']  #Input (numClip, chunkLengh, dim:200)  
-test_Y_raw = test_data['speech']  #Input (numClip, chunkLengh)
+test_X_raw= test_data['clips']  #Input (numClip:9804, chunkLengh, dim:200)  
+test_Y_raw = test_data['speech']  #Input (numClip:9804, chunkLengh)
+
+
+######################################
+# Select speaking time only only
+speak_time =[]
+#Choose only speaking signal
+for i in range(train_X_raw.shape[0]):
+    speechSignal = train_speech_raw[i,:]
+    if np.max(speechSignal)==1:
+        speak_time.append(i)
+train_X_raw = train_X_raw[speak_time,:,:]
+logger.info("Training Dataset: {}".format(train_X_raw.shape))
+
+
 
 """Visualize X and Y
 #by jhugestar
@@ -98,6 +112,7 @@ train_X_raw = train_X_raw[:,:,:featureDim]
 test_X_raw = test_X_raw[:,:,:featureDim]
 
 
+
 ######################################
 # Network Setting
 num_epochs = args.epochs #500
@@ -106,7 +121,7 @@ batch_size = args.batch
 learning_rate = 1e-3
 
 
-model = getattr(modelZoo,args.model)(featureDim, args.latentDim_vae).cuda()
+#model = getattr(modelZoo,args.model)(featureDim, args.latentDim_vae).cuda()
 # if args.autoreg ==1: #and "vae" in args.model:
 #     model = getattr(modelZoo,args.model)(frameLeng=160).cuda()
 # else:
@@ -115,6 +130,7 @@ model = getattr(modelZoo,args.model)(featureDim, args.latentDim_vae).cuda()
 #model = modelZoo.autoencoder_1conv_vect_vae(featureDim).cuda()
 #model = modelZoo.autoencoder_3conv_vect_vae(featureDim).cuda()
 
+model = modelZoo.autoencoder_first(featureDim).cuda()
 model.train()
 
 for param in model.parameters():
@@ -241,76 +257,42 @@ for epoch in range(num_epochs):
         #outputGT = Variable(torch.from_numpy(outputData_np)).cuda()  #(batch, 73, frameNum)
         #outputGT = Variable(torch.from_numpy(inputData_np)).cuda()  #(batch, 73, frameNum)  
 
-        if "vae" in  model.__class__.__name__:
-            # ===================forward=====================
-            output, mu, logvar = model(inputData)
-            #loss = criterion(output, inputData)
-            #loss = modelZoo.vae_loss_function(output, inputData, mu, logvar,criterion)
-            loss, recon_loss, kld_loss = modelZoo.vae_loss_function(output, inputData, mu, logvar,criterion,args.weight_kld)
+    
+        # ===================forward=====================
+        output = model(inputData)
 
-            # ===================backward====================
-            optimizer.zero_grad()
-            loss.backward()
-            optimizer.step()
+        #loss = criterion(output, outputGT)
+        loss = criterion(output, inputData)
 
-            # ===================log========================
-            # print('model: {}, epoch [{}/{}], loss:{:.4f} (recon: {:.4f}, kld {:.4f})'
-            #             .format(checkpointFolder_base, epoch +pretrain_epoch, num_epochs, loss.item(), recon_loss.item(), kld_loss.item()))
-            avgLoss += loss.item()*batch_size
-            avgReconLoss += recon_loss.item()*batch_size
-            avgKLDLoss += kld_loss.item()*batch_size
+        # ===================backward====================
+        optimizer.zero_grad()
+        loss.backward()
+        optimizer.step()
 
-            if tensorboard_bLog:
-                # 1. Log scalar values (scalar summary)
-                if int(torch.__version__[2])==2:
-                    info = { 'loss': loss.data[0] }
-                else:
-                    info = { 'loss': loss.item(), 'reconLoss': recon_loss.item(), 'kldLoss': kld_loss.item() }
+        # ===================log========================
+        # print('model: {}, epoch [{}/{}], loss:{:.4f}'
+        #             .format(checkpointFolder_base, epoch +pretrain_epoch, num_epochs, loss.item()))
+        avgLoss += loss.item()*batch_size
+    
+        if tensorboard_bLog:
+            # 1. Log scalar values (scalar summary)
+            if int(torch.__version__[2])==2:
+                info = { 'loss': loss.data[0] }
+            else:
+                info = { 'loss': loss.item() }
 
-                for tag, value in info.items():
-                    tb_logger.scalar_summary(tag, value, stepNum)
-            
-        else:
-            # ===================forward=====================
-            output = model(inputData)
-
-            #loss = criterion(output, outputGT)
-            loss = criterion(output, inputData)
-
-            # ===================backward====================
-            optimizer.zero_grad()
-            loss.backward()
-            optimizer.step()
-
-            # ===================log========================
-            # print('model: {}, epoch [{}/{}], loss:{:.4f}'
-            #             .format(checkpointFolder_base, epoch +pretrain_epoch, num_epochs, loss.item()))
-            avgLoss += loss.item()*batch_size
-        
-            if tensorboard_bLog:
-                # 1. Log scalar values (scalar summary)
-                if int(torch.__version__[2])==2:
-                    info = { 'loss': loss.data[0] }
-                else:
-                    info = { 'loss': loss.item() }
-
-                for tag, value in info.items():
-                    tb_logger.scalar_summary(tag, value, stepNum)
+            for tag, value in info.items():
+                tb_logger.scalar_summary(tag, value, stepNum)
         
         stepNum = stepNum+1
 
     ######################################
     # Logging
-    temp_str = 'model: {}, epoch [{}/{}], avg loss:{:.4f} (recon: {:.4f}, kld: {:.4f})'.format(checkpointFolder_base, epoch +pretrain_epoch, num_epochs,
-                                                                 avgLoss/ (len(batchinds)*batch_size),
-                                                                 avgReconLoss/ (len(batchinds)*batch_size),
-                                                                 avgKLDLoss/ (len(batchinds)*batch_size)
+    temp_str = 'model: {}, epoch [{}/{}], avg loss:{:.4f}'.format(checkpointFolder_base, epoch +pretrain_epoch, num_epochs,
+                                                                 avgLoss/ (len(batchinds)*batch_size)
                                                                   )
     logger.info(temp_str)
     
-
-
-
     ######################################
     # Check Testing Error
     batch_size_test = batch_size
@@ -332,23 +314,16 @@ for epoch in range(num_epochs):
         #outputGT = Variable(torch.from_numpy(inputData_np)).cuda()  #(batch, 73, frameNum)
 
         # ===================forward=====================
-        output, mu, logvar = model(inputData)
+        output = model(inputData)
 
         if isinstance(output, tuple):
             output = output[0]
         #loss = criterion(output, outputGT)
 
-        if "vae" in  model.__class__.__name__:
-            loss, recon_loss, kld_loss = modelZoo.vae_loss_function(output, inputData, mu, logvar, criterion, args.weight_kld)
-            
-            test_loss += loss.item()*batch_size_test
-            test_avgReconLoss += recon_loss.item()*batch_size_test
-            test_avgKLDLoss += kld_loss.item()*batch_size_test
 
-        else:
-            loss = criterion(output, inputData)  #Just recon loss only
+        loss = criterion(output, inputData)  #Just recon loss only
 
-            test_loss += loss.item()*batch_size_test
+        test_loss += loss.item()*batch_size_test
         #test_loss += loss.data.cpu().numpy().item()* batch_size_test # sum up batch loss
 
 
@@ -356,10 +331,10 @@ for epoch in range(num_epochs):
     test_avgReconLoss /= len(batchinds)*batch_size_test
     test_avgKLDLoss /= len(batchinds)*batch_size_test
     
-    logger.info('    On testing data: average loss: {:.4f} (recon: {:.4f}, kld: {:.4f})||  (best {:.4f})\n'.format(test_loss, test_avgReconLoss, test_avgKLDLoss, curBestloss))
+    logger.info('    On testing data: average loss: {:.4f} (best {:.4f})\n'.format(test_loss, curBestloss))
     if tensorboard_bLog:
-        #info = { 'test_loss': test_loss }
-        info = { 'test_loss': test_loss.item(), 'test_reconLoss': test_avgReconLoss.item(), 'test_KLDLoss': test_avgKLDLoss.item() }
+        info = { 'test_loss': test_loss }
+        #info = { 'test_loss': test_loss.item()}
         for tag, value in info.items():
             tb_logger.scalar_summary(tag, value, stepNum)
         
