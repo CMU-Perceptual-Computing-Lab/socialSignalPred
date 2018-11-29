@@ -43,7 +43,8 @@ args = parser.parse_args()
 
 ######################################
 # Manual Parameter Setting
-args.model ='autoencoder_first_speakConditional_add'
+args.model ='autoencoder_first_speakConditional'
+#args.model ='autoencoder_first_speakConditional_add'
 #args.solver = 'sgd'
 #args.finetune = 'social_autoencoder_3conv_vae'
 #args.check_root = '/posefs2b/Users/hanbyulj/pytorch_motionSynth/checkpoint'
