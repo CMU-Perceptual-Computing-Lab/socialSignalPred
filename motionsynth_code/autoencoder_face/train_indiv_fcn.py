@@ -133,8 +133,9 @@ learning_rate = 1e-3
 #model = modelZoo.autoencoder_1conv_vect_vae(featureDim).cuda()
 #model = modelZoo.autoencoder_3conv_vect_vae(featureDim).cuda()
 
+model = getattr(modelZoo,args.model)(featureDim).cuda()
 #model = modelZoo.autoencoder_first(featureDim).cuda()
-model = modelZoo.autoencoder_first_16(featureDim).cuda()
+#model = modelZoo.autoencoder_first_16(featureDim).cuda()
 
 model.train()
 
