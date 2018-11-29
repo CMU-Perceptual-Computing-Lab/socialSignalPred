@@ -143,9 +143,8 @@ checkpointFolder = checkpointRoot+ '/best/social_regressor_fcn_try6_noNorm_noReg
 preTrainFileName= 'checkpoint_e150_loss33.4851.pth'
 
 #layer 3
-checkpointFolder = checkpointRoot+ '/social_regressor_fcn_3_try2/'
-preTrainFileName= 'checkpoint_e50_loss22.8530.pth'
-preTrainFileName= 'checkpoint_e12000_loss29.2500.pth'
+checkpointFolder = checkpointRoot+ '/social_regressor_fcn_3/'
+preTrainFileName= 'checkpoint_e13_loss18.4568'
  
 
 

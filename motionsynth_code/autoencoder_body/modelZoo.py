@@ -68,7 +68,7 @@ class autoencoder_first_speakConditional_add(nn.Module):
         super(autoencoder_first_speakConditional_add, self).__init__()
         self.encoder = nn.Sequential(
             nn.Dropout(0.25),
-            nn.Conv1d(74,256,25,padding=12),        #256, 73, 200
+            nn.Conv1d(73,256,25,padding=12),        #256, 73, 200
             nn.ReLU(True),
             nn.MaxPool1d(kernel_size=2, stride=2)   #256, 73, 120
         )
@@ -80,7 +80,7 @@ class autoencoder_first_speakConditional_add(nn.Module):
           )  
 
     def forward(self, input_):      
-        latent = self.encoder(input_)
+        latent = self.encoder(input_[:,:-1,:])
 
         label_ = input_[:,-1:,:latent.shape[2]]
         latent_condition = latent + label_

@@ -138,7 +138,6 @@ else:
     logger.info('Unknown solver option')
     assert(False)
 
-
 ######################################
 # Set Check point folder
 checkpointFolder = setCheckPointFolder(args, model)
