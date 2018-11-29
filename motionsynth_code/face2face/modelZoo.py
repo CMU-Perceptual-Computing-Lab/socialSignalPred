@@ -547,25 +547,25 @@ class regressor_fcn_bn_encoder_2(nn.Module):
         return latent
 
 
-class regressor_fcn_bn_encoder_3(nn.Module):
+class regressor_fcn_bn_encoder_noDrop(nn.Module):
     def __init__(self):
-        super(regressor_fcn_bn_encoder_3, self).__init__()
+        super(regressor_fcn_bn_encoder_noDrop, self).__init__()
 
         self.encoder = nn.Sequential(
-            nn.Dropout(0.25),
-            nn.Conv1d(10,256,3,padding=1),        #256, 73, 200
+            #nn.Dropout(0.25),
+            nn.Conv1d(10,64,25,padding=12),        #256, 73, 200
             nn.ReLU(),
             nn.BatchNorm1d(64),
 
-            nn.Dropout(0.25),
-            nn.Conv1d(64,128,3,padding=1),        #256, 73, 200
+            #nn.Dropout(0.25),
+            nn.Conv1d(64,128,15,padding=7),        #256, 73, 200
             nn.ReLU(),
             nn.BatchNorm1d(128),
 
-            nn.Dropout(0.25),
-            nn.Conv1d(128,256,3,padding=1),        #256, 73, 200
+            #nn.Dropout(0.25),
+            nn.Conv1d(128,256,5,padding=2),        #256, 73, 200
             nn.ReLU(),
-            #nn.BatchNorm1d(256),
+            nn.BatchNorm1d(256),
             nn.MaxPool1d(kernel_size=2, stride=2),   #256, 73, 120
         )
 

@@ -50,7 +50,7 @@ args = parser.parse_args()
 #args.model ='regressor_holden'
 # args.model ='regressor_fcn'
 # args.model ='regressor_fcn_bn'
-args.model ='regressor_fcn_bn_encoder'
+#args.model ='regressor_fcn_bn_encoder'
 # args.model ='regressor_fcn_bn_encoder_2'
 
 
