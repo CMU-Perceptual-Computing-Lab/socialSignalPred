@@ -579,3 +579,27 @@ class regressor_fcn_bn_encoder_noDrop(nn.Module):
     def forward(self, input_):
         latent = self.encoder(input_)
         return latent
+
+
+    
+class regressor_fcn_bn_encoder_noDrop_2(nn.Module):
+    def __init__(self):
+        super(regressor_fcn_bn_encoder_noDrop_2, self).__init__()
+
+        self.encoder = nn.Sequential(
+            #nn.Dropout(0.25),
+            nn.Conv1d(10,256,25,padding=12),        #256, 73, 200
+            nn.ReLU(),
+            nn.BatchNorm1d(256),
+        )
+
+        # self.decoder = nn.Sequential(
+        #     #nn.MaxUnpool1d(kernel_size=2, stride=2),
+        #     nn.Dropout(0.25),
+        #     nn.ConvTranspose1d(256, 73, 25, stride=2, padding=12, output_padding=1),
+        #     #nn.ReLU(True)
+        #   )  
+
+    def forward(self, input_):
+        latent = self.encoder(input_)
+        return latent

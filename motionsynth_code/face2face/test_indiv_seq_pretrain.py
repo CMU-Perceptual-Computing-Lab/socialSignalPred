@@ -82,7 +82,9 @@ preTrainFileName= 'checkpoint_e200_loss0.6707.pth'
 checkpointFolder = checkpointRoot+ '/social_regressor_fcn_bn_encoder_try7/'
 preTrainFileName= 'checkpoint_e450_loss0.6481.pth'
 
-
+checkpointRoot = '/posefs2b/Users/hanbyulj/pytorch_motionSynth/checkpoint/'
+checkpointFolder = checkpointRoot+ '/social_regressor_fcn_bn_encoder_noDrop/'
+preTrainFileName= 'checkpoint_e20_loss0.7392.pth'
 
 #120 frames good!
 
@@ -132,7 +134,7 @@ model = model.eval()  #Do I need this again?
 ######################################
 # Checkout Folder and pretrain file setting
 ae_checkpointRoot = './'
-ae_checkpointFolder = checkpointRoot+ '/social_autoencoder_first_try4/'
+ae_checkpointFolder = ae_checkpointRoot+ '/social_autoencoder_first_try4/'
 preTrainFileName= 'checkpoint_e100_loss0.0351.pth'
 
 # ######################################
