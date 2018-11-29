@@ -84,7 +84,7 @@ preTrainFileName= 'checkpoint_e450_loss0.6481.pth'
 
 checkpointRoot = '/posefs2b/Users/hanbyulj/pytorch_motionSynth/checkpoint/'
 checkpointFolder = checkpointRoot+ '/social_regressor_fcn_bn_encoder_noDrop/'
-preTrainFileName= 'checkpoint_e20_loss0.7392.pth'
+preTrainFileName= 'checkpoint_e50_loss0.7558.pth'
 
 #120 frames good!
 
