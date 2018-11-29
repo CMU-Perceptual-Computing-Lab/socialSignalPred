@@ -76,11 +76,25 @@ test_dblist = ['data_hagglingSellers_speech_face_120frm_10gap_white_testing']
 
 train_data = np.load(datapath + train_dblist[0] + '.npz')
 train_X_raw= train_data['clips']  #Input (numClip:34468, chunkLengh, dim:200)  
-train_Y_raw = train_data['speech']  #Input (numClip:34468, chunkLengh)
+train_speech_raw = train_data['speech']  #Input (numClip:34468, chunkLengh)
 
 test_data = np.load(datapath + test_dblist[0] + '.npz')
 test_X_raw= test_data['clips']  #Input (numClip:9804, chunkLengh, dim:200)  
 test_Y_raw = test_data['speech']  #Input (numClip:9804, chunkLengh)
+
+
+######################################
+# Select speaking time only only
+speak_time =[]
+#Choose only speaking signal
+for i in range(train_X_raw.shape[0]):
+    speechSignal = train_speech_raw[i,:]
+    if np.max(speechSignal)==1:
+        speak_time.append(i)
+train_X_raw = train_X_raw[speak_time,:,:]
+logger.info("Training Dataset: {}".format(train_X_raw.shape))
+
+
 
 """Visualize X and Y
 #by jhugestar
@@ -96,6 +110,7 @@ for frameIdx in range(1,train_X_raw.shape[1],10):
 featureDim = 5
 train_X_raw = train_X_raw[:,:,:featureDim]
 test_X_raw = test_X_raw[:,:,:featureDim]
+
 
 
 ######################################

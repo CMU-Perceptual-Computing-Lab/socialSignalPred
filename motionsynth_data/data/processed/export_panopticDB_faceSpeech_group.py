@@ -544,7 +544,7 @@ def process_file_withSpeech(filename, subjectRole,  window=240, window_step=120)
         - return windows_pos_normal:  [elm1,elm2,elm3], where elmX is list of (window x 9) and the depth order is pos(3), faceNormal(3), bodyNormal(3)
         - windows_speech: [elm1,elm2,elm3], where elmX is list of (window,)
 """
-def process_file_withSpeech_byGroup(filename, window=240, window_step=120):
+def process_file_withSpeech_byGroup(filename, window=240, window_step=120, featureNum=200):
     
    
     #Load speech info
@@ -604,7 +604,10 @@ def process_file_withSpeech_byGroup(filename, window=240, window_step=120):
         
             slice = motionData_list[pIdx][j:j+window] #(frames, featureDim:200)
 
-            slice_concat = slice
+            slice_concat = slice    #(windowLeng, 200)
+
+            #only save part of them
+            slice_concat = slice_concat[:,:featureNum]
 
             windows_data[pIdx].append(slice_concat)
 
@@ -681,7 +684,9 @@ def get_files_haggling(directory, bReturnTesting):
 
 faceParamDir = '/ssd/codes/pytorch_motionSynth/motionsynth_data/data/processed_panoptic/panopticDB_faceMesh_pkl_hagglingProcessed'
 """Haggling training games sellers"""
-bTesting = True
+bTesting = False
+featureNum = 5
+
 h36m_files = get_files_haggling(faceParamDir,bTesting)
 print('Num: {}'.format(len(h36m_files)))
 group_data = [ [], [], [] ]
@@ -690,7 +695,7 @@ group_speech = [ [], [], [] ]
 cnt =0
 for i, item in enumerate(h36m_files):
     print('Processing %i of %i (%s)' % (i, len(h36m_files), item))
-    clips, speech = process_file_withSpeech_byGroup(item, 30, 10)
+    clips, speech = process_file_withSpeech_byGroup(item, 120, 5, featureNum)
 
     for pIdx in range(3):
         group_data[pIdx] += clips[pIdx]
@@ -699,14 +704,14 @@ for i, item in enumerate(h36m_files):
     # if cnt>20:
     #     break
     cnt +=1
-    # if cnt>5:
-    #     break
+    if cnt>5:
+        break
 for pIdx in range(3):
     group_data[pIdx] = np.array(group_data[pIdx])
     group_speech[pIdx] = np.array(group_speech[pIdx])
 print("Data shape: {}".format(group_data[0].shape))
 #np.savez_compressed('data_hagglingSellers_speech_face_60frm_5gap_white_training', clips=data_clips, classes=data_speech)
-np.savez('data_hagglingSellers_speech_group_face_30frm_10gap_white_testing', clips=group_data, speech=group_speech)
+np.savez('data_hagglingSellers_speech_group_face_120frm_5gap_white_5dim_training_tiny', clips=group_data, speech=group_speech)
 
 
 
