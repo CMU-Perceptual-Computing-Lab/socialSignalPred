@@ -90,12 +90,12 @@ logger.info("Raw: Training Dataset: {}".format(train_X_raw.shape))
 #Select speaking time only only
 speak_time =[]
 #Choose only speaking signal
-for i in range(train_X_raw.shape[0]):
-    speechSignal = train_speech_raw[i,:]
-    if np.min(speechSignal)==1:
-        speak_time.append(i)
-train_X_raw = train_X_raw[speak_time,:,:]
-logger.info("Training Dataset: {}".format(train_X_raw.shape))
+# for i in range(train_X_raw.shape[0]):
+#     speechSignal = train_speech_raw[i,:]
+#     if np.min(speechSignal)==1:
+#         speak_time.append(i)
+# train_X_raw = train_X_raw[speak_time,:,:]
+# logger.info("Training Dataset: {}".format(train_X_raw.shape))
 
 
 """Visualize X and Y
