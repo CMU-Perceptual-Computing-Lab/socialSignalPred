@@ -44,7 +44,7 @@ args = parser.parse_args()
 ######################################3
 # Manual Parameter Setting
 
-#args.model ='autoencoder_3conv_vect_vae'
+#args.model ='autoencoder_first_16_2layer'
 #args.solver = 'sgd'
 #args.finetune = 'social_autoencoder_3conv_vae'
 #args.check_root = '/posefs2b/Users/hanbyulj/pytorch_motionSynth/checkpoint'

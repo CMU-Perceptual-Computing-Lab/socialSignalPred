@@ -52,7 +52,7 @@ def my_args_parser():
     parser.add_argument('--checkpoint_freq', type=int, default=50, metavar='N',
                         help='How frequently save the checkpoint (default: every 50 epoch)')
 
-    parser.add_argument('--model', type=str, default='autoencoder_3conv_vect_vae',
+    parser.add_argument('--model', type=str, default='autoencoder_first',
                         help='a model name in the model_zoo.py (default: autoencoder_3conv_vect_vae')
 
     parser.add_argument('--solver', type=str, default='adam_ams',
