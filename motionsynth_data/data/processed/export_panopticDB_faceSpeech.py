@@ -138,7 +138,7 @@ def process_file(filename, window=1, window_step=1):
 
 
 import pickle
-def process_file_withSpeech(filename, subjectRole,  window=240, window_step=120):
+def process_file_withSpeech(filename, subjectRole,  window=240, window_step=120, featureDim=200):
     
     #anim, names, frametime = BVH.load(filename)
     faceParamData = pickle.load( open(filename, "rb" ) )
@@ -186,7 +186,7 @@ def process_file_withSpeech(filename, subjectRole,  window=240, window_step=120)
         if(maxValue>2.0):
             continue
 
-        
+        slice = slice[:,:featureDim]
         windows.append(slice)
         
         cls = speechData['indicator'][j:j+window]
@@ -637,29 +637,30 @@ np.savez('data_hagglingSellers_speech_face_60frm_10gap_white_training', clips=da
 
 faceParamDir = '/ssd/codes/pytorch_motionSynth/motionsynth_data/data/processed_panoptic/panopticDB_faceMesh_pkl_hagglingProcessed'
 """Haggling training games sellers"""
-h36m_files = get_files_haggling(faceParamDir,False)
+h36m_files = get_files_haggling(faceParamDir,True)
 print('Num: {}'.format(len(h36m_files)))
 hagglingRoles = [1,2] #Sellers
 #print(h36m_files)
 h36m_clips = []
 h36m_classes = []
+featureDim = 5
 cnt =0
 for i, item in enumerate(h36m_files):
     print('Processing %i of %i (%s)' % (i, len(h36m_files), item))
-    for role in hagglingRoles:process_file_withSpeech
-        clips, speech = process_file_withSpeech(item,role, 120, 10)
+    for role in hagglingRoles:
+        clips, speech = process_file_withSpeech(item,role, 120, 5,featureDim)
         h36m_clips += clips
         h36m_classes += speech
         # if cnt>20:
         #     break
         cnt +=1
-    if cnt>5:
-        break
+    # if cnt>5:
+    #     break
 data_clips = np.array(h36m_clips)
 data_speech = np.array(h36m_classes)
 #np.savez_compressed('data_hagglingSellers_speech_face_60frm_5gap_white_training', clips=data_clips, classes=data_speech)
 print(data_clips.shape)
-np.savez('data_hagglingSellers_speech_face_120frm_10gap_white_training_tiny', clips=data_clips, speech=data_speech)
+np.savez('data_hagglingSellers_speech_face_120frm_5gap_5dim_white_testing', clips=data_clips, speech=data_speech)
 
 # """Haggling training games sellers"""
 # h36m_files = get_files_haggling_sellers('panoptic',True)

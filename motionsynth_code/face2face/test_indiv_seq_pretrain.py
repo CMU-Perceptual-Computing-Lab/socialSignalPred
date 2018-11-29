@@ -84,7 +84,13 @@ preTrainFileName= 'checkpoint_e450_loss0.6481.pth'
 
 checkpointRoot = '/posefs2b/Users/hanbyulj/pytorch_motionSynth/checkpoint/'
 checkpointFolder = checkpointRoot+ '/social_regressor_fcn_bn_encoder_noDrop/'
-preTrainFileName= 'checkpoint_e50_loss0.7558.pth'
+preTrainFileName= 'checkpoint_e100_loss0.7682.pth'
+
+
+
+checkpointRoot = '/posefs2b/Users/hanbyulj/pytorch_motionSynth/checkpoint/'
+checkpointFolder = checkpointRoot+ '/social_regressor_fcn_bn_encoder_noDrop_3/'
+preTrainFileName= 'checkpoint_e40_loss0.7444.pth'
 
 #120 frames good!
 
@@ -170,6 +176,10 @@ for seqIdx in range(len(test_X_raw_all)):
     #     continue
 
     print('{}'.format(os.path.basename(test_seqNames[seqIdx])))
+
+
+    if not '170221_haggling_m2_group4' in test_seqNames[seqIdx]:
+        continue
 
     test_X_raw = test_X_raw_all[seqIdx]     #(1, frames, feature:73)
     ######################################

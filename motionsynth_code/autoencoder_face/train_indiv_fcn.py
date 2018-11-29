@@ -44,7 +44,7 @@ args = parser.parse_args()
 ######################################3
 # Manual Parameter Setting
 
-args.model ='autoencoder_3conv_vect_vae'
+#args.model ='autoencoder_3conv_vect_vae'
 #args.solver = 'sgd'
 #args.finetune = 'social_autoencoder_3conv_vae'
 #args.check_root = '/posefs2b/Users/hanbyulj/pytorch_motionSynth/checkpoint'
@@ -71,8 +71,11 @@ datapath ='../../motionsynth_data/data/processed/'
 # train_dblist = ['data_hagglingSellers_speech_face_60frm_5gap_white_testing_tiny']
 # test_dblist = ['data_hagglingSellers_speech_face_60frm_5gap_white_testing_tiny']
 
-train_dblist = ['data_hagglingSellers_speech_face_120frm_10gap_white_training']
-test_dblist = ['data_hagglingSellers_speech_face_120frm_10gap_white_testing']
+# train_dblist = ['data_hagglingSellers_speech_face_120frm_10gap_white_training']
+# test_dblist = ['data_hagglingSellers_speech_face_120frm_10gap_white_testing']
+
+train_dblist = ['data_hagglingSellers_speech_face_120frm_5gap_5dim_white_training']
+test_dblist = ['data_hagglingSellers_speech_face_120frm_5gap_5dim_white_testing']
 
 train_data = np.load(datapath + train_dblist[0] + '.npz')
 train_X_raw= train_data['clips']  #Input (numClip:34468, chunkLengh, dim:200)  
@@ -130,7 +133,9 @@ learning_rate = 1e-3
 #model = modelZoo.autoencoder_1conv_vect_vae(featureDim).cuda()
 #model = modelZoo.autoencoder_3conv_vect_vae(featureDim).cuda()
 
-model = modelZoo.autoencoder_first(featureDim).cuda()
+#model = modelZoo.autoencoder_first(featureDim).cuda()
+model = modelZoo.autoencoder_first_16(featureDim).cuda()
+
 model.train()
 
 for param in model.parameters():

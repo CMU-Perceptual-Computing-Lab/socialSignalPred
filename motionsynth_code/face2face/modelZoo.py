@@ -581,7 +581,7 @@ class regressor_fcn_bn_encoder_noDrop(nn.Module):
         return latent
 
 
-    
+#doesnt work
 class regressor_fcn_bn_encoder_noDrop_2(nn.Module):
     def __init__(self):
         super(regressor_fcn_bn_encoder_noDrop_2, self).__init__()

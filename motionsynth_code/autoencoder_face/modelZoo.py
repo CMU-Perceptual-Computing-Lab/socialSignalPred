@@ -37,6 +37,30 @@ class autoencoder_first(nn.Module):
         return x
 
 
+
+class autoencoder_first_16(nn.Module):
+    def __init__(self, featureDim):
+        super(autoencoder_first_16, self).__init__()
+        self.encoder = nn.Sequential(
+            nn.Dropout(0.25),
+            nn.Conv1d(featureDim,16,5,padding=2),        #256, 73, 200
+            nn.ReLU(True),
+            nn.MaxPool1d(kernel_size=2, stride=2)   #256, 73, 120
+        )
+        self.decoder = nn.Sequential(
+            #nn.MaxUnpool1d(kernel_size=2, stride=2),
+            nn.Dropout(0.25),
+            nn.ConvTranspose1d(16, featureDim, 5, stride=2, padding=2, output_padding=1),
+            #nn.ReLU(True)
+          )  
+
+    def forward(self, x):
+        x = self.encoder(x)
+        x = self.decoder(x)
+        return x
+
+
+
 class autoencoder_1conv_vect(nn.Module):
     def __init__(self, featureDim):
         super(autoencoder_1conv_vect, self).__init__()
