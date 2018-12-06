@@ -238,11 +238,13 @@ test_X = (test_X - Xmean) / Xstd
 # dataBlockingMode = 0     #No block
 # dataBlockingMode = 1     #No face
 # dataBlockingMode = 2     #No body
-dataBlockingMode = model.blockmode 
+dataBlockingMode = args.blockmode 
 if dataBlockingMode==1:     #No face
+    logger.info('###: Blocking face features: {0}')
     train_X[:,:5,:] = 0   #train_X= (batchsize,featureNum,frames)
     test_X[:,:5,:] = 0   #train_X= (batchsize,featureNum,frames)
 elif dataBlockingMode==2: #No body
+    logger.info('###: Blocking body features: {0}')
     train_X[:,5:,:] = 0   #train_X= (batchsize,featureNum,frames)
     test_X[:,5:,:] = 0   #train_X= (batchsize,featureNum,frames)
 
