@@ -258,11 +258,11 @@ test_X = (test_X - Xmean) / Xstd
 # dataBlockingMode = 1     #No face: body only
 # dataBlockingMode = 2     #No body: face only
 dataBlockingMode = args.blockmode 
-if dataBlockingMode==1:     #No face
+if dataBlockingMode==1:     #No face: body only
     logger.info('###: Blocking face features: {0}')
     train_X[:,:5,:] = 0   #train_X= (batchsize,featureNum,frames)
     test_X[:,:5,:] = 0   #train_X= (batchsize,featureNum,frames)
-elif dataBlockingMode==2: #No body
+elif dataBlockingMode==2: #No body: face only
     logger.info('###: Blocking body features: {0}')
     train_X[:,5:,:] = 0   #train_X= (batchsize,featureNum,frames)
     test_X[:,5:,:] = 0   #train_X= (batchsize,featureNum,frames)
@@ -273,6 +273,12 @@ I = np.arange(len(train_X))
 rng.shuffle(I); 
 train_X = train_X[I]
 train_Y = train_Y[I]
+
+
+# Random person Shuffle Input
+I = np.arange(len(test_X))
+rng.shuffle(I); 
+test_X = test_X[I]
 
 logger.info('Input data size: {0}'.format(train_X.shape))
 
