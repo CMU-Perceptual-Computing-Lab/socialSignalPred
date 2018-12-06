@@ -231,6 +231,22 @@ np.savez_compressed(checkpointFolder+'/preprocess_core.npz', Xmean=Xmean, Xstd=X
 train_X = (train_X - Xmean) / Xstd
 test_X = (test_X - Xmean) / Xstd
 
+
+
+# Data blocking
+
+# dataBlockingMode = 0     #No block
+# dataBlockingMode = 1     #No face
+# dataBlockingMode = 2     #No body
+dataBlockingMode = model.blockmode 
+if dataBlockingMode==1:     #No face
+    train_X[:,:5,:] = 0   #train_X= (batchsize,featureNum,frames)
+    test_X[:,:5,:] = 0   #train_X= (batchsize,featureNum,frames)
+elif dataBlockingMode==2: #No body
+    train_X[:,5:,:] = 0   #train_X= (batchsize,featureNum,frames)
+    test_X[:,5:,:] = 0   #train_X= (batchsize,featureNum,frames)
+
+
 # Data Shuffle
 I = np.arange(len(train_X))
 rng.shuffle(I); 
@@ -272,8 +288,7 @@ for epoch in range(num_epochs):
         inputData_np = train_X[idxStart:(idxStart+batch_size),:,:]        #(batchsize,featureNum,frames)
 
         #Reordering from (batchsize,featureNum,frames) ->(batch, frame,features)
-        #inputData_np = np.swapaxes(inputData_np, 1, 2) #(batch,  frame, features)
-        outputData_np = train_Y[idxStart:(idxStart+batch_size),:]      
+        outputData_np = train_Y[idxStart:(idxStart+batch_size),:]       #(batch,  frame, features)
         #outputData_np = outputData_np[:,:,np.newaxis]   #(batch, frame, 1)
         outputData_np = outputData_np[:,np.newaxis,:]   #(batch, frame, 1)
 
