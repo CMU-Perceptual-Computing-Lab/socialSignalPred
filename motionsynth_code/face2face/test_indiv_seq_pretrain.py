@@ -58,8 +58,8 @@ torch.cuda.manual_seed(23456)
 datapath ='../../motionsynth_data/data/processed/' 
 
 #test_dblist = ['data_hagglingSellers_speech_group_face_120frm_5gap_white_5dim_training_tiny']
-test_dblist = ['data_hagglingSellers_speech_group_face_5dim_bySequence_testing']
 test_dblist = ['data_hagglingSellers_speech_group_face_5dim_bySequence_training_tiny']
+test_dblist = ['data_hagglingSellers_speech_group_face_5dim_bySequence_testing']
 
 #train_data = np.load(datapath + train_dblist[0] + '.npz')
 pkl_file = open(datapath + test_dblist[0] + '.pkl', 'rb')
@@ -82,18 +82,25 @@ preTrainFileName= 'checkpoint_e200_loss0.6707.pth'
 checkpointFolder = checkpointRoot+ '/social_regressor_fcn_bn_encoder_try7/'
 preTrainFileName= 'checkpoint_e450_loss0.6481.pth'
 
-checkpointRoot = '/posefs2b/Users/hanbyulj/pytorch_motionSynth/checkpoint/'
-checkpointFolder = checkpointRoot+ '/social_regressor_fcn_bn_encoder_noDrop/'
-preTrainFileName= 'checkpoint_e100_loss0.7682.pth'
 
+checkpointRoot = './'
+checkpointFolder = checkpointRoot+ '/social_regressor_fcn_bn_encoder_16_try3/'
+preTrainFileName= 'checkpoint_e8450_loss0.5845.pth'
 
 
 checkpointRoot = '/posefs2b/Users/hanbyulj/pytorch_motionSynth/checkpoint/'
 checkpointFolder = checkpointRoot+ '/social_regressor_fcn_bn_encoder_noDrop_3/'
-preTrainFileName= 'checkpoint_e40_loss0.7444.pth'
+preTrainFileName= 'checkpoint_e2750_loss0.7456.pth'
+preTrainFileName= 'checkpoint_e7500_loss0.7555.pth'
+
+
+checkpointRoot = '/posefs2b/Users/hanbyulj/pytorch_motionSynth/checkpoint/'
+checkpointFolder = checkpointRoot+ '/social_regressor_fcn_bn_encoder_noDrop/'
+preTrainFileName= 'checkpoint_e2550_loss0.7280.pth'
+preTrainFileName= 'checkpoint_e6750_loss0.7233.pth'
+
 
 #120 frames good!
-
 bVisualize = True
 
 ######################################
@@ -139,14 +146,22 @@ model = model.eval()  #Do I need this again?
 
 ######################################
 # Checkout Folder and pretrain file setting
+
+ae_checkpointRoot = './'
+ae_checkpointFolder = ae_checkpointRoot+ '/social_autoencoder_first_16/'
+preTrainFileName= 'checkpoint_e150_loss0.0347.pth'
+
 ae_checkpointRoot = './'
 ae_checkpointFolder = ae_checkpointRoot+ '/social_autoencoder_first_try4/'
 preTrainFileName= 'checkpoint_e100_loss0.0351.pth'
+
+
 
 # ######################################
 # # Load Pretrained Auto-encoder
 ae_preprocess = np.load(ae_checkpointFolder + 'preprocess_core.npz') #preprocess['Xmean' or 'Xstd']: (1, 73,1))
 ae_model = modelZoo.autoencoder_first(5).cuda()
+#ae_model = modelZoo.autoencoder_first_16(5).cuda()
 
 #Creat Model
 trainResultName = ae_checkpointFolder + preTrainFileName
@@ -178,8 +193,8 @@ for seqIdx in range(len(test_X_raw_all)):
     print('{}'.format(os.path.basename(test_seqNames[seqIdx])))
 
 
-    if not '170221_haggling_m2_group4' in test_seqNames[seqIdx]:
-        continue
+    # if not '170221_haggling_m2_group4' in test_seqNames[seqIdx]:
+    #     continue
 
     test_X_raw = test_X_raw_all[seqIdx]     #(1, frames, feature:73)
     ######################################
@@ -254,8 +269,8 @@ for seqIdx in range(len(test_X_raw_all)):
 
 
     """Remvoe OUTPU GT"""
-    #faceData = [faceData[0],faceData[2],faceData[3]]
-    faceData = [faceData[0],faceData[1]]
+    faceData = [faceData[0],faceData[2],faceData[3]]
+    #faceData = [faceData[0],faceData[1]]
 
 
     # # ####################################

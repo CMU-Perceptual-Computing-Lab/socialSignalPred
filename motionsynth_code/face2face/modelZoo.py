@@ -84,38 +84,6 @@ class naive_mlp(nn.Module):
 
 
 
-# Trajectory to Body motion
-# Based on Holden's original network
-class regressor_fcn(nn.Module):
-    def __init__(self):
-        super(regressor_fcn, self).__init__()
-
-        self.encoder = nn.Sequential(
-            nn.Dropout(0.25),
-            nn.Conv1d(146,256,45,padding=22),        #256, 73, 200
-            nn.ReLU(),
-
-            nn.Dropout(0.25),
-            nn.Conv1d(256,256,25,padding=12),        #256, 73, 200
-            nn.ReLU(),
-
-            nn.Dropout(0.25),
-            nn.Conv1d(256,256,15,padding=7),        #256, 73, 200
-            nn.ReLU(),
-            nn.MaxPool1d(kernel_size=2, stride=2),   #256, 73, 120
-        )
-
-        self.decoder = nn.Sequential(
-            #nn.MaxUnpool1d(kernel_size=2, stride=2),
-            nn.Dropout(0.25),
-            nn.ConvTranspose1d(256, 73, 25, stride=2, padding=12, output_padding=1),
-            #nn.ReLU(True)
-          )  
-
-    def forward(self, input_):
-        latent = self.encoder(input_)
-        output = self.decoder(latent)
-        return output
 
 class regressor_fcn_bn_encoder_2(nn.Module):
     def __init__(self):
@@ -627,6 +595,100 @@ class regressor_fcn_bn_encoder_noDrop_3(nn.Module):
             nn.Conv1d(128,256,3,padding=1),        #256, 73, 200
             nn.ReLU(),
             nn.BatchNorm1d(256),
+            nn.MaxPool1d(kernel_size=2, stride=2),   #256, 73, 120
+        )
+
+        # self.decoder = nn.Sequential(
+        #     #nn.MaxUnpool1d(kernel_size=2, stride=2),
+        #     nn.Dropout(0.25),
+        #     nn.ConvTranspose1d(256, 73, 25, stride=2, padding=12, output_padding=1),
+        #     #nn.ReLU(True)
+        #   )  
+
+    def forward(self, input_):
+        latent = self.encoder(input_)
+        return latent
+
+
+
+
+
+
+
+class autoencoder_first_16(nn.Module):
+    def __init__(self, featureDim):
+        super(autoencoder_first_16, self).__init__()
+        self.encoder = nn.Sequential(
+            nn.Dropout(0.25),
+            nn.Conv1d(featureDim,16,5,padding=2),        #256, 73, 200
+            nn.ReLU(True),
+            nn.MaxPool1d(kernel_size=2, stride=2)   #256, 73, 120
+        )
+        self.decoder = nn.Sequential(
+            #nn.MaxUnpool1d(kernel_size=2, stride=2),
+            nn.Dropout(0.25),
+            nn.ConvTranspose1d(16, featureDim, 5, stride=2, padding=2, output_padding=1),
+            #nn.ReLU(True)
+          )  
+
+    def forward(self, x):
+        x = self.encoder(x)
+        x = self.decoder(x)
+        return x
+
+
+
+
+class regressor_fcn_bn_encoder_16(nn.Module):
+    def __init__(self):
+        super(regressor_fcn_bn_encoder_16, self).__init__()
+
+        self.encoder = nn.Sequential(
+            #nn.Dropout(0.25),
+            nn.Conv1d(10,16,5,padding=2),        #256, 73, 200
+            nn.ReLU(),
+            nn.BatchNorm1d(16),
+
+            #nn.Dropout(0.25),
+            nn.Conv1d(16,16,5,padding=2),        #256, 73, 200
+            #nn.ReLU(),
+            nn.BatchNorm1d(16),
+            nn.MaxPool1d(kernel_size=2, stride=2),   #256, 73, 120
+        )
+
+        # self.decoder = nn.Sequential(
+        #     #nn.MaxUnpool1d(kernel_size=2, stride=2),
+        #     nn.Dropout(0.25),
+        #     nn.ConvTranspose1d(256, 73, 25, stride=2, padding=12, output_padding=1),
+        #     #nn.ReLU(True)
+        #   )  
+
+    def forward(self, input_):
+        latent = self.encoder(input_)
+        return latent
+
+
+
+
+class regressor_fcn_bn_encoder_64(nn.Module):
+    def __init__(self):
+        super(regressor_fcn_bn_encoder_64, self).__init__()
+
+        self.encoder = nn.Sequential(
+            #nn.Dropout(0.25),
+            nn.Conv1d(10,32,5,padding=2),        #256, 73, 200
+            nn.ReLU(),
+            nn.BatchNorm1d(32),
+
+            #nn.Dropout(0.25),
+            nn.Conv1d(32,64,5,padding=2),        #256, 73, 200
+            #nn.ReLU(),
+            nn.BatchNorm1d(64),
+
+            #nn.Dropout(0.25),
+            nn.Conv1d(64,16,5,padding=2),        #256, 73, 200
+            #nn.ReLU(),
+            nn.BatchNorm1d(16),
             nn.MaxPool1d(kernel_size=2, stride=2),   #256, 73, 120
         )
 

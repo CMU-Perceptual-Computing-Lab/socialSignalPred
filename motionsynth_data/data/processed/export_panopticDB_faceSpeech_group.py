@@ -546,7 +546,6 @@ def process_file_withSpeech(filename, subjectRole,  window=240, window_step=120)
 """
 def process_file_withSpeech_byGroup(filename, window=240, window_step=120, featureNum=200):
     
-   
     #Load speech info
     seqName = os.path.basename(filename)
     #speech_fileName = seqName[:-7] + '.pkl'
@@ -575,7 +574,7 @@ def process_file_withSpeech_byGroup(filename, window=240, window_step=120, featu
     if len(motionData_list[1]) != len(motionData_list[2]): raise Exception()
     if len(speechData_list[0]) != len(speechData_list[1]): raise Exception()
     if len(speechData_list[1]) != len(speechData_list[2]): raise Exception()
-        
+    
     """ Slide over windows """
     windows_data = [list(),list(),list()]
     windows_speech = [list(),list(),list()]

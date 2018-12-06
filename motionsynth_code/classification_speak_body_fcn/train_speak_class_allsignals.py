@@ -65,37 +65,42 @@ test_dblist = ['data_hagglingSellers_speech_body_group_120frm_30gap_white_noGa_t
 train_dblist = ['data_hagglingSellers_speech_body_group_120frm_10gap_white_noGa_training']
 test_dblist = ['data_hagglingSellers_speech_body_group_120frm_30gap_white_noGa_testing']
 
+# train_dblist = ['data_hagglingSellers_speech_body_face_group_120frm_10gap_white_noGa_testing_tiny']
+# test_dblist = ['data_hagglingSellers_speech_body_face_group_120frm_10gap_white_noGa_testing_tiny']
+
+train_dblist = ['data_hagglingSellers_speech_body_face_group_120frm_10gap_white_noGa_testing']
+test_dblist = ['data_hagglingSellers_speech_body_face_group_120frm_10gap_white_noGa_testing']
 
 train_data = np.load(datapath + train_dblist[0] + '.npz')
-# pkl_file = open(datapath + train_dblist[0] + '.pkl', 'rb')
-# train_data = pickle.load(pkl_file)
-# pkl_file.close()
-
-train_X_raw= train_data['data']  #Input (3, num,240,73)
-train_Y_raw = train_data['speech']  #Input (3, num,240,73)
+train_body_raw= train_data['body']  #Input (3, num ,240,73)
+train_face_raw= train_data['face']  #Input (3, num ,240,73)
+train_speech_raw = train_data['speech']  #Input (3, num ,240,73)
 
 # train_X = train_X[:-1:10,:,:]
 # train_Y = train_Y[:-1:10,:]
 
 test_data = np.load(datapath + test_dblist[0] + '.npz')
-# pkl_file = open(datapath + test_dblist[0] + '.pkl', 'rb')
-# test_data = pickle.load(pkl_file)
-# pkl_file.close()
-
-test_X_raw = test_data['data']  #Input (1044,240,73)
-test_Y_raw = test_data['speech']  #Input (1044,240,73)
+test_body_raw = test_data['body']  #Input (1044,240,73)
+test_face_raw = test_data['face']  #Input (1044,240,73)
+test_speech_raw = test_data['speech']  #Input (1044,240,73)
 
 ######################################
 # Input data selection
 
 if args.inputSubject == 2:
 
-    train_X = np.concatenate( (train_X_raw[2,:,:,:], train_X_raw[1,:,:,:]),axis=0)
-    test_X = np.concatenate( (test_X_raw[2,:,:,:], test_X_raw[1,:,:,:]),axis=0)
+    train_body = np.concatenate( (train_body_raw[2,:,:,:], train_body_raw[1,:,:,:]),axis=0)
+    test_body = np.concatenate( (test_body_raw[2,:,:,:], test_body_raw[1,:,:,:]),axis=0)
+
+    train_face = np.concatenate( (train_face_raw[2,:,:,:], train_face_raw[1,:,:,:]),axis=0)
+    test_face = np.concatenate( (test_face_raw[2,:,:,:], test_face_raw[1,:,:,:]),axis=0)
+
+    train_X = np.concatenate( (train_face, train_body),axis=2)
+    test_X = np.concatenate( (test_face, test_body),axis=2)
 
     #Own Body - Speak
-    train_Y = np.concatenate( (train_Y_raw[2], train_Y_raw[1]), axis=0)  #Input (3, num,240,73)
-    test_Y = np.concatenate( (test_Y_raw[2],test_Y_raw[1]),axis=0)   #Input (3, num,240,73)
+    train_Y = np.concatenate( (train_speech_raw[2], train_speech_raw[1]), axis=0)  #Input (3, num,240,73)
+    test_Y = np.concatenate( (test_speech_raw[2],test_speech_raw[1]),axis=0)   #Input (3, num,240,73)
 
 else:
     print( "args.inputSubject: {}".format(args.inputSubject) )
@@ -137,7 +142,8 @@ lstm_hidden_dim = 20
 feature_dim = 73
 #model = modelZoo.naive_lstm(batch_size, lstm_hidden_dim, feature_dim).cuda()
 #model=modelZoo.regressor_fcn_bn().cuda()
-model = getattr(modelZoo,args.model)().cuda()
+#model = getattr(modelZoo,args.model)().cuda()
+model = modelZoo.speackClass_allSignal().cuda()
 model.train()
 
 # for param in model.parameters():
@@ -196,21 +202,25 @@ train_Y = train_Y.astype(np.float32)
 test_X = np.swapaxes(test_X, 1, 2).astype(np.float32) #(num, 200, 1)
 test_Y = test_Y.astype(np.float32)
 
-# Compute mean and var
-# Xmean = train_X.mean(axis=2).mean(axis=0)[np.newaxis,:,np.newaxis]
-# Xstd = np.array([[[train_X.std()]]]).repeat(train_X.shape[1], axis=1)
 
+######################################
 # Compute mean and std 
 feet = np.array([12,13,14,15,16,17,24,25,26,27,28,29])
+feet = feet+5   #initial 5dim is for face
+
 Xmean = train_X.mean(axis=2).mean(axis=0)[np.newaxis,:,np.newaxis]  #(1, 73, 1)
 Xmean[:,-7:-4] = 0.0
 Xmean[:,-4:]   = 0.5
 
-Xstd = np.array([[[train_X.std()]]]).repeat(train_X.shape[1], axis=1) #(1, 73, 1)
+#Xstd = np.array([[[train_X.std()]]]).repeat(train_X.shape[1], axis=1) #(1, 73, 1)
+Xstd = np.array([[[ train_X[:,5:].std()]]]).repeat(train_X.shape[1], axis=1) #(1, 73, 1)
 Xstd[:,feet]  = 0.9 * Xstd[:,feet]
 Xstd[:,-7:-5] = 0.9 * train_X[:,-7:-5].std()
 Xstd[:,-5:-4] = 0.9 * train_X[:,-5:-4].std()
 Xstd[:,-4:]   = 0.5
+
+#Face part
+Xstd[:,:5] = train_X[:,:5].std()
 
 
 

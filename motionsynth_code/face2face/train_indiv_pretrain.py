@@ -48,7 +48,7 @@ args = parser.parse_args()
 ######################################
 # Manual Parameter Setting
 #args.model ='regressor_holden'
-# args.model ='regressor_fcn'
+args.model ='regressor_fcn_bn_encoder_64'
 # args.model ='regressor_fcn_bn'
 #args.model ='regressor_fcn_bn_encoder'
 # args.model ='regressor_fcn_bn_encoder_2'
@@ -75,8 +75,13 @@ torch.cuda.manual_seed(23456)
 datapath ='../../motionsynth_data/data/processed/' 
 
 
+train_dblist = ['data_hagglingSellers_speech_group_face_120frm_5gap_white_5dim_training_tiny']
+test_dblist = ['data_hagglingSellers_speech_group_face_120frm_5gap_white_5dim_training_tiny']
+
 train_dblist = ['data_hagglingSellers_speech_group_face_120frm_5gap_white_5dim_training']
 test_dblist = ['data_hagglingSellers_speech_group_face_120frm_10gap_white_5dim_testing']
+
+
 
 train_data = np.load(datapath + train_dblist[0] + '.npz')
 train_X_raw= train_data['clips']  #Input (numClip, frames, featureDim:73)
@@ -120,13 +125,14 @@ preTrainFileName= 'checkpoint_e100_loss0.0351.pth'
 ae_checkpointFolder = checkpointRoot+ '/social_autoencoder_first_try6/'
 preTrainFileName= 'checkpoint_e33_loss0.0274.pth'
 
-
-
+ae_checkpointFolder = checkpointRoot+ '/social_autoencoder_first_16/'
+preTrainFileName= 'checkpoint_e150_loss0.0347.pth'
 
 # ######################################
 # # Load Pretrained Auto-encoder
 ae_preprocess = np.load(ae_checkpointFolder + 'preprocess_core.npz') #preprocess['Xmean' or 'Xstd']: (1, 73,1))
-ae_model = modelZoo.autoencoder_first(5).cuda()
+#ae_model = modelZoo.autoencoder_first(5).cuda()
+ae_model = modelZoo.autoencoder_first_16(5).cuda()
 
 #Creat Model
 trainResultName = ae_checkpointFolder + preTrainFileName

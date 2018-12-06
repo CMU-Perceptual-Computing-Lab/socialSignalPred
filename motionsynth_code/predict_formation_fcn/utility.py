@@ -256,3 +256,50 @@ def ConvertTrajectory_velocityForm(posData, bodyNormalData):
         initRot_list.append(initRot)
 
     return traj_list, initTrans_list,initRot_list
+
+
+#(numSkel, 66, frames)
+def ComputeHeadOrientation(skeletons, faceNormal=None):
+
+    i=12
+    neckPt = skeletons[:,(3*i):(3*i+3),:].copy()
+    trans = neckPt#skeletons[:,:3,:]
+
+    trans[:,1,:] -=20
+
+    # faceMassCenter = np.array([-0.002735  , -1.44728992,  0.2565446 ])*100
+    # faceMassCenter[1] +=20
+    # faceMassCenter = faceMassCenter[np.newaxis,:,np.newaxis]
+    # trans -=faceMassCenter
+
+
+    """ Compute Rvelocity"""
+    rotation_angle_list = []
+    for i in range(len(faceNormal)):
+
+        forward = faceNormal[i] # (2,frames)
+        forward = data_2dTo3D(forward) # (2,frames)
+        forward = np.swapaxes(forward,0,1) #(frames, 3)
+        target = np.array([[0,0,1]]).repeat(len(forward), axis=0) #(frames, 3)
+        rotation_q = Quaternions.between(target, forward)[:,np.newaxis]    #forward:(frame,3)
+
+        #up = np.array([[0,1,0]]).repeat(len(forward), axis=0) #(frames, 3)
+        #down = np.array([[0,-1,0]]).repeat(len(forward), axis=0) #(frames, 3)
+        #rotation_q2 = Quaternions.between(up,down)[:,np.newaxis]    #forward:(frame,3)
+        #rotation_q = rotation_q2#* rotation_q
+
+        rotation_angle = [rotation_q[i].angle_axis() for i in range(len(rotation_q))]
+
+        rotation_angle = [i[0] * i[1] for i in rotation_angle]
+        rotation_angle = np.squeeze(np.array(rotation_angle)) #(frames, 3)
+        rotation_angle = np.swapaxes(rotation_angle,0,1) #(3, frames)
+
+        rotation_angle_list.append(rotation_angle)
+
+
+    #adjust length
+    length = min( [ i.shape[1] for i in rotation_angle_list])
+    rotation_angle_list = [ f[:,:length] for f in rotation_angle_list ]
+    rotation_angle_list = np.array(rotation_angle_list) #(3,3, frames)
+
+    return trans, rotation_angle_list #(numSkel,3, frames)
