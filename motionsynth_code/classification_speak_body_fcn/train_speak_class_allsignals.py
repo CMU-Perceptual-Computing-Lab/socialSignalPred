@@ -275,10 +275,10 @@ train_X = train_X[I]
 train_Y = train_Y[I]
 
 
-# Random person Shuffle Input
-I = np.arange(len(test_X))
-rng.shuffle(I); 
-test_X = test_X[I]
+# # Random person Shuffle Input
+# I = np.arange(len(test_X))
+# rng.shuffle(I); 
+# test_X = test_X[I]
 
 logger.info('Input data size: {0}'.format(train_X.shape))
 
