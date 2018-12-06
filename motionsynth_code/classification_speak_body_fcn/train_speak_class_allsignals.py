@@ -68,8 +68,13 @@ test_dblist = ['data_hagglingSellers_speech_body_group_120frm_30gap_white_noGa_t
 # train_dblist = ['data_hagglingSellers_speech_body_face_group_120frm_10gap_white_noGa_testing_tiny']
 # test_dblist = ['data_hagglingSellers_speech_body_face_group_120frm_10gap_white_noGa_testing_tiny']
 
+#White Body
 train_dblist = ['data_hagglingSellers_speech_body_face_group_120frm_10gap_white_noGa_training']
 test_dblist = ['data_hagglingSellers_speech_body_face_group_120frm_10gap_white_noGa_testing']
+
+#White Face&Body
+train_dblist = ['data_hagglingSellers_speech_body_face_group_120frm_10gap_whiteBF_noGa_training']
+test_dblist = ['data_hagglingSellers_speech_body_face_group_120frm_10gap_whiteBF_noGa_testing']
 
 train_data = np.load(datapath + train_dblist[0] + '.npz')
 train_body_raw= train_data['body']  #Input (3, num ,240,73)
@@ -89,18 +94,27 @@ test_speech_raw = test_data['speech']  #Input (1044,240,73)
 
 if args.inputSubject == 2:
 
-    train_body = np.concatenate( (train_body_raw[2,:,:,:], train_body_raw[1,:,:,:]),axis=0)
-    test_body = np.concatenate( (test_body_raw[2,:,:,:], test_body_raw[1,:,:,:]),axis=0)
-
     train_face = np.concatenate( (train_face_raw[2,:,:,:], train_face_raw[1,:,:,:]),axis=0)
     test_face = np.concatenate( (test_face_raw[2,:,:,:], test_face_raw[1,:,:,:]),axis=0)
 
+    train_body = np.concatenate( (train_body_raw[2,:,:,:], train_body_raw[1,:,:,:]),axis=0)
+    test_body = np.concatenate( (test_body_raw[2,:,:,:], test_body_raw[1,:,:,:]),axis=0)
+
     train_X = np.concatenate( (train_face, train_body),axis=2)
     test_X = np.concatenate( (test_face, test_body),axis=2)
+    #train_X = train_face#np.concatenate( (train_face, train_body),axis=2)
+    #test_X = test_face#np.concatenate( (test_face, test_body),axis=2)
 
-    #Own Body - Speak
+    # #Own Body - Speak
     train_Y = np.concatenate( (train_speech_raw[2], train_speech_raw[1]), axis=0)  #Input (3, num,240,73)
     test_Y = np.concatenate( (test_speech_raw[2],test_speech_raw[1]),axis=0)   #Input (3, num,240,73)
+
+    # train_X = train_face_raw[0,:,:,:]
+    # test_X = test_face_raw[0,:,:,:]
+
+    # train_Y = train_speech_raw[2]
+    # test_Y = test_speech_raw[2]
+
 
 else:
     print( "args.inputSubject: {}".format(args.inputSubject) )
@@ -144,6 +158,7 @@ feature_dim = 73
 #model=modelZoo.regressor_fcn_bn().cuda()
 #model = getattr(modelZoo,args.model)().cuda()
 model = modelZoo.speackClass_allSignal().cuda()
+#model = modelZoo.speackClass_face().cuda()
 model.train()
 
 # for param in model.parameters():
@@ -209,18 +224,23 @@ feet = np.array([12,13,14,15,16,17,24,25,26,27,28,29])
 feet = feet+5   #initial 5dim is for face
 
 Xmean = train_X.mean(axis=2).mean(axis=0)[np.newaxis,:,np.newaxis]  #(1, 73, 1)
-Xmean[:,-7:-4] = 0.0
-Xmean[:,-4:]   = 0.5
 
-#Xstd = np.array([[[train_X.std()]]]).repeat(train_X.shape[1], axis=1) #(1, 73, 1)
-Xstd = np.array([[[ train_X[:,5:].std()]]]).repeat(train_X.shape[1], axis=1) #(1, 73, 1)
-Xstd[:,feet]  = 0.9 * Xstd[:,feet]
-Xstd[:,-7:-5] = 0.9 * train_X[:,-7:-5].std()
-Xstd[:,-5:-4] = 0.9 * train_X[:,-5:-4].std()
-Xstd[:,-4:]   = 0.5
+if False:
+    Xmean[:,-7:-4] = 0.0
+    Xmean[:,-4:]   = 0.5
 
-#Face part
-Xstd[:,:5] = train_X[:,:5].std()
+Xstd = np.array([[[train_X.std()]]]).repeat(train_X.shape[1], axis=1) #(1, 73, 1)
+
+if False:
+    Xstd = np.array([[[ train_X[:,5:].std()]]]).repeat(train_X.shape[1], axis=1) #(1, 73, 1)
+    
+    Xstd[:,feet]  = 0.9 * Xstd[:,feet]
+    Xstd[:,-7:-5] = 0.9 * train_X[:,-7:-5].std()
+    Xstd[:,-5:-4] = 0.9 * train_X[:,-5:-4].std()
+    Xstd[:,-4:]   = 0.5
+
+    #Face part
+    Xstd[:,:5] = train_X[:,:5].std()
 
 
 
@@ -258,7 +278,6 @@ train_Y = train_Y[I]
 logger.info('Input data size: {0}'.format(train_X.shape))
 
 
-
 ######################################
 # Some settings before training
 if train_X.shape[0]  < batch_size:
@@ -267,7 +286,6 @@ curBestAccu = 0
 #Compute stepNum start point (to be continuos in tensorboard if pretraine data is loaded)
 filelog_str = ''
 stepNum = pretrain_epoch* len(np.arange(train_X.shape[0] // pretrain_batch_size))
-
 
 
 ######################################
@@ -318,9 +336,7 @@ for epoch in range(num_epochs):
             else:
                 l1_reg = l1_reg + W.norm(1)        
         l1_regularization = 0.001 * l1_reg
-
         loss = loss + l1_regularization
-
 
         # ===================backward====================
         optimizer.zero_grad()
@@ -382,16 +398,16 @@ for epoch in range(num_epochs):
         #model.hidden = model.init_hidden() #clear out hidden state of the LSTM
         output = model(inputData)
 
-        l1_reg = None
-        for W in model.parameters():
-            if l1_reg is None:
-                l1_reg = W.norm(1)
-            else:
-                l1_reg = l1_reg + W.norm(1)        
-        l1_regularization = 0.1 * l1_reg
+        # l1_reg = None
+        # for W in model.parameters():
+        #     if l1_reg is None:
+        #         l1_reg = W.norm(1)
+        #     else:
+        #         l1_reg = l1_reg + W.norm(1)        
+        # l1_regularization = 0.1 * l1_reg
 
 
-        loss = criterion(output, outputGT)+ l1_regularization
+        loss = criterion(output, outputGT)#+ l1_regularization
 
         test_loss += loss.item()*batch_size_test
         #test_loss += loss.data.cpu().numpy().item()* batch_size_test # sum up batch loss
