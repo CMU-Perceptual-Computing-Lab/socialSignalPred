@@ -102,19 +102,10 @@ if args.inputSubject == 2:
 
     train_X = np.concatenate( (train_face, train_body),axis=2)
     test_X = np.concatenate( (test_face, test_body),axis=2)
-    #train_X = train_face#np.concatenate( (train_face, train_body),axis=2)
-    #test_X = test_face#np.concatenate( (test_face, test_body),axis=2)
 
     # #Own Body - Speak
     train_Y = np.concatenate( (train_speech_raw[2], train_speech_raw[1]), axis=0)  #Input (3, num,240,73)
     test_Y = np.concatenate( (test_speech_raw[2],test_speech_raw[1]),axis=0)   #Input (3, num,240,73)
-
-    # train_X = train_face_raw[0,:,:,:]
-    # test_X = test_face_raw[0,:,:,:]
-
-    # train_Y = train_speech_raw[2]
-    # test_Y = test_speech_raw[2]
-
 
 else:
     print( "args.inputSubject: {}".format(args.inputSubject) )
@@ -122,19 +113,27 @@ else:
     #test_X = test_X[args.inputSubject,:,:,:]
 
     if args.inputSubject==1:
-        train_X = np.concatenate( (train_X_raw[2,:,:,:], train_X_raw[1,:,:,:]),axis=0)
-        test_X = np.concatenate( (test_X_raw[2,:,:,:], test_X_raw[1,:,:,:]),axis=0)
+        
+        train_face = np.concatenate( (train_face_raw[2,:,:,:], train_face_raw[1,:,:,:]),axis=0)
+        test_face = np.concatenate( (test_face_raw[2,:,:,:], test_face_raw[1,:,:,:]),axis=0)
+
+        train_body = np.concatenate( (train_body_raw[2,:,:,:], train_body_raw[1,:,:,:]),axis=0)
+        test_body = np.concatenate( (test_body_raw[2,:,:,:], test_body_raw[1,:,:,:]),axis=0)
+
+        train_X = np.concatenate( (train_face, train_body),axis=2)
+        test_X = np.concatenate( (test_face, test_body),axis=2)
 
         #Reverse
-        train_Y = np.concatenate( (train_Y_raw[1], train_Y_raw[2]), axis=0)  #Input (3, num,240,73)
-        test_Y = np.concatenate( (test_Y_raw[1],test_Y_raw[2]),axis=0)   #Input (3, num,240,73)
-    else: #args.inputSubject==0:
-        train_X = np.concatenate( (train_X_raw[0,:,:,:], train_X_raw[0,:,:,:]),axis=0)
-        test_X = np.concatenate( (test_X_raw[0,:,:,:], test_X_raw[0,:,:,:]),axis=0)
+        train_Y = np.concatenate( (train_speech_raw[1], train_speech_raw[2]), axis=0)  #Input (3, num,240,73)
+        test_Y = np.concatenate( (test_speech_raw[1],test_speech_raw[2]),axis=0)   #Input (3, num,240,73)
 
-        #Reverse
-        train_Y = np.concatenate( (train_Y_raw[1], train_Y_raw[2]), axis=0)  #Input (3, num,240,73)
-        test_Y = np.concatenate( (test_Y_raw[1],test_Y_raw[2]),axis=0)   #Input (3, num,240,73)
+    #else: #args.inputSubject==0:
+        # train_X = np.concatenate( (train_X_raw[0,:,:,:], train_X_raw[0,:,:,:]),axis=0)
+        # test_X = np.concatenate( (test_X_raw[0,:,:,:], test_X_raw[0,:,:,:]),axis=0)
+
+        # #Reverse
+        # train_Y = np.concatenate( (train_Y_raw[1], train_Y_raw[2]), axis=0)  #Input (3, num,240,73)
+        # test_Y = np.concatenate( (test_Y_raw[1],test_Y_raw[2]),axis=0)   #Input (3, num,240,73)
 
     #train_Y = train_Y[2]  #Input (3, num,240,73)
     #test_Y = test_Y[2]  #Input (3, num,240,73)
@@ -256,8 +255,8 @@ test_X = (test_X - Xmean) / Xstd
 # Data blocking
 
 # dataBlockingMode = 0     #No block
-# dataBlockingMode = 1     #No face
-# dataBlockingMode = 2     #No body
+# dataBlockingMode = 1     #No face: body only
+# dataBlockingMode = 2     #No body: face only
 dataBlockingMode = args.blockmode 
 if dataBlockingMode==1:     #No face
     logger.info('###: Blocking face features: {0}')
