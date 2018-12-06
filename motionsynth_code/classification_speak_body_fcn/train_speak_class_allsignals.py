@@ -225,22 +225,22 @@ feet = feet+5   #initial 5dim is for face
 
 Xmean = train_X.mean(axis=2).mean(axis=0)[np.newaxis,:,np.newaxis]  #(1, 73, 1)
 
-if False:
-    Xmean[:,-7:-4] = 0.0
-    Xmean[:,-4:]   = 0.5
 
-Xstd = np.array([[[train_X.std()]]]).repeat(train_X.shape[1], axis=1) #(1, 73, 1)
+Xmean[:,-7:-4] = 0.0
+Xmean[:,-4:]   = 0.5
 
-if False:
-    Xstd = np.array([[[ train_X[:,5:].std()]]]).repeat(train_X.shape[1], axis=1) #(1, 73, 1)
-    
-    Xstd[:,feet]  = 0.9 * Xstd[:,feet]
-    Xstd[:,-7:-5] = 0.9 * train_X[:,-7:-5].std()
-    Xstd[:,-5:-4] = 0.9 * train_X[:,-5:-4].std()
-    Xstd[:,-4:]   = 0.5
+#Xstd = np.array([[[train_X.std()]]]).repeat(train_X.shape[1], axis=1) #(1, 73, 1)
 
-    #Face part
-    Xstd[:,:5] = train_X[:,:5].std()
+
+Xstd = np.array([[[ train_X[:,5:].std()]]]).repeat(train_X.shape[1], axis=1) #(1, 73, 1)
+
+Xstd[:,feet]  = 0.9 * Xstd[:,feet]
+Xstd[:,-7:-5] = 0.9 * train_X[:,-7:-5].std()
+Xstd[:,-5:-4] = 0.9 * train_X[:,-5:-4].std()
+Xstd[:,-4:]   = 0.5
+
+#Face part
+Xstd[:,:5] = train_X[:,:5].std()
 
 
 
