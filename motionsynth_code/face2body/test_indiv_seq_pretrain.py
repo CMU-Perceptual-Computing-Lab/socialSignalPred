@@ -10,7 +10,7 @@ from torch import nn
 from torch.autograd import Variable
 import os
 
-import modelZoo
+#import modelZoo
 
 import cPickle as pickle
 
@@ -57,267 +57,122 @@ torch.cuda.manual_seed(23456)
 #datapath ='/ssd/codes/pytorch_motionSynth/motionsynth_data' 
 datapath ='../../motionsynth_data/data/processed/' 
 
-test_dblist = ['data_hagglingSellers_speech_body_bySequence_white_noGa_testing_tiny']
-test_dblist = ['data_hagglingSellers_speech_body_bySequence_white_noGa_testing']
 
-#train_data = np.load(datapath + train_dblist[0] + '.npz')
-pkl_file = open(datapath + test_dblist[0] + '.pkl', 'rb')
-test_data = pickle.load(pkl_file)
-pkl_file.close()
-
-test_X_raw_all = test_data['data']  #Input (1044,240,73)
-# test_Y_raw_all = test_data['speech']  #Input (1044,240,73)
-test_seqNames = test_data['seqNames']
-
-test_X_raw_initInfo =  test_data['initInfo']    #(3, chunkNum, 1, 3)
-
-######################################
-# Checkout Folder and pretrain file setting
+test_dblist_body = ['data_hagglingSellers_speech_body_face_bySequence_white_noGa_brl_testing']
+test_dblist_body = ['data_hagglingSellers_speech_body_face_bySequence_white_noGa_brl_testing_tiny']
 
 
-checkpointRoot = '/posefs2b/Users/hanbyulj/pytorch_motionSynth/checkpoint/'
-checkpointFolder = checkpointRoot+ '/social_regressor_fcn_bn_encoder/'
-preTrainFileName= 'checkpoint_e58_loss47.9278.pth'
+"""Load body motion data"""
+pkl_file_body = open(datapath + test_dblist_body[0] + '.pkl', 'rb')
+test_data_body = pickle.load(pkl_file_body)
+pkl_file_body.close()
 
-#240 frames
-checkpointRoot = '/posefs2b/Users/hanbyulj/pytorch_motionSynth/checkpoint/'
-checkpointFolder = checkpointRoot+ '/social_regressor_fcn_bn_encoder_try1/'
-preTrainFileName= 'checkpoint_e18_loss0.1314.pth'
-preTrainFileName= 'checkpoint_e50_loss0.1429.pth'
+test_body_raw_all = test_data_body['data']  #Input (1044,240,73)
+test_body_seqNames = test_data_body['seqNames']
+test_body_initInfo = test_data_body['initInfo']
 
+"""Load face expression data"""
+test_face_raw_all = test_data_body['face']  #Input (1044,240,73)
 
-#120 frames good! new try. 3 kernel
-checkpointRoot = './'
-checkpointFolder = checkpointRoot+ '/social_regressor_fcn_bn_encoder_2_try2/'
-preTrainFileName= 'checkpoint_e50_loss0.1534.pth'
-preTrainFileName= 'checkpoint_e800_loss0.1431.pth'
-
-
-#120 frames good!
-checkpointRoot = '/posefs2b/Users/hanbyulj/pytorch_motionSynth/checkpoint/'
-checkpointFolder = checkpointRoot+ '/social_regressor_fcn_bn_encoder_try2/'
-preTrainFileName= 'checkpoint_e100_loss0.1432.pth'
-preTrainFileName= 'checkpoint_e550_loss0.1397.pth'
-
-
-
-#120 frames good!
-checkpointRoot = '/posefs2b/Users/hanbyulj/pytorch_motionSynth/checkpoint/'
-checkpointFolder = checkpointRoot+ '/social_regressor_fcn_bn_encoder_7/'
-preTrainFileName= 'checkpoint_e300_loss0.1422.pth'
-
-
-
-
+# ######################################
+# # Load Face2body
+from network_face2body import Network_face2body 
+net_face2body = Network_face2body()
 
 
 bVisualize = True
 
-######################################
-# Load Data pre-processing
-preprocess = np.load(checkpointFolder + 'preprocess_core.npz') #preprocess['Xmean' or 'Xstd']: (1, 73,1)
 
-
-######################################
-# Load Options
-log_file_name = os.path.join(checkpointFolder, 'opt.json')
-import json
-with open(log_file_name, 'r') as opt_file:
-    options_dict = json.load(opt_file)
-
-    ##Setting Options to Args
-    args.model = options_dict['model']
-    
-
-######################################
-# Network Setting
-#batch_size = args.batch
-batch_size = 500#512
-criterion = nn.BCELoss()
-
-#Creat Model
-#model = modelZoo.naive_mlp_wNorm_2().cuda()
-model = getattr(modelZoo,args.model)().cuda()
-
-model.eval()
-
-#Creat Model
-trainResultName = checkpointFolder + preTrainFileName
-loaded_state = torch.load(trainResultName, map_location=lambda storage, loc: storage)
-
-model.load_state_dict(loaded_state,strict=False) #strict False is needed some version issue for batchnorm
-model = model.eval()  #Do I need this again?
-
-
-
-
-############################################################################
-# Load Pretrained Autoencoder
-
-######################################
-# Checkout Folder and pretrain file setting
-ae_checkpointRoot = './'
-ae_checkpointFolder = ae_checkpointRoot+ '/social_autoencoder_first_try9_120frm_best_noReg/'
-preTrainFileName= 'checkpoint_e1009_loss0.0085.pth'
-
-# ######################################
-# # Load Pretrained Auto-encoder
-ae_preprocess = np.load(ae_checkpointFolder + 'preprocess_core.npz') #preprocess['Xmean' or 'Xstd']: (1, 73,1))
-ae_model = modelZoo.autoencoder_first().cuda()
-
-#Creat Model
-trainResultName = ae_checkpointFolder + preTrainFileName
-loaded_state = torch.load(trainResultName, map_location=lambda storage, loc: storage)
-
-ae_model.load_state_dict(loaded_state,strict=False) #strict False is needed some version issue for batchnorm
-ae_model = ae_model.eval()  #Do I need this again?
-
-
-######################################
-# If model is for single frame data
-bSingleFrameInput = False
-if not hasattr(model, 'init_hidden'):
-    bSingleFrameInput = True
-
-############################
-## Choose a sequence
-#seqIdx =1
-
-posErr_list = []
-skeletonErr_list = []
-
-
-for seqIdx in range(len(test_X_raw_all)):
+for seqIdx in range(len(test_face_raw_all)):
 
     # if seqIdx!=len(test_X_raw_all)-1:
     #     continue
 
-    print('{}'.format(os.path.basename(test_seqNames[seqIdx])))
+    #print('{}'.format(os.path.basename(test_seqNames[seqIdx])))
 
-    test_X_raw = test_X_raw_all[seqIdx]     #(1, frames, feature:73)
-    test_X_initInfo = test_X_raw_initInfo[seqIdx]
-    ######################################
-    # Input/Output Option
+    face_raw_group = test_face_raw_all[seqIdx]     #(1, frames, feature:73)
+    test_body_group = test_body_raw_all[seqIdx]     #(1, frames, feature:73)
 
-    ## Test data
-    test_X = test_X_raw[0:1,:,:]      #(1, frames, features:73) //person0,1's all values (position, head orientation, body orientation)
-    test_X = np.concatenate( (test_X, test_X_raw[1:2,:,:]), axis= 2)      #(1, frames, features:146)
-    test_Y = test_X_raw[2:3,:,:]    #(1, frames, features:73)
+    #######################################################
+    # Pre-processing for Face2Face
+    #faceData_in = [face_raw_group[0,:,:], face_raw_group[1,:,:] ]  #(frames, 5)
+    faceData_in = face_raw_group[2:3,:,:]      #(1, frames, features:5)
+    faceData_in = np.swapaxes(faceData_in, 1, 2).astype(np.float32)   #(1, features:10, frames)
 
-    inputData_initTrans = test_X_initInfo[0]['pos']
-    inputData_initTrans2 = test_X_initInfo[1]['pos']
-    outputData_initTrans = test_X_initInfo[2]['pos']
+    faceData_in_std = net_face2body.standardize_input(faceData_in)  #(1, features:10, frames)
 
-    inputData_initRot  = Quaternions(test_X_initInfo[0]['rot'].flatten()[:])
-    inputData_initRot2  = Quaternions(test_X_initInfo[1]['rot'].flatten()[:])
-    outputData_initRot  = Quaternions(test_X_initInfo[2]['rot'].flatten()[:])
-
-
-    ######################################
-    # Data pre-processing
-    test_X = np.swapaxes(test_X, 1, 2).astype(np.float32)   #(1, features, frames)
-    test_Y = np.swapaxes(test_Y, 1, 2).astype(np.float32)   #(1, features, frames)
-
-
-    ######################################
-    # Data pre-processing
-    preprocess = np.load(checkpointFolder + 'preprocess_core.npz') #preprocess['Xmean' or 'Xstd']: (1, 73,1)
-
-    body_mean = preprocess['body_mean']
-    body_std = preprocess['body_std']
-
-    body_mean_two = preprocess['body_mean_two']
-    body_std_two = preprocess['body_std_two']
-
-    test_X_std = (test_X - body_mean_two) / body_std_two
-    test_Y_std = (test_Y - body_mean) / body_std
-
-
-    idxStart  = 0
-    inputData_np = test_X_std[idxStart:(idxStart+batch_size),:,:]  #(batch, 3, frameNum)
-    outputData_np = test_Y_std[idxStart:(idxStart+batch_size),:,:] #(batch, 73 , frameNum)
-    
-    inputData_np_ori = test_X[idxStart:(idxStart+batch_size),:,:]  #(batch, 3, frameNum)
-    outputData_np_GT = test_Y[idxStart:(idxStart+batch_size),:,:] #(batch, 73, frameNum)
-
-    inputData = Variable(torch.from_numpy(inputData_np)).cuda()  #(batch, 3, frameNum)
-    outputGT = Variable(torch.from_numpy(outputData_np)).cuda()  #(batch, 73, frameNum)
-
-    # ===================forward=====================
-    output = model(inputData)
-    output = ae_model.decoder(output)
-    #loss = criterion(output, outputGT)
-    #loss = criterion(output, outputGT)
-
-
+    #######################################################
+    # Predicting face by Face2Face
+    inputData_ = Variable(torch.from_numpy(faceData_in_std)).cuda()  #(batch, 3, frameNum)
+    f2face_pred_body = net_face2body(inputData_)
     #De-standardaize
-    output_np = output.data.cpu().numpy()  #(batch, 73, frames)
-    output_np = output_np*body_std + body_mean
+    f2face_pred_body = f2face_pred_body.data.cpu().numpy()  #(1, featureDim:5, frames)
+    f2face_pred_body = net_face2body.destandardize_output(f2face_pred_body)
+ #  output_np = output_np*body_std + body_mean
+    f2face_pred_body = np.squeeze(f2face_pred_body)  #(featureDim:73, frames)
 
-    output_np = np.swapaxes(output_np,1,2)  #(batch, frames, 73)
-    output_np = np.reshape(output_np,(-1,73))
-    output_np = np.swapaxes(output_np,0,1)
-
-    """Overwrite global trans oreintation info"""
-    #output_np[-7:-3,:] =  outputData_np_GT[0,-7:-3,:output_np.shape[1]]         #
-
-
-    #Output GT
-    outputData_np_GT = np.swapaxes(outputData_np_GT,1,2)  #(batch, frames, 73)
-    outputData_np_GT = np.reshape(outputData_np_GT,(-1,73))
-    outputData_np_GT = np.swapaxes(outputData_np_GT,0,1)
-  
-    #Input GTs
-    inputData_np_ori_1 = inputData_np_ori[:,:73,:]
-    inputData_np_ori_1 = np.swapaxes(inputData_np_ori_1,1,2)  #(batch, frames, 73)
-    inputData_np_ori_1 = np.reshape(inputData_np_ori_1,(-1,73))
-    inputData_np_ori_1 = np.swapaxes(inputData_np_ori_1,0,1)
-
-    inputData_np_ori_2 = inputData_np_ori[:,73:,:]
-    inputData_np_ori_2 = np.swapaxes(inputData_np_ori_2,1,2)  #(batch, frames, 73)
-    inputData_np_ori_2 = np.reshape(inputData_np_ori_2,(-1,73))
-    inputData_np_ori_2 = np.swapaxes(inputData_np_ori_2,0,1)
-
-    #glViewer.show_Holden_Data_73([ outputData_np_ori, inputData_np_ori, output_np] )
-
-    initTrans = [outputData_initTrans,outputData_initTrans, inputData_initTrans, inputData_initTrans2]
-    initRot = [outputData_initRot[0],outputData_initRot[0], inputData_initRot[0], inputData_initRot2[0]]
-    frameLen = output_np.shape[1]
-    bodyData = [ output_np, outputData_np_GT[:,:frameLen], inputData_np_ori_1[:,:frameLen], inputData_np_ori_2[:,:frameLen] ]
-
-
-    """Remvoe OUTPU GT"""
-    bodyData = [bodyData[0],bodyData[2],bodyData[3]]
-    initRot = [initRot[0],initRot[2],initRot[3]]
-    initTrans = [initTrans[0],initTrans[2],initTrans[3]]
-
-
-
-    # ####################################
-    # ## Compute Skeleton Error
-    HOLDEN_DATA_SCALING = 5
-    bodyData_pred = bodyData[0][:-7,:]*HOLDEN_DATA_SCALING   #prediction (66,frames)
-    """Baselines"""
-    """
-    #bodyData_pred = bodyData[2][:-7,:]*HOLDEN_DATA_SCALING   #Baseline:Mirroring (buyer)
-    #bodyData_pred = bodyData[3][:-7,:]*HOLDEN_DATA_SCALING   #Baseline: Mirroring (other seller)
-    bodyData_pred = body_mean.copy()[0,:66,:]   #Mirroring (buyer)   (73)
-    bodyData_pred = np.repeat(bodyData_pred,bodyData[0].shape[1],axis=1)*HOLDEN_DATA_SCALING
-    """
-
-    bodyData_gt = bodyData[1][:-7,:]*HOLDEN_DATA_SCALING       #GT
-    bodyData_gt = bodyData_gt[:,:bodyData_pred.shape[1]]
-    skelErr = ( bodyData_pred -  bodyData_gt)**2           #66, frames
-    skelErr = np.reshape(skelErr, (3,22,-1))        #3,22, frames
-    skelErr = np.sqrt(np.sum(skelErr, axis=0))      #22,frames        
-    skelErr = np.mean(skelErr,axis=0)   #frames
-    skeletonErr_list.append(skelErr)
-    
-    if bVisualize==False:
-        continue
-
-    glViewer.set_Holden_Data_73(bodyData, initTrans=initTrans, initRot=initRot)#, initTrans=initTrans, initRot=initRot)
+    bodyData = [ f2face_pred_body]
+    glViewer.set_Holden_Data_73(bodyData)#, initTrans=initTrans, initRot=initRot)
     glViewer.init_gl()
+
+    continue
+
+    # #Output GT
+    # outputData_np_GT = np.swapaxes(outputData_np_GT,1,2)  #(batch, frames, 73)
+    # outputData_np_GT = np.reshape(outputData_np_GT,(-1,73))
+    # outputData_np_GT = np.swapaxes(outputData_np_GT,0,1)
+  
+    # #Input GTs
+    # inputData_np_ori_1 = inputData_np_ori[:,:73,:]
+    # inputData_np_ori_1 = np.swapaxes(inputData_np_ori_1,1,2)  #(batch, frames, 73)
+    # inputData_np_ori_1 = np.reshape(inputData_np_ori_1,(-1,73))
+    # inputData_np_ori_1 = np.swapaxes(inputData_np_ori_1,0,1)
+
+    # inputData_np_ori_2 = inputData_np_ori[:,73:,:]
+    # inputData_np_ori_2 = np.swapaxes(inputData_np_ori_2,1,2)  #(batch, frames, 73)
+    # inputData_np_ori_2 = np.reshape(inputData_np_ori_2,(-1,73))
+    # inputData_np_ori_2 = np.swapaxes(inputData_np_ori_2,0,1)
+
+    # #glViewer.show_Holden_Data_73([ outputData_np_ori, inputData_np_ori, output_np] )
+
+    # initTrans = [outputData_initTrans,outputData_initTrans, inputData_initTrans, inputData_initTrans2]
+    # initRot = [outputData_initRot[0],outputData_initRot[0], inputData_initRot[0], inputData_initRot2[0]]
+    # frameLen = output_np.shape[1]
+    
+
+
+    # """Remvoe OUTPU GT"""
+    # bodyData = [bodyData[0],bodyData[2],bodyData[3]]
+    # initRot = [initRot[0],initRot[2],initRot[3]]
+    # initTrans = [initTrans[0],initTrans[2],initTrans[3]]
+
+
+
+    # # ####################################
+    # # ## Compute Skeleton Error
+    # HOLDEN_DATA_SCALING = 5
+    # bodyData_pred = bodyData[0][:-7,:]*HOLDEN_DATA_SCALING   #prediction (66,frames)
+    # """Baselines"""
+    # """
+    # #bodyData_pred = bodyData[2][:-7,:]*HOLDEN_DATA_SCALING   #Baseline:Mirroring (buyer)
+    # #bodyData_pred = bodyData[3][:-7,:]*HOLDEN_DATA_SCALING   #Baseline: Mirroring (other seller)
+    # bodyData_pred = body_mean.copy()[0,:66,:]   #Mirroring (buyer)   (73)
+    # bodyData_pred = np.repeat(bodyData_pred,bodyData[0].shape[1],axis=1)*HOLDEN_DATA_SCALING
+    # """
+
+    # bodyData_gt = bodyData[1][:-7,:]*HOLDEN_DATA_SCALING       #GT
+    # bodyData_gt = bodyData_gt[:,:bodyData_pred.shape[1]]
+    # skelErr = ( bodyData_pred -  bodyData_gt)**2           #66, frames
+    # skelErr = np.reshape(skelErr, (3,22,-1))        #3,22, frames
+    # skelErr = np.sqrt(np.sum(skelErr, axis=0))      #22,frames        
+    # skelErr = np.mean(skelErr,axis=0)   #frames
+    # skeletonErr_list.append(skelErr)
+    
+    # if bVisualize==False:
+    #     continue
+
+    # glViewer.set_Holden_Data_73(bodyData, initTrans=initTrans, initRot=initRot)#, initTrans=initTrans, initRot=initRot)
+    # glViewer.init_gl()
 
 # Compute error
 

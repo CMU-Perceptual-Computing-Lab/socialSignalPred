@@ -31,7 +31,7 @@ from torch import nn
 from torch.autograd import Variable
 import os
 
-import modelZoo
+import modelZoo_face2body as modelZoo
 
 # Utility Functions
 import utility
@@ -86,21 +86,27 @@ test_dblist = ['data_hagglingSellers_speech_body_group_240frm_15gap_white_noGa_t
 train_dblist = ['data_hagglingSellers_speech_body_group_120frm_10gap_white_noGa_training']
 test_dblist = ['data_hagglingSellers_speech_body_group_120frm_30gap_white_noGa_testing']
 
-# pkl_file = open(datapath + train_dblist[0] + '.pkl', 'rb')
-# train_data = pickle.load(pkl_file)
-# pkl_file.close()
+#White Face&Body
+train_dblist = ['data_hagglingSellers_speech_body_face_group_120frm_10gap_whiteBF_noGa_training']
+test_dblist = ['data_hagglingSellers_speech_body_face_group_120frm_10gap_whiteBF_noGa_testing']
+
+
 train_data = np.load(datapath + train_dblist[0] + '.npz')
-train_X_raw= train_data['data']  #Input (numClip, frames, featureDim:73)
-#train_speech_raw = train_data['speech']  #Input (numClip, frames)
+train_body_raw= train_data['body']  #Input (3, num ,240,73)
+train_face_raw= train_data['face']  #Input (3, num ,240,73)
+train_speech_raw = train_data['speech']  #Input (3, num ,240,73)
 
+
+# train_X = train_X[:-1:10,:,:]
+# train_Y = train_Y[:-1:10,:]
 test_data = np.load(datapath + test_dblist[0] + '.npz')
-# pkl_file = open(datapath + test_dblist[0] + '.pkl', 'rb')
-# test_data = pickle.load(pkl_file)
-# pkl_file.close()
-test_X_raw= test_data['data']      #Input (numClip, frames, featureDim:73)
-#test_speech_raw = test_data['speech']    #Input (numClip, frames)
+test_body_raw = test_data['body']  #Input (1044,240,73)
+test_face_raw = test_data['face']  #Input (1044,240,73)
+test_speech_raw = test_data['speech']  #Input (1044,240,73)
 
-logger.info("Raw: Training Dataset: {}".format(train_X_raw.shape))
+
+
+#logger.info("Raw: Training Dataset: {}".format(train_X_raw.shape))
 #Select speaking time only only
 # speak_time =[]
 # #Choose only speaking signal
@@ -156,6 +162,7 @@ batch_size = args.batch
 learning_rate = 1e-3
 
 model = getattr(modelZoo,args.model)().cuda()
+#model = modelZoo.regressor_fcn_bn_encoder().cuda()
 model.train()
 
 # Loss Function #
@@ -207,32 +214,26 @@ save_options(checkpointFolder, option_str, options_dict)
 ######################################
 # Input/Output Option
 
-train_X = train_X_raw[0,:,:,:]      #(num, frameNum, featureDim:3)
-train_X = np.concatenate( (train_X, train_X_raw[1,:,:,:]), axis= 2)    #(num, chunkLength, 18)
-train_Y = train_X_raw[2,:,:,:]    #2nd seller's position only
+train_X = train_face_raw[1,:,:,:]      #(num, frameNum, featureDim:3)
+train_Y = train_body_raw[2,:,:,:]    #2nd seller's position only
 
 ## Change the second and third 
-train_X_swap = train_X_raw[0,:,:,:]      #(num, chunkLength, 9) //person0,1's all values (position, head orientation, body orientation)
-train_X_swap = np.concatenate( (train_X_swap, train_X_raw[2,:,:,:]), axis= 2)    #(num, chunkLength, 18)
-train_Y_swap = train_X_raw[1,:,:,:]    #2nd seller's position only
+train_X_swap = train_face_raw[2,:,:,:]      #(num, chunkLength, 9) //person0,1's all values (position, head orientation, body orientation)
+train_Y_swap = train_body_raw[1,:,:,:]    #2nd seller's position only
 
 train_X = np.concatenate( (train_X, train_X_swap), axis=0)
 train_Y = np.concatenate( (train_Y, train_Y_swap), axis=0)
 
 
 ## Test data
-test_X = test_X_raw[0,:,:,:]      #(num, chunkLength, 9) //person0,1's all values (position, head orientation, body orientation)
-test_X = np.concatenate( (test_X, test_X_raw[1,:,:,:]), axis= 2)      #(num, chunkLength, 18)
-test_Y = test_X_raw[2,:,:,:]    #2nd seller's position only
+test_X = test_face_raw[1,:,:,:]      #(num, chunkLength, 9) //person0,1's all values (position, head orientation, body orientation)
+test_Y = test_body_raw[2,:,:,:]    #2nd seller's position only
 
-test_X_swap = test_X_raw[0,:,:,:]      #(num, chunkLength, 9) //person0,1's all values (position, head orientation, body orientation)
-test_X_swap = np.concatenate( (test_X_swap, test_X_raw[2,:,:,:]), axis= 2)      #(num, chunkLength, 18)
-test_Y_swap = test_X_raw[1,:,:,:]    #2nd seller's position only
+test_X_swap = test_face_raw[2,:,:,:]      #(num, chunkLength, 9) //person0,1's all values (position, head orientation, body orientation)
+test_Y_swap = test_body_raw[1,:,:,:]    #2nd seller's position only
 
 test_X = np.concatenate( (test_X, test_X_swap), axis=0)
 test_Y = np.concatenate( (test_Y, test_Y_swap), axis=0)
-
-
 
 ######################################
 # Data pre-processing
@@ -246,7 +247,7 @@ test_Y = np.swapaxes(test_Y, 1, 2).astype(np.float32)
 # Standardization (consider seller motion only)
 feet = np.array([12,13,14,15,16,17,24,25,26,27,28,29])
 
-train_body = train_X[:,:73,:]
+train_body = train_Y#[:,,:]
 body_mean = train_body.mean(axis=2).mean(axis=0)[np.newaxis,:,np.newaxis]  #(1, 73, 1)
 body_mean[:,-7:-4] = 0.0
 body_mean[:,-4:]   = 0.5
@@ -258,18 +259,21 @@ body_std[:,-5:-4] = 0.9 * train_body[:,-5:-4].std()
 body_std[:,-4:]   = 0.5
 
 
-body_mean_two = np.concatenate((body_mean,body_mean),axis=1)
-body_std_two = np.concatenate((body_std,body_std),axis=1)
-# Data standardization 
-train_X = (train_X - body_mean_two) / body_std_two
-test_X = (test_X - body_mean_two) / body_std_two
+#Face part
+face_mean = train_X.mean(axis=2).mean(axis=0)[np.newaxis,:,np.newaxis]
+face_std = np.array([[[train_X.std()]]]).repeat(train_X.shape[1], axis=1) #(1, 73, 1)
 
-# Data standardization : for trajectory
+
+# Data standardization 
+train_X = (train_X - face_mean) / face_std
+test_X = (test_X - face_mean) / face_std
+
+# Data standardization : for face
 train_Y = (train_Y - body_mean) / body_std
 test_Y = (test_Y - body_mean) / body_std
 
 # Save mean and var
-np.savez_compressed(checkpointFolder+'/preprocess_core.npz', body_mean=body_mean, body_std=body_std, body_mean_two=body_mean_two, body_std_two=body_std_two)
+np.savez_compressed(checkpointFolder+'/preprocess_core.npz', body_mean=body_mean, body_std=body_std, face_mean=face_mean, face_std=face_std)
 
 
 # Data Shuffle
