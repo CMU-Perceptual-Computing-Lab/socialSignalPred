@@ -322,7 +322,7 @@ traj_list_seq =[]
 traj2body_skeletonErr_list = []
 body2body_skeletonErr_list = []
 trajbody2body_skeletonErr_list =[]
-bVisualize = True
+bVisualize = False
 bRender = False         #IF true, save the opengl vis to files (/ssd/render_ssp/)
 for seqIdx in range(len(test_X_raw_all)):
 
@@ -583,15 +583,15 @@ for seqIdx in range(len(test_X_raw_all)):
     vis_f2body_initRot = [ pred_initRot_list[0] ] + vis_bodyGT_initRot
     vis_f2body_initTrans = [ pred_initTrans_list[0] ] +  vis_bodyGT_initTrans
 
-    # """Ensure the same length"""
-    # frameLeng = min(vis_f2body_bodyData[0].shape[1], vis_t2body_bodyData[0].shape[1])
-    # vis_f2body_bodyData[0] = vis_f2body_bodyData[0][:,:frameLeng]
-    # vis_t2body_bodyData[0] = vis_t2body_bodyData[0][:,:frameLeng]
+    """Ensure the same length"""
+    frameLeng = min(vis_f2body_bodyData[0].shape[1], vis_t2body_bodyData[0].shape[1])
+    vis_f2body_bodyData[0] = vis_f2body_bodyData[0][:,:frameLeng]
+    vis_t2body_bodyData[0] = vis_t2body_bodyData[0][:,:frameLeng]
 
-    # vis_b2body_hybrid_bodyData = [ f.copy() for f in vis_b2body_bodyData ]
-    # vis_b2body_hybrid_bodyData[0][0:33,:] = vis_t2body_bodyData[0][0:33,:]  #Overwrite leg motion
+    vis_f2body_hybrid_bodyData = [ f.copy() for f in vis_f2body_bodyData ]
+    vis_f2body_hybrid_bodyData[0][0:33,:] = vis_t2body_bodyData[0][0:33,:]  #Overwrite leg motion
     # #vis_b2body_hybrid_bodyData[0][-3:,:] = vis_t2body_bodyData[0][-3:,:]     #Overwrite root motion
-    # vis_b2body_hybrid_bodyData[0][-7:,:] = vis_t2body_bodyData[0][-7:,:]     #Overwrite root motion
+    vis_f2body_hybrid_bodyData[0][-7:,:] = vis_t2body_bodyData[0][-7:,:]     #Overwrite root motion
 
 
 
@@ -648,6 +648,7 @@ for seqIdx in range(len(test_X_raw_all)):
         #eval_in_body = vis_b2body_hybrid_bodyData[1].copy()    #GT Body
         #eval_in_body = vis_b2body_hybrid_bodyData[0].copy() 
         eval_in_body = vis_f2body_bodyData[0].copy() 
+        eval_in_body = vis_f2body_hybrid_bodyData[0].copy() 
         #eval_in_body = vis_b2body_bodyData[0].copy() 
         eval_in_body = eval_in_body[np.newaxis,:,:]
         
@@ -667,13 +668,13 @@ for seqIdx in range(len(test_X_raw_all)):
 
         print("{0}".format(acc))
 
-        import matplotlib.pyplot as plt
-        plt.plot(b2speak_pred_speak)
-        plt.hold(True)
-        plt.plot(vis_b2speak_speak[1][:b2speak_pred_speak.shape[0]])
-        plt.show()
-        plt.pause(0.5)
-        #print("{0}".format(loss_gt))
+
+        # import matplotlib.pyplot as plt
+        # plt.plot(b2speak_pred_speak)
+        # plt.hold(True)
+        # plt.plot(vis_b2speak_speak[1][:b2speak_pred_speak.shape[0]])
+        # plt.show()
+        # plt.pause(0.5)
 
 
     #######################################################
@@ -739,8 +740,10 @@ for seqIdx in range(len(test_X_raw_all)):
     final_vis_body_initRot = [ vis_b2body_initRot[i] for i in selectedIdx]
     final_vis_body_initTrans = [ vis_b2body_initTrans[i] for i in selectedIdx]
     #final_vis_bodyData = [ vis_t2body_bodyData[i] for i in selectedIdx]        #Traj2Body
-    #final_vis_bodyData = [ vis_b2body_hybrid_bodyData[i] for i in selectedIdx]        #Hybrid
-    final_vis_bodyData = [ vis_f2body_bodyData[i] for i in selectedIdx]        #Hybrid
+    #final_vis_bodyData = [ vis_b2body_hybrid_bodyData[i] for i in selectedIdx]        #f2body +t2body Hybrid
+    #final_vis_bodyData = [ vis_f2body_bodyData[i] for i in selectedIdx]        #f2Body
+    final_vis_bodyData = [ vis_f2body_hybrid_bodyData[i] for i in selectedIdx]        #f2body + t2body Hybrid
+    
     #final_vis_bodyData = [vis_t2body_bodyData[0], vis_b2body_bodyData[0], vis_b2body_hybrid_bodyData[0], vis_b2body_bodyData[1]]
     #final_vis_bodyData = [vis_t2body_bodyData[0], vis_b2body_hybrid_bodyData[0], vis_b2body_bodyData[1]]
     
