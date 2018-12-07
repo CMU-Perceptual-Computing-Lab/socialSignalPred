@@ -36,8 +36,7 @@ from Pivots import Pivots
 ######################################
 # Sub networks
 from network_face2face import Network_face2face 
-
-
+from network_face2body import Network_face2body
 
 ######################################
 # Logging
@@ -312,7 +311,7 @@ model_ae_body = model_ae_body.eval()  #Do I need this again?
 # ######################################
 # # Load Face2Face
 net_face2face = Network_face2face()
-
+net_face2body = Network_face2body()
 
 
 ############################
@@ -497,6 +496,7 @@ for seqIdx in range(len(test_X_raw_all)):
     b2b_in_body_std = (b2b_in_body - b2b_body_mean_two) / b2b_body_std_two
     b2b_ouput_GT_std = (b2b_ouput_GT - b2b_body_mean) / b2b_body_std
 
+
     #######################################################
     # Predicting by Body2Body
     inputData_ = Variable(torch.from_numpy(b2b_in_body_std)).cuda()  #(batch, 3, frameNum)
@@ -561,6 +561,39 @@ for seqIdx in range(len(test_X_raw_all)):
         #print("{0}".format(loss_gt))
 
 
+    #######################################################
+    # Predicting by Face2Body
+    faceData_in = face_raw_group[1:2,:,:]      #(1, frames, features:5)
+    #faceData_in = np.concatenate( (faceData_in, face_raw_group[1:2,:,:]), axis= 2)      #(1, frames, features:5
+    faceData_in = np.swapaxes(faceData_in, 1, 2).astype(np.float32)   #(1, features:10, frames)
+
+    faceData_in_std = net_face2body.standardize_input(faceData_in)  #(1, features:10, frames)
+
+    #######################################################
+    # Predicting face by Face2Face
+    inputData_ = Variable(torch.from_numpy(faceData_in_std)).cuda()  #(batch, 3, frameNum)
+    f2body_pred_body = net_face2body(inputData_)
+    #De-standardaize
+    f2body_pred_body = f2body_pred_body.data.cpu().numpy()  #(1, featureDim:5, frames)
+    f2body_pred_body = net_face2body.destandardize_output(f2body_pred_body)
+    f2body_pred_body = np.squeeze(f2body_pred_body)  #(featureDim:73, frames)
+
+
+    vis_f2body_bodyData = [ f2body_pred_body] + vis_bodyData_GT  
+    vis_f2body_initRot = [ pred_initRot_list[0] ] + vis_bodyGT_initRot
+    vis_f2body_initTrans = [ pred_initTrans_list[0] ] +  vis_bodyGT_initTrans
+
+    # """Ensure the same length"""
+    # frameLeng = min(vis_f2body_bodyData[0].shape[1], vis_t2body_bodyData[0].shape[1])
+    # vis_f2body_bodyData[0] = vis_f2body_bodyData[0][:,:frameLeng]
+    # vis_t2body_bodyData[0] = vis_t2body_bodyData[0][:,:frameLeng]
+
+    # vis_b2body_hybrid_bodyData = [ f.copy() for f in vis_b2body_bodyData ]
+    # vis_b2body_hybrid_bodyData[0][0:33,:] = vis_t2body_bodyData[0][0:33,:]  #Overwrite leg motion
+    # #vis_b2body_hybrid_bodyData[0][-3:,:] = vis_t2body_bodyData[0][-3:,:]     #Overwrite root motion
+    # vis_b2body_hybrid_bodyData[0][-7:,:] = vis_t2body_bodyData[0][-7:,:]     #Overwrite root motion
+
+
 
     # # ## Compute Skeleton Error
     # #Only consider the predicted on
@@ -613,7 +646,8 @@ for seqIdx in range(len(test_X_raw_all)):
     if True:
         #eval_in_body = vis_t2body_bodyData[0].copy() 
         #eval_in_body = vis_b2body_hybrid_bodyData[1].copy()    #GT Body
-        eval_in_body = vis_b2body_hybrid_bodyData[0].copy() 
+        #eval_in_body = vis_b2body_hybrid_bodyData[0].copy() 
+        eval_in_body = vis_f2body_bodyData[0].copy() 
         #eval_in_body = vis_b2body_bodyData[0].copy() 
         eval_in_body = eval_in_body[np.newaxis,:,:]
         
@@ -705,7 +739,8 @@ for seqIdx in range(len(test_X_raw_all)):
     final_vis_body_initRot = [ vis_b2body_initRot[i] for i in selectedIdx]
     final_vis_body_initTrans = [ vis_b2body_initTrans[i] for i in selectedIdx]
     #final_vis_bodyData = [ vis_t2body_bodyData[i] for i in selectedIdx]        #Traj2Body
-    final_vis_bodyData = [ vis_b2body_hybrid_bodyData[i] for i in selectedIdx]        #Hybrid
+    #final_vis_bodyData = [ vis_b2body_hybrid_bodyData[i] for i in selectedIdx]        #Hybrid
+    final_vis_bodyData = [ vis_f2body_bodyData[i] for i in selectedIdx]        #Hybrid
     #final_vis_bodyData = [vis_t2body_bodyData[0], vis_b2body_bodyData[0], vis_b2body_hybrid_bodyData[0], vis_b2body_bodyData[1]]
     #final_vis_bodyData = [vis_t2body_bodyData[0], vis_b2body_hybrid_bodyData[0], vis_b2body_bodyData[1]]
     
