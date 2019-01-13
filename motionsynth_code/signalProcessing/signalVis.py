@@ -105,7 +105,7 @@ bodyData = get_Holden_Data_73([ X[0,:,:], X[1,:,:], X[2,:,:] ], ignore_root=True
 
 
 fig = plt.figure()
-for pIdx  in range(len(faceData)):
+for pIdx  in range(len(bodyData)):
 
     ax = plt.subplot(3,1,pIdx+1)
 
@@ -115,7 +115,9 @@ for pIdx  in range(len(faceData)):
     
 
     #Draw face component
-    for comp  in [13, 16, 20]: #left and right hand
+    #for comp  in [13, 16, 20]: #left and right hand
+    #for comp  in range(16,17): #left and right hand
+    for comp  in [17,21]: #left and right hand
 
         # for i, axis in enumerate(['x','y','z']):
         #     data = np.swapaxes(bodyData[pIdx][(comp*3+i):(comp*3+i+1),:],0,1)
@@ -130,6 +132,7 @@ for pIdx  in range(len(faceData)):
         data_vel = data_vel[:,1:]  -  data_vel[:,:-1]
         data_vel = sum(data_vel**2)**0.5
         ax.plot(data_vel,label='joint{}_vel'.format(comp))
+        ax.hold(True)
 
 
     ax.legend(loc='center left', bbox_to_anchor=(1, 0.5))

@@ -303,3 +303,41 @@ def ComputeHeadOrientation(skeletons, faceNormal=None):
     rotation_angle_list = np.array(rotation_angle_list) #(3,3, frames)
 
     return trans, rotation_angle_list #(numSkel,3, frames)
+
+
+#Crop and align the ``last dim" of input_list
+def EnsureLastDimLength(input_list):
+    #print(input_list)
+    length = min([x.shape[-1] for x in input_list])
+    #print("EnsureLength: minLength {}".format(length))
+
+    for i in range(len(input_list)):
+        dimNum = len(input_list[i].shape)
+        if dimNum==1:
+            input_list[i] = input_list[i][:length]
+        elif dimNum==2:
+            input_list[i] = input_list[i][:,:length]
+        elif dimNum==3:
+            input_list[i] = input_list[i][:,:,:length]
+
+    lengthCheck = max([len(x) for x in input_list])
+    #print("EnsureLength: maxLength {}".format(lengthCheck))
+    return input_list
+
+def EnsureFirstDimLength(input_list):
+    #print(input_list)
+    length = min([x.shape[0] for x in input_list])
+    #print("EnsureLength: minLength {}".format(length))
+
+    for i in range(len(input_list)):
+        dimNum = len(input_list[i].shape)
+        if dimNum==1:
+            input_list[i] = input_list[i][:length]
+        elif dimNum==2:
+            input_list[i] = input_list[i][:length,:]
+        elif dimNum==3:
+            input_list[i] = input_list[i][:length,:,:]
+
+    length = max([x.shape[0] for x in input_list])
+    #print("EnsureLength: maxLength {}".format(lengthCheck))
+    return input_list

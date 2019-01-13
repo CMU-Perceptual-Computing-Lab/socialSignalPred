@@ -294,8 +294,8 @@ for seqIdx in range(len(test_X_raw_all)):
 
         seqName = os.path.basename(test_seqNames[seqIdx])
         #if not ('170221_haggling_b2_group4' in seqName):
-        # if not ('170221_haggling_b1_group4' in seqName):
-        #     continue
+        if not ('170221_haggling_b3_group2' in seqName):
+            continue
 
         #Rendering Model
         if bRender:

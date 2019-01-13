@@ -210,10 +210,10 @@ save_options(checkpointFolder, option_str, options_dict)
 
 ######################################
 # Data pre-processing
-train_X = np.swapaxes(train_X, 1, 2).astype(np.float32) #(num, 200, 1)
+train_X = np.swapaxes(train_X, 1, 2).astype(np.float32) #(num,featureDim, frames)
 train_Y = train_Y.astype(np.float32)
 
-test_X = np.swapaxes(test_X, 1, 2).astype(np.float32) #(num, 200, 1)
+test_X = np.swapaxes(test_X, 1, 2).astype(np.float32) #(num, featureDim, frames)
 test_Y = test_Y.astype(np.float32)
 
 
@@ -240,8 +240,6 @@ Xstd[:,-4:]   = 0.5
 
 #Face part
 Xstd[:,:5] = train_X[:,:5].std()
-
-
 
 # Save mean and var
 np.savez_compressed(checkpointFolder+'/preprocess_core.npz', Xmean=Xmean, Xstd=Xstd)

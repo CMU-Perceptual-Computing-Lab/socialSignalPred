@@ -1102,8 +1102,8 @@ def process_file_withSpeech_byGroup_bySeq_normalize(filename, apply_brl=False):
 """Haggling testing games sellers"""
 faceParamDir = '/ssd/codes/pytorch_motionSynth/motionsynth_data/data/processed_panoptic/panopticDB_pkl_hagglingProcessed'
 h36m_files = get_files_haggling(faceParamDir,True)
-#h36m_files2 = get_files_haggling(faceParamDir,True)
-#h36m_files = h36m_files +h36m_files2
+h36m_files2 = get_files_haggling(faceParamDir,False)
+h36m_files = h36m_files +h36m_files2
 
 print('Num: {}'.format(len(h36m_files)))
 seq_data = []
@@ -1120,7 +1120,8 @@ for i, item in enumerate(h36m_files):
     #clips, speech, refPos, refRot, attention = process_file_withSpeech_byGroup_bySeq(item,apply_brl=True)
 
     ## Normalization for full frames
-    clips, speech, refPos, refRot = process_file_withSpeech_byGroup_bySeq_normalize(item,apply_brl=True)
+    #clips, speech, refPos, refRot = process_file_withSpeech_byGroup_bySeq_normalize(item,apply_brl=True)
+    clips, speech, refPos, refRot = process_file_withSpeech_byGroup_bySeq_normalize(item,apply_brl=False)
 
     ## Normalization for by the first frame 
     #clips, speech, refPos, refRot = process_file_withSpeech_byGroup_bySeq_normalizeByFirst(item,apply_brl=True)
@@ -1140,14 +1141,15 @@ for i, item in enumerate(h36m_files):
 
     seq_attention.append(attention)
 
-    if i==2:
-        break;
+    # if i==2:
+    #     break;
 
 #print("Data shape: {}".format(group_data[0].shape))
 #np.savez('data_hagglingSellers_speech_formation_bySequence_white_training', data=seq_data, speech=seq_speech)
 #output = open('data_hagglingSellers_speech_formation_pN_rN_rV_bySequence_white_testing_beta_4d_inverse.pkl', 'wb')
-output = open('data_hagglingSellers_speech_formation_bySequence_white_brl_testing_4fcn_atten_tiny.pkl', 'wb')
+#output = open('data_hagglingSellers_speech_formation_bySequence_white_brl_testing_4fcn_atten_tiny.pkl', 'wb')
 #output = open('data_hagglingSellers_speech_formation_bySequence_white_brl_all_4fcn_norm_tiny.pkl', 'wb')
 #output = open('data_hagglingSellers_speech_formation_bySequence_white_brl_firstFrmNorm_testing_4fcn.pkl', 'wb')
+output = open('data_hagglingSellers_speech_formation_bySequence_white_bwl_all_4fcn_norm.pkl', 'wb')
 pickle.dump({'data':seq_data, 'speech':seq_speech, 'seqNames': h36m_files, 'refPos': seq_refPos,'refRot': seq_refRot, 'attention': seq_attention}, output)
 output.close()

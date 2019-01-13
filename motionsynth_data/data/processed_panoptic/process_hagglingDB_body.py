@@ -128,7 +128,7 @@ for seqInfo in hagglingInfo:
         #Find a group of people
         group = list()
         #for humanId in (buyerId,leftSellerId,rightSellerId): #buyer, leftSeller, rightSeller order
-        for humanId in (buyerId,winnerId,loserId): #buyer, leftSeller, rightSeller order
+        for humanId in (buyerId,winnerId,loserId): #buyer, winner, loser order
             group.append(motionData[humanId])
             localStartFrame = groupStartFrame  - group[-1]['startFrame']
             localEndFrame = groupEndFrame - group[-1]['startFrame']

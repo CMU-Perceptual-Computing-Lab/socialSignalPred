@@ -314,6 +314,23 @@ net_face2face = Network_face2face()
 net_face2body = Network_face2body()
 
 
+#######################################
+## Load Network
+bOwnBody = False
+bFaceOnly = True
+bBodyOnly = False
+if bBodyOnly:
+    from network_X2speak import Network_body2speak
+    net_X2speak = Network_body2speak(bOwnBody)
+elif bFaceOnly:
+    from network_X2speak import Network_face2speak
+    net_X2speak = Network_face2speak(bOwnBody)
+else:
+    from network_X2speak import Network_facebody2speak
+    net_X2speak = Network_facebody2speak(bOwnBody)
+
+
+
 ############################
 ## Choose a sequence
 #seqIdx =1
@@ -335,8 +352,13 @@ for seqIdx in range(len(test_X_raw_all)):
     #                     '170228_haggling_b1_group7' in seqName or
     #                     '170228_haggling_b2_group0' in seqName ) :
     #     continue
+    # if not ('170228_haggling_b1_group2' in seqName) :
+    #     continue
+    # if not ('170228_haggling_b2_group0' in seqName) :
+    #     continue
     if not ('170228_haggling_b1_group3' in seqName) :
         continue
+    
     #Rendering Model
     if bRender:
         outputFolder = '/ssd/render_ssp/{}'.format(seqName[:-4])
@@ -614,6 +636,34 @@ for seqIdx in range(len(test_X_raw_all)):
 
 
 
+    #######################################################
+    # Predicting by Face2Speak
+    test_face = face_raw_group[1,:,:]       #(frames, dim:5)
+    test_body = body_raw_group[1,:,:]       #(frames, dim:73)
+    [test_face, test_body] =  utility.EnsureFirstDimLength([test_face, test_body])
+    test_X = np.concatenate( (test_face, test_body),axis=1)     #(frames, dim:78)
+
+    #making them as (batch, featureDim, freams)
+    test_X = np.expand_dims(test_X,0)   #(1, freams, dim)
+    test_X = np.swapaxes(test_X, 1, 2).astype(np.float32) #(num, featureDim, frames)
+
+    # Standardization
+    test_X_std = net_X2speak.standardize_input(test_X)  #(1, features, frames)
+    # if bBodyOnly:
+    #     test_X_std[0,:5,:]*=0
+    # if bFaceOnly:
+    #     test_X_std[0,5:,:]*=0
+
+    # Predicting face by Face2Face
+    inputData_ = Variable(torch.from_numpy(test_X_std)).cuda()  #(batch, 3, frameNum)
+    outputData_ = net_X2speak(inputData_)
+    
+    # De-Standardization (no need)
+    outputData_ = outputData_.data.cpu().numpy()  
+    f2speak_pred_speak = np.squeeze(outputData_)  #(frames,)
+
+    vis_f2speak_speak = [f2speak_pred_speak, speech_raw[2,:].copy(), speech_raw[0,:].copy(), speech_raw[1,:].copy()]
+
     ######## Evaluation body by AE ################################
     if False:
         eval_in_body = vis_f2body_bodyData[0].copy() 
@@ -647,7 +697,7 @@ for seqIdx in range(len(test_X_raw_all)):
 
 
     ######## Evaluation body by body2speak ################################
-    if True:
+    if False:
         #eval_in_body = vis_t2body_bodyData[0].copy()       #Traj2Body
         eval_in_body = vis_t2body_bodyData[1].copy()       #GT body
         #eval_in_body = vis_b2body_hybrid_bodyData[1].copy()    #GT Body
@@ -745,8 +795,8 @@ for seqIdx in range(len(test_X_raw_all)):
     final_vis_body_initRot = [ vis_b2body_initRot[i] for i in selectedIdx]
     final_vis_body_initTrans = [ vis_b2body_initTrans[i] for i in selectedIdx]
     #final_vis_bodyData = [ vis_t2body_bodyData[i] for i in selectedIdx]        #Traj2Body
-    #final_vis_bodyData = [ vis_b2body_hybrid_bodyData[i] for i in selectedIdx]        #f2body +t2body Hybrid
-    final_vis_bodyData = [ vis_f2body_bodyData[i] for i in selectedIdx]        #f2Body
+    final_vis_bodyData = [ vis_b2body_hybrid_bodyData[i] for i in selectedIdx]        #f2body +t2body Hybrid
+    #final_vis_bodyData = [ vis_f2body_bodyData[i] for i in selectedIdx]        #f2Body
     #final_vis_bodyData = [ vis_f2body_hybrid_bodyData[i] for i in selectedIdx]        #f2body + t2body Hybrid
     
     #final_vis_bodyData = [vis_t2body_bodyData[0], vis_b2body_bodyData[0], vis_b2body_hybrid_bodyData[0], vis_b2body_bodyData[1]]
@@ -765,7 +815,8 @@ for seqIdx in range(len(test_X_raw_all)):
     final_vis_holdenTraj_holden_initTrans = vis_traj_holden_initTrans
 
     """ Select Speak to visualize """
-    final_vis_speak = [vis_b2speak_speak[i] for i in selectedIdx]
+    #final_vis_speak = [vis_b2speak_speak[i] for i in selectedIdx]
+    final_vis_speak = [vis_f2speak_speak[i] for i in selectedIdx]
 
     """ Select Face to visualize """
     #Final slection to draw a subset
@@ -777,9 +828,9 @@ for seqIdx in range(len(test_X_raw_all)):
     ####################################################################################
     # Visualization
     """ Visualize Location + Orientation """
-    glViewer.setPosOnly(final_vis_posData)
-    glViewer.setFaceNormal(final_vis_faceNormalData)
-    glViewer.setBodyNormal(final_vis_bodyNormalData)
+    # glViewer.setPosOnly(final_vis_posData)
+    #glViewer.setFaceNormal(final_vis_faceNormalData)
+    #glViewer.setBodyNormal(final_vis_bodyNormalData)
     
     """Visualize Trajectory"""
     #glViewer.set_Holden_Trajectory_3(final_vis_holdenTraj, initTrans=final_vis_holdenTraj_holden_initTrans, initRot=final_vis_holdenTraj_holden_initRot)   #pred
@@ -788,12 +839,14 @@ for seqIdx in range(len(test_X_raw_all)):
     glViewer.set_Holden_Data_73(final_vis_bodyData, ignore_root=False, initRot=final_vis_body_initRot, initTrans= final_vis_body_initTrans, bIsGT=False)
     
     """Visualize Speech"""
-    glViewer.setSpeech_binary(final_vis_speak)
+    glViewer.setSpeechGT_binary(final_vis_speak)
+    #glViewer.setSpeechGT_binary([ final_vis_speak[1], final_vis_speak[2],final_vis_speak[3]])
+    #glViewer.setSpeech_binary(final_vis_speak)
 
     # """Visualize face"""
-    # #glViewer.SetFaceParmData(vis_faceData,False)
-    # vis_f2face_trans , vis_f2face_rot = utility.ComputeHeadOrientation(glViewer.g_skeletons, final_vis_faceNormalData)
-    # glViewer.SetFaceParmDataWithTrans(final_vis_faceData,True, vis_f2face_trans, vis_f2face_rot)
+    ##glViewer.SetFaceParmData(vis_faceData,False)
+    vis_f2face_trans , vis_f2face_rot = utility.ComputeHeadOrientation(glViewer.g_skeletons, final_vis_faceNormalData)
+    glViewer.SetFaceParmDataWithTrans(final_vis_faceData,True, vis_f2face_trans, vis_f2face_rot)
 
     """Render output to videos"""
     if bRender:

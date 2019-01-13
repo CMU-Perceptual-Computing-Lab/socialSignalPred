@@ -1,7 +1,4 @@
-import sys
-sys.path.append('../../motionsynth_data/motion')
-from Pivots import Pivots
-from Quaternions import Quaternions
+import numpy as np
 
 def print_options(parser,opt):
     option_dict = dict()
@@ -48,8 +45,8 @@ def my_args_parser():
     parser.add_argument('--epochs', type=int, default=500001, metavar='N',
                         help='number of epochs to train (default: 50001)')
 
-    parser.add_argument('--batch', type=int, default=256, metavar='N',
-                        help='batch size (default: 2018)')
+    parser.add_argument('--batch', type=int, default=512, metavar='N',
+                        help='batch size (default: 512)')
 
     parser.add_argument('--gpu', type=int, default=0, metavar='N',
                         help='Select gpu (default: 0)')
@@ -57,11 +54,8 @@ def my_args_parser():
     parser.add_argument('--checkpoint_freq', type=int, default=50, metavar='N',
                         help='How frequently save the checkpoint (default: every 50 epoch)')
 
-    parser.add_argument('--model', type=str, default='speackClass_allSignal',
-                        help='a model name in the model_zoo.py (default: regressor_fcn_bn_updated')
-
-    parser.add_argument('--blockmode', type=int, default=0,
-                        help='blockmode. block which features in the input (0: no blocking')                         
+    parser.add_argument('--model', type=str, default='autoencoder_first',
+                        help='a model name in the model_zoo.py (default: autoencoder_first')
 
     parser.add_argument('--solver', type=str, default='adam_ams',
                         help='Optimization solver. adam or sgd, adam_ams. (default: adam_ams')
@@ -80,15 +74,6 @@ def my_args_parser():
 
     parser.add_argument('--autoreg', type=int, default='0',
                         help='If >0, train with autoregressive mode. (using init 150 frames input and later 150 frames as output) (default: 0')
-
-    parser.add_argument('--lstm_hidden_dim', type=int, default='12',
-                        help='Hidden layer dimension for LSTM layer (default: 12')
-    
-    parser.add_argument('--faceParam_feature_dim', type=int, default='200',
-                        help='Face Mesh Parameter Feature Dimension used for training (default: 200')
-    
-    parser.add_argument('--inputSubject', type=int, default='2',
-                        help='Input person Idx (default: 2)')
     
     return parser
 
@@ -180,8 +165,6 @@ def loadPreTrained(args, checkpointFolder, model, optimizer):
 
     return model, optimizer, pretrain_epoch, pretrain_batch_size
 
-
-import numpy as np
 #input 2xframes
 #output 3xframes where Yaxis has zeros
 def data_2dTo3D(data_2d, newRowIdx =1):
@@ -198,6 +181,81 @@ def data_2dTo3D(data_2d, newRowIdx =1):
         data_3d[1,:] = data_2d[1,:]
 
     return data_3d
+
+"""Generate Trajectory in Holden's form by pos and body orientation
+    
+    input: 
+      - posData: a list of trajectories, where each element has
+          2 x frames  (location in the X-Z plane)
+      - normal data
+          2 x frames  (location in the X-Z plane)
+    
+
+    output: a list of trajectories in the velocity formation
+        - traj_list: 3 x frames: [xVel ; yVecl; rotVel]
+        - initTrans_list: 3 x 1   # to go back to original absolute coordination
+        - initRot_list: 3 x 1     # to go back to original absolute coordination
+"""
+import sys
+sys.path.append('../../motionsynth_data/motion')
+#sys.path.append('/ssd/codes/pytorch_motionSynth/motionsynth_data/motion')
+from Pivots import Pivots
+from Quaternions import Quaternions
+def ConvertTrajectory_velocityForm(posData, bodyNormalData):
+    traj_list=[]
+    initTrans_list=[]
+    initRot_list=[]
+    for i in range(len(posData)):
+        targetPos = np.swapaxes(posData[i],0,1) #framesx2
+        
+        velocity = (targetPos[1:,:] - targetPos[:-1,:]).copy()      #(frames,2)
+        frameLeng = velocity.shape[0]
+        velocity_3d = np.zeros( (frameLeng,3) )
+        velocity_3d[:,0] = velocity[:,0]
+        velocity_3d[:,2] = velocity[:,1]        #(frames,3)
+        velocity_3d = np.expand_dims(velocity_3d,1)   #(frames,1, 3)
+        
+        """ Compute Rvelocity"""
+        targetNormal = np.swapaxes(bodyNormalData[i],0,1) #(frames, 2)
+
+        if targetNormal.shape[1] ==2:
+            forward = np.zeros( (targetNormal.shape[0],3) )
+            forward[:,0]  = targetNormal[:,0]
+            forward[:,2]  = targetNormal[:,1]
+        else:
+            forward = targetNormal
+
+        forward = forward / np.sqrt((forward**2).sum(axis=-1))[...,np.newaxis]
+        target = np.array([[0,0,1]]).repeat(len(forward), axis=0)
+        rotation = Quaternions.between(forward, target)[:,np.newaxis]    #forward:(frame,3)
+
+        velocity_3d = rotation[1:] * velocity_3d
+
+        """ Get Root Rotation """
+        rvelocity = Pivots.from_quaternions(rotation[1:] * -rotation[:-1]).ps
+
+
+        """ Save output """
+        trajData = np.zeros( (frameLeng,3))
+        trajData[:,0] = velocity_3d[:,0,0] * 0.2    #0.2 to make holden data scale
+        trajData[:,1] = velocity_3d[:,0,2] * 0.2    #0.2 to make holden data scale
+        trajData[:,2] = rvelocity[:,0]
+
+
+        initTrans = np.zeros( (1,3) )
+        initTrans[0,0] = targetPos[0,0]
+        initTrans[0,2] = targetPos[0,1]
+        initTrans = initTrans*0.2
+
+        trajData = np.swapaxes(trajData,0,1) 
+        traj_list.append(trajData)
+        initTrans_list.append(initTrans)
+
+
+        initRot = -rotation[0] #Inverse to move [0,0,1] -> original Forward
+        initRot_list.append(initRot)
+
+    return traj_list, initTrans_list,initRot_list
 
 
 #(numSkel, 66, frames)
@@ -217,28 +275,26 @@ def ComputeHeadOrientation(skeletons, faceNormal=None):
 
     """ Compute Rvelocity"""
     rotation_angle_list = []
-    if faceNormal is not None:
-        for i in range(len(faceNormal)):
+    for i in range(len(faceNormal)):
 
-            forward = faceNormal[i] # (2,frames)
-            if forward.shape[0]==2:
-                forward = data_2dTo3D(forward) # (2,frames)
-            forward = np.swapaxes(forward,0,1) #(frames, 3)
-            target = np.array([[0,0,1]]).repeat(len(forward), axis=0) #(frames, 3)
-            rotation_q = Quaternions.between(target, forward)[:,np.newaxis]    #forward:(frame,3)
+        forward = faceNormal[i] # (2,frames)
+        forward = data_2dTo3D(forward) # (2,frames)
+        forward = np.swapaxes(forward,0,1) #(frames, 3)
+        target = np.array([[0,0,1]]).repeat(len(forward), axis=0) #(frames, 3)
+        rotation_q = Quaternions.between(target, forward)[:,np.newaxis]    #forward:(frame,3)
 
-            #up = np.array([[0,1,0]]).repeat(len(forward), axis=0) #(frames, 3)
-            #down = np.array([[0,-1,0]]).repeat(len(forward), axis=0) #(frames, 3)
-            #rotation_q2 = Quaternions.between(up,down)[:,np.newaxis]    #forward:(frame,3)
-            #rotation_q = rotation_q2#* rotation_q
+        #up = np.array([[0,1,0]]).repeat(len(forward), axis=0) #(frames, 3)
+        #down = np.array([[0,-1,0]]).repeat(len(forward), axis=0) #(frames, 3)
+        #rotation_q2 = Quaternions.between(up,down)[:,np.newaxis]    #forward:(frame,3)
+        #rotation_q = rotation_q2#* rotation_q
 
-            rotation_angle = [rotation_q[i].angle_axis() for i in range(len(rotation_q))]
+        rotation_angle = [rotation_q[i].angle_axis() for i in range(len(rotation_q))]
 
-            rotation_angle = [i[0] * i[1] for i in rotation_angle]
-            rotation_angle = np.squeeze(np.array(rotation_angle)) #(frames, 3)
-            rotation_angle = np.swapaxes(rotation_angle,0,1) #(3, frames)
+        rotation_angle = [i[0] * i[1] for i in rotation_angle]
+        rotation_angle = np.squeeze(np.array(rotation_angle)) #(frames, 3)
+        rotation_angle = np.swapaxes(rotation_angle,0,1) #(3, frames)
 
-            rotation_angle_list.append(rotation_angle)
+        rotation_angle_list.append(rotation_angle)
 
 
     #adjust length
@@ -247,3 +303,9 @@ def ComputeHeadOrientation(skeletons, faceNormal=None):
     rotation_angle_list = np.array(rotation_angle_list) #(3,3, frames)
 
     return trans, rotation_angle_list #(numSkel,3, frames)
+
+
+import matplotlib.pyplot as plt
+def Plot(input_):
+    plt.plot(input_)
+    plt.show()
