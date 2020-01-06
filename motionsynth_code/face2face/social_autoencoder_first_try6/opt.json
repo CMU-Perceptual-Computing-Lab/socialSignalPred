@@ -1,1 +1,0 @@
-{"weight_kld": 0.001, "solver": "adam_ams", "latentDim_vae": 100, "finetune": "", "db": "haggling_socialmodel_wl", "batch": 2048, "autoreg": 0, "check_root": "./", "epochs": 500001, "checkpoint_freq": 50, "gpu": 0, "model": "autoencoder_3conv_vect_vae"}
