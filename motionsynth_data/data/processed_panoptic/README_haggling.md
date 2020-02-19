@@ -15,6 +15,7 @@ gathering_panopticDB_hand.py
 This code does some additional processing for each haggling sequence, as follows:
 
 1: Align the startFarmes for the people in the same group
+
 2: Separate the name of pkl file, to have a single group only
 
 
