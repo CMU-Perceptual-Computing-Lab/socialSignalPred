@@ -14,9 +14,9 @@ gathering_panopticDB_hand.py
 2. process_hagglingDB.py 
 This code does some additional processing for each haggling sequence, as follows:
 
-1: Align the startFarmes for the people in the same group
+  - 1) Align the startFarmes for the people in the same group
 
-2: Separate the name of pkl file, to have a single group only
+  - 2) Separate the name of pkl file, to have a single group only
 
 
 Similarly, run the following for face, and hands:
